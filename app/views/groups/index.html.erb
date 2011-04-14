@@ -1,0 +1,31 @@
+<h1>Listing Groups</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%- @groups.each do |group| -%>
+      <tr>
+        <td><%=h group.pretty_name %></td>
+        <td>
+          <%= link_to 'Show', group %>
+          <%- if can? :edit, group -%>
+            <%= link_to  'Edit', edit_group_path(group) %>
+          <%- end -%>
+          <%- if can? :destroy, group -%>
+            <%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %>
+          <%- end -%>
+        </td>
+      </tr>
+    <%- end -%>
+  </tbody>
+</table>
+
+<%- if can? :create, Group -%>
+  <%= link_to 'New Group', new_group_path, :class => 'button' %>
+<%- end -%>

@@ -1,0 +1,36 @@
+<%- form_for @group, :html => { :class => 'ar-form' } do |f| -%>
+  <%= f.error_messages %>
+  <fieldset>
+    <ol>
+      <li>
+      <%- if @group.for_cancan? -%>
+        <strong>Name:</strong>
+        <p><%= @group.pretty_name %></p>
+      <%- else -%>
+        <%= f.label :name, 'Name:' %>
+        <%= f.text_field :name %>
+      <%- end -%>
+      </li>
+      <li>
+        <%= f.label :users, 'Group Members:' %>
+        Group members listed by NetID. Add more by name or by NetID using the lookup tool.
+        <%= f.text_field :user_logins, :class => 'multiple-ldap-autocomplete' %>
+      </li>
+  <%- if current_user.in_group?(:root) -%>
+      <li>
+        <%= f.label :restricted, 'Restrict group management to Administrative users:' %>
+        <%= f.check_box :restricted %>
+      </li>
+      <li>
+        <%= f.label :is_hydra_role, 'Group is relevant to hydra application:' %>
+        <%= f.check_box :is_hydra_role %>
+      </li>
+    </ol>
+  <%- else -%>
+    </ol>
+    <%= f.hidden_field :is_hydra_role %>
+  <%- end -%>
+  </fieldset>
+  <%= f.submit submit_button_message, :class => 'button' %>
+  <%= f.submit cancel_button_message, :name => 'Cancel', :class => 'button' %>
+<%- end -%>

@@ -1,0 +1,17 @@
+<dl class="attributes">
+  <dt>Name:</dt>
+  <dd><%=h @group.pretty_name %></dd>
+  <dt>Users in group:</dt>
+  <dd>
+    <ul>
+      <%- @group.users.each do |user| -%>
+        <li><%= user.login %></li>
+      <%- end -%>
+    </ul>
+  </dd>
+</dl>
+
+<%- if can? :edit, Group -%>
+  <%= link_to 'Edit Group', edit_group_path(@group), :class => 'button' %>
+<%- end -%>
+<%= link_to 'Return to Group Listing', groups_path, :class => 'button' %>

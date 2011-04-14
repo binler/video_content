@@ -8,6 +8,7 @@ nohup.out
 
 vendor/plugins/haml/init.rb
 vendor/plugins/blacklight/.git
+config/initializers/ldap_config.rb
 log/*
 coverage.data
 coverage/*
