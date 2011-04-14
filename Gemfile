@@ -5,6 +5,8 @@ gem 'rails', '2.3.5'
 gem 'active-fedora', '2.0.0'  
 gem 'authlogic', '>=0.1.0'
 gem 'builder'
+gem 'block_helpers'
+gem 'cancan', '~> 1.5.1'
 gem 'columnize'
 gem 'crack'
 gem 'curb'
@@ -29,6 +31,7 @@ gem 'RedCloth', '4.2.2'
 gem 'rsolr', '=0.12.1'
 gem 'rsolr-ext', '=0.12.1'
 gem 'ruby-net-ldap'
+gem 'rubycas-client'
 gem 'solr-ruby' 
 gem 'solrizer', '>=1.0.1'
 gem 'solrizer-fedora', '>=1.0.1'
@@ -39,11 +42,6 @@ gem 'webrat'
 gem 'will_paginate'
 gem 'xml-simple'
 gem 'yard'
-
-
-source 'http://gemcutter.org'
-
-gem 'block_helpers'
 
 group :development, :test do
   gem 'ruby-debug'
