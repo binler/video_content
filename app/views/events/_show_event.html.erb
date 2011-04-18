@@ -1,0 +1,43 @@
+<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"events", :content_type=>"event")%>" method="post" data-resourceType="event" accept-charset="utf-8">
+  <fieldset id="title_fields">
+    <legend>Title</legend>
+    <dl>	
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle], "Title:") %>
+      </dt>
+      <dd class="title">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle]) %>
+      </dd>
+    <% end %>
+
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier, :pbcoreIdentifier_source]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier, :pbcoreIdentifier_source], "ID Source:") %>
+      </dt>
+      <dd class="id_source">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier, :pbcoreIdentifier_source]) %>
+      </dd>
+    <% end %>
+
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreIdentifier]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreIdentifier], "Event ID:") %>
+      </dt>
+      <dd class="event_id">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreIdentifier]) %>
+      </dd>
+    <% end %>
+
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle, :pbcoreTitle_type]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle, :pbcoreTitle_type], "Title Type:") %>
+      </dt>
+      <dd class="title_type">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle, :pbcoreTitle_type]) %>
+      </dd>
+    <% end %>
+
+    </dl>
+  </fieldset>
+</form>

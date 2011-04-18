@@ -1,0 +1,9 @@
+<h1>Special Collections</h1>
+
+<ul class="collection-list">
+  <%- @events.each do |event| -%>
+    <li>
+      <h2><%=link_to event.pid, event_path(event) %></h2>
+    </li>
+  <%- end -%>
+</ul>

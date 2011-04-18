@@ -1,0 +1,37 @@
+  <fieldset id="collection_fields">
+    <legend> Collection </legend>
+    <dl>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier, :pbcoreIdentifier_source]).first.empty?%>
+          <dt class="id_source">
+            <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier, :pbcoreIdentifier_source], "Source ID:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier, :pbcoreIdentifier_source])%>
+          </dd>
+      <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier]).first.empty?%>
+          <dt class="event_id">
+            <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier], "ID:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier])%>
+          </dd>
+      <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle]).first.empty?%>
+          <dt class="title">
+            <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle], "Title:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle])%>
+          </dd>
+      <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle, :pbcoreTitle_type]).first.empty?%>
+          <dt class="title_type">
+            <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle, :pbcoreTitle_type], "Title Type:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle, :pbcoreTitle_type])%>
+          </dd>
+      <%end%>
+    </dl>
+  </fieldset>

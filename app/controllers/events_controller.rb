@@ -64,12 +64,12 @@ class EventsController < CatalogController
     if af_model
       @asset = create_and_save_event(af_model)
     end
-    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
+    redirect_to url_for(:action=>"edit", :controller=>"events", :label => params[:label], :id=>@asset.pid)
   end
 
 
-#  def show  
-#    show_without_customizations
-#  end
+  def show  
+    show_without_customizations
+  end
 
 end

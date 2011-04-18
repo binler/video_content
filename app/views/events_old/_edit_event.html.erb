@@ -1,0 +1,32 @@
+<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"events", :content_type=>"event")%>" method="post" data-resourceType="<%= content %>" accept-charset="utf-8">
+  <fieldset id="work_fields">
+    <legend> Event </legend>
+    <dl>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier, :pbcoreIdentifier_source], "ID Source:") %>
+      </dt>
+      <dd class="id_source">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier, :pbcoreIdentifier_source], :multiple=>false) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreIdentifier], "Event ID:") %>
+      </dt>
+      <dd class="event_id">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreIdentifier], :multiple=>false) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle], "Title:") %>
+      </dt>
+      <dd class="title">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle, :pbcoreTitle_type], "Title Type:") %>
+      </dt>
+      <dd class="title_type">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle, :pbcoreTitle_type]) %>
+      </dd>
+    </dl>
+  </fieldset>
+</form>
+

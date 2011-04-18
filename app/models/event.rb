@@ -15,6 +15,7 @@ class Event < ActiveFedora::Base
   # A place to put extra metadata values
   has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|    
     m.field 'depositor', :string
+    m.field 'collection', :string
   end
 
   has_datastream :name=>"external_file", :type=>ActiveFedora::Datastream, :controlGroup=>'R'

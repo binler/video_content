@@ -217,7 +217,27 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
     return builder.doc
   end
 
-  def self.techdata_template
+  def self.part_template
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.pbcorePart("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
+        "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
+	xml.pbcoreIdentifier(:source=>"")
+	xml.pbcoreTitle(:titleType=>"", :source=>"", :version=>"", :annotation=>"")
+	xml.pbcoreDescription(:descriptionType=>"Event", :descriptionTypeSource=>"pbcoreDescription/descriptionType", :ref=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#summary")
+	xml.pbcoreContributor{
+	  xml.contributor
+	  xml.contributorRole
+	}
+	xml.pbcoreRightsSummary{
+	  xml.rightsSummary
+	  xml.rightsLink
+	  xml.rightsEmbedded
+	}
+      }
+    end
+  end
+
+  def self.digitalfile_template
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.pbcoreInstantiation("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
         "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
@@ -303,7 +323,10 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       when :event
         node = PbcoreXml.event_template
         nodeset = self.find_by_terms(:pbcoreDescriptionDocument)
-      when :techdata
+      when :part
+        node = PbcoreXml.part_template
+        nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart)
+      when :degitalfile
         node = PbcoreXml.techdata_template
         nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcoreInstantiation)
       when :derivative
@@ -333,10 +356,14 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
   def remove_node(node_type, index)
     #TODO: Added code to remove any given node
     case node_type.to_sym
-       when :techdata
+      when :digitalfile
         remove_node = self.find_by_terms(:pbcoreDescriptionDocument, :pbcoreInstantiation)[index.to_i]
       when :derivative
         remove_node = self.find_by_terms(:pbcoreInstantiation, :instantiationPart)[index.to_i]
+      when :creator
+        remove_node = self.find_by_terms(:pbcoreInstantiation, :pbcoreCreator)[index.to_i]
+      when :part
+        remove_node = self.find_by_terms(:pbcoreInstantiation, :pbcorePart)[index.to_i]
     end
     unless remove_node.nil?
       puts "Term to delete: #{remove_node.inspect}"
