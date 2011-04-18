@@ -6,7 +6,7 @@ class ApplicationMailer < ActionMailer::Base
   mail_config = YAML.load(File.open(File.join(Rails.root, "config/mailer.yml")))
   mail_config.each_pair do |name,mail_params|
     method_name = "#{name}_notice"
-    self.send(:define_method,:"#{method_name}") {|user,opts| notice(user,mail_params['from_address'],mail_params['subject_text'],mail_params['body_text'],mail_params['template_file'],opts)}
+    self.send(:define_method,:"#{method_name}") {|user,*opts| notice(user,mail_params['from_address'],mail_params['subject_text'],mail_params['body_text'],mail_params['template_file'],*opts)}
   end
   
   def notice(to_address, from_address, subject_text, body_text, template_file, opts={})
