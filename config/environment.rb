@@ -77,6 +77,17 @@ else
   ActionMailer::Base.delivery_method = :smtp
 end
 puts "Mail will be sent using #{ActionMailer::Base.delivery_method}"
+
+ActionMailer::Base.smtp_settings = {
+  :address              => SMTP_HOST,
+  :port                 => SMTP_PORT,
+  :domain               => SMTP_DOMAIN,
+  :authentication       => SMTP_AUTHENTICATION_TYPE,
+  :user_name            => SMTP_USER_NAME,
+  :password             => SMTP_PASSWORD,
+  :enable_starttls_auto => SMTP_ENABLE_STARTTLS_AUTO
+}
+
 require 'casclient'
 require 'casclient/frameworks/rails/filter'
 
@@ -89,3 +100,4 @@ CASClient::Frameworks::Rails::Filter.configure(
   :validate_url => "https://cas.library.nd.edu/cas/serviceValidate",
   :logger       => cas_logger
 )
+
