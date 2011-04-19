@@ -1,6 +1,9 @@
 class Group < ActiveRecord::Base
   has_and_belongs_to_many :users
 
+  has_many :permissions, :dependent => :destroy
+  has_many :event_workflows, :through => :permissions, :source => :permissible, :source_type => 'EventWorkflow'
+
   validates_presence_of   :name
   validates_uniqueness_of :name
 
