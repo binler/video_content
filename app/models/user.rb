@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
                           LDAP_USER_ID,
                           LDAP_FIRST_NAME,
                           LDAP_LAST_NAME,
-                          LDAP_NICKNAME,
+                          LDAP_PREFERRED_NAME,
                           LDAP_DEPARTMENT,
                         ],
       :filter        => Net::LDAP::Filter.eq( LDAP_USER_ID, netid ),
@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
       :email        => "#{person[LDAP_USER_ID.to_sym].first}@nd.edu",
       :first_name   => person[LDAP_FIRST_NAME.to_sym].first,
       :last_name    => person[LDAP_LAST_NAME.to_sym].first,
-      :nickname     => person[LDAP_NICKNAME.to_sym].first,
+      :nickname     => person[LDAP_PREFERRED_NAME.to_sym].first,
       :account_type => account_type
     )
     new_user.save!
@@ -130,14 +130,14 @@ class User < ActiveRecord::Base
 
   def enrich_data_from_ldap
     attrs = User.ldap_lookup(login)
-    if attrs.nil? || attrs[:uid].first.blank?
+    if attrs.nil? || attrs[LDAP_USER_ID.to_sym].first.blank?
       self.invalid_netid = true
     else
       self.login        ||= attrs[LDAP_USER_ID.to_sym].first
       self.email        ||= "#{attrs[LDAP_USER_ID.to_sym].first}@nd.edu"
       self.first_name   ||= attrs[LDAP_FIRST_NAME.to_sym].first
       self.last_name    ||= attrs[LDAP_LAST_NAME.to_sym].first
-      self.nickname     ||= attrs[LDAP_NICKNAME.to_sym].first
+      self.nickname     ||= attrs[LDAP_PREFERRED_NAME.to_sym].first
       self.account_type ||= User.type_from_affiliation(attrs[LDAP_USER_ID.to_sym].first)
       self.email        ||= "#{login}@nd.edu"
     end
