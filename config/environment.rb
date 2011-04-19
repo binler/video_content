@@ -77,3 +77,15 @@ else
   ActionMailer::Base.delivery_method = :smtp
 end
 puts "Mail will be sent using #{ActionMailer::Base.delivery_method}"
+require 'casclient'
+require 'casclient/frameworks/rails/filter'
+
+# enable detailed CAS logging
+cas_logger = CASClient::Logger.new(RAILS_ROOT+'/log/cas.log')
+cas_logger.level = Logger::WARN
+
+CASClient::Frameworks::Rails::Filter.configure(
+  :cas_base_url => "https://cas.library.nd.edu/cas/",
+  :validate_url => "https://cas.library.nd.edu/cas/serviceValidate",
+  :logger       => cas_logger
+)

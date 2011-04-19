@@ -1,0 +1,17 @@
+<dl class="attributes">
+  <dt>Name:</dt>
+  <dd><%=h @account.name %></dd>
+  <dt>Groups:</dt>
+  <dd>
+    <ul>
+      <%- @account.groups.each do |group| -%>
+        <li><%= group.pretty_name %></li>
+      <%- end -%>
+    </ul>
+  </dd>
+</dl>
+
+<%- if can? :edit, @account -%>
+  <%= link_to 'Edit Account', edit_account_path(@account), :class => 'button' %>
+<%- end -%>
+<%= link_to 'Return to Account Listing', accounts_path, :class => 'button' %>

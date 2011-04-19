@@ -12,7 +12,7 @@ module Ldap
     end
     
     def do_ldap_lookup(computing_id)
-      ldap = Net::LDAP.new(:host => LDAP_HOST, :base => LDAP_BASE)
+      ldap = Net::LDAP.new(:host => LDAP_HOST, :port => LDAP_PORT, :auth => {:method => LDAP_ACCESS_METHOD, :username => LDAP_ACCESS_USER, :password => LDAP_ACCESS_PASSWORD}, :base => LDAP_BASE)
       filter = Net::LDAP::Filter.eq( LDAP_USER_ID, computing_id)
       attrs = []
       @ldap_vals = {}

@@ -1,0 +1,41 @@
+<h1>Listing Accounts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Account Type</th>
+      <th class="masquerade-link">Masquerade</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%- @accounts.each do |user| -%>
+      <tr>
+        <td><%=h user.name         %></td>
+        <td><%=h user.account_type %></td>
+        <td class="masquerade-link">
+        <%- if can?( :masquerade, user ) && !( user.login == current_user.login ) -%>
+          <%= icon_masquerade_link(user) %>
+        <%- else -%>
+          &nbsp;
+        <%- end -%>
+        </td>
+        <td>
+          <%= link_to 'Show', account_path(user) %>
+          <%- if can? :edit, user -%>
+            <%= link_to  'Edit', edit_account_path(user) %>
+          <%- end -%>
+          <%- if can? :destroy, user -%>
+            <%= link_to 'Destroy', {:controller => 'accounts', :action => 'destroy', :id => user.id }, :confirm => 'Are you sure?', :method => :delete %>
+          <%- end -%>
+        </td>
+      </tr>
+    <%- end -%>
+  </tbody>
+</table>
+
+<%- if can? :create, User -%>
+  <%= link_to 'New Account', new_account_path, :class => 'button' %>
+<%- end -%>
