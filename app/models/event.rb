@@ -51,4 +51,23 @@ class Event < ActiveFedora::Base
     desc_ds.find_by_terms(:pbcoreDescriptionDocument, :pbcoreCreator, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
   end
 
+  def workflow
+    @workflow ||= EventWorkflow.find_or_create_by_pid(pid)
+  end
+
+  # Favoring explicit delegation for now. Perhaps method_missing should be implemented later.
+  # Delegate state machine interactions to workflow
+  [:state, :state_events, :fire_events].each do |method|
+    delegate method, :to => :workflow
+  end
+
+  EventWorkflow.state_query_methods.each do |method|
+    delegate method, :to => :workflow
+  end
+
+  # Delegate group and permission information to workflow
+  [:groups].each do |method|
+    delegate method, :to => :workflow
+  end
+
 end
