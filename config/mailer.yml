@@ -1,0 +1,11 @@
+review:
+  from_address: ndliblis@nd.edu
+  subject_text: Review of Event Needed
+  body_text: This is a test email for review
+  template_file: notice.text.html.erb
+event_created:
+  from_address: ndliblis@nd.edu
+  subject_text: Event Created
+  body_text: Event has been created
+#  body_text: Event has been created\: #{event.title}
+  template_file: notice.text.html.erb

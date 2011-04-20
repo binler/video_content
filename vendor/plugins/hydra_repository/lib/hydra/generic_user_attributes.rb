@@ -1,6 +1,6 @@
 module Hydra::GenericUserAttributes
 
-  USER_ATTRIBUTES = ['first_name','last_name','full_name','affiliation','photo']
+  USER_ATTRIBUTES = ['full_name','affiliation','photo']
 
   attr_writer :user_attributes
 

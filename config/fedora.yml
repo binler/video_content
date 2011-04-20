@@ -1,8 +1,10 @@
-development:
+development: &DEV
   fedora:
     url: http://fedoraAdmin:fedoraAdmin@127.0.0.1:8983/fedora
   solr:
     url: http://localhost:8983/solr/development
+dev_cached:
+  <<: *DEV
 test: &TEST  
   fedora:
     url: http://fedoraAdmin:fedoraAdmin@127.0.0.1:8983/fedora

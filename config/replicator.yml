@@ -20,7 +20,7 @@ staging: &TEST
       url: http://fedoraAdmin:fedoraAdmin@salt-dev.stanford.edu:8080/fedora
     solr:
       url: http://salt-dev.stanford.edu:8080/solr
-development: &TEST
+development: &DEV
   source:
     fedora:
       url: http://fedoraAdmin:fedoraAdmin@localhost:8080/fedora
@@ -31,6 +31,8 @@ development: &TEST
       url: http://fedoraAdmin:fedoraAdmin@salt-dev.stanford.edu:8080/fedora
     solr:
       url: http://salt-dev.stanford.edu:8080/solr
+dev_cached:
+  <<: *DEV
 test:
   <<: *TEST
 cucumber:

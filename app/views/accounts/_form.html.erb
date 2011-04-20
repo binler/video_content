@@ -1,0 +1,38 @@
+<% javascript_includes << ['jquery.selectlist.min.js', 'multiselect.js'] %>
+<%- form_for :account, @account, :url => @post_action, :html => { :class => 'ar-form' } do |f| -%>
+  <%= f.error_messages %>
+  <fieldset>
+  <%- if @account.new_record? -%>
+    <ol>
+      <li>
+        <%= f.label :login, "NetID:" %>
+        Look up an ND user by name or by NetID using the lookup tool.
+        <%= f.text_field :login, :class => 'ldap-autocomplete' %>
+      </li>
+  <%- else -%>
+    <input name="_method" type="hidden" value="put" />
+    <ol>
+      <li>
+        <strong>NetID:</strong>
+        <p><%= @account.login %></p>
+      </li>
+      <li>
+        <strong>Name associated with this account:</strong>
+        <p><%= @account.name %></p>
+      </li>
+      <li>
+        <%= f.label :nickname, 'Preferred Name:' %>
+        This will be given precedence over the name associated with this account. Please use the full name.
+        <%= f.text_field :nickname %>
+      </li>
+  <%- end -%>
+      <li>
+        <%= f.label :group_ids, 'Groups where this user is a member:' %>
+        <%# NOTE the :group_ids method cannot be reliably called on a user object with class caching turned off. Use the dev_cached environment if needed. -%>
+        <%= f.collection_select :group_ids, @available_groups, :id, :pretty_name, {:prompt => true, :selected => @account.group_ids }, { :multiple => true, :name => 'account[group_ids][]', :class => 'multiselect' } %>
+      </li>
+    </ol>
+  </fieldset>
+  <%= f.submit submit_button_message, :class => 'button' %>
+  <%= f.submit cancel_button_message, :name => 'Cancel', :class => 'button' %>
+<%- end -%>

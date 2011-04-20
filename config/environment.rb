@@ -67,3 +67,37 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
   config.middleware.use "UserAttributesLoader" if Rails.env == 'development'  
 end
+
+case RAILS_ENV
+when "pre_production" || "production"
+  ActionMailer::Base.delivery_method = :sendmail
+when "test"
+  ActionMailer::Base.delivery_method = :test
+else
+  ActionMailer::Base.delivery_method = :smtp
+end
+puts "Mail will be sent using #{ActionMailer::Base.delivery_method}"
+
+ActionMailer::Base.smtp_settings = {
+  :address              => SMTP_HOST,
+  :port                 => SMTP_PORT,
+  :domain               => SMTP_DOMAIN,
+  :authentication       => SMTP_AUTHENTICATION_TYPE,
+  :user_name            => SMTP_USER_NAME,
+  :password             => SMTP_PASSWORD,
+  :enable_starttls_auto => SMTP_ENABLE_STARTTLS_AUTO
+}
+
+require 'casclient'
+require 'casclient/frameworks/rails/filter'
+
+# enable detailed CAS logging
+cas_logger = CASClient::Logger.new(RAILS_ROOT+'/log/cas.log')
+cas_logger.level = Logger::WARN
+
+CASClient::Frameworks::Rails::Filter.configure(
+  :cas_base_url => "https://cas.library.nd.edu/cas/",
+  :validate_url => "https://cas.library.nd.edu/cas/serviceValidate",
+  :logger       => cas_logger
+)
+
