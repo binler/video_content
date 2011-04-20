@@ -1,32 +1,98 @@
-<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"events", :content_type=>"event")%>" method="post" data-resourceType="<%= content %>" accept-charset="utf-8">
+<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"events", :content_type=>"event")%>" method="post" data-resourceType="<%= content_type %>" accept-charset="utf-8">
   <fieldset id="work_fields">
     <legend> Event </legend>
     <dl>
       <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier, :pbcoreIdentifier_source], "ID Source:") %>
-      </dt>
-      <dd class="id_source">
-        <%= fedora_text_field(document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier, :pbcoreIdentifier_source], :multiple=>false) %>
-      </dd>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreIdentifier], "Event ID:") %>
-      </dt>
-      <dd class="event_id">
-        <%= fedora_text_field(document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreIdentifier], :multiple=>false) %>
-      </dd>
-      <dt>
         <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle], "Title:") %>
       </dt>
       <dd class="title">
-        <%= fedora_text_field(document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle])%>
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle])%>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle, :pbcoreTitle_type], "Title Type:") %>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier], "Event ID:") %>
       </dt>
-      <dd class="title_type">
-        <%= fedora_text_field(document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle, :pbcoreTitle_type]) %>
+      <dd class="event_id">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreAssetDate], "Date:") %>
+      </dt>
+      <dd class="date">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAssetDate]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreDescription], "Description:") %>
+      </dt>
+      <dd class="description">
+        <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreDescription]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreSubject], "Keywords:") %>
+      </dt>
+      <dd class="subject">
+        <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreSubject]) %>
       </dd>
     </dl>
+  </fieldset>
+  <fieldset>
+    <legend>Copyright Notice</legend>
+    <dl>
+      <input class="update_description_display" type="hidden" name="description display" action="<%= events_path(params[:id],:content_type=>content_type)%>"/>
+      <dt>
+	<%= fedora_field_label("properties", [:review], "Select Contract:") %>
+      </dt>
+      <dd class="display">
+        <table>
+	  <tr><td><%= custom_radio_button(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreRightsSummary => "0"}, :rightsSummary], :contract_a=>"CONTRACT A")%></td>
+	  <td><%= custom_radio_button(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreRightsSummary => "0"}, :rightsSummary], :contract_b=>"CONTRACT B")%></td></tr>
+	  <tr><td><%= custom_radio_button(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreRightsSummary => "0"}, :rightsSummary], :contract_c=>"CONTRACT C")%></td>
+	  <td><%= custom_radio_button(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreRightsSummary => "0"}, :rightsSummary], :contract_d=>"CONTRACT D")%></td></tr>
+        </table>
+      </dd>
+    </dl>
+  </fieldset>
+  <fieldset>
+    <legend>Usage Rights / Permissions</legend>
+    <dl>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreRightsSummary => "1"}, :rightsSummary], "Rights Summary:") %>
+      </dt>
+      <dd class="urp_rights_summary">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreRightsSummary => "1"}, :rightsSummary]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreRightsSummary => "1"}, :rightsLink], "Rights Link:") %>
+      </dt>
+      <dd class="urp_rights_link">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreRightsSummary => "1"}, :rightsLink]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreRightsSummary => "1"}, :rightsEmbedded], "Rights Embedded:") %>
+      </dt>
+      <dd class="urp_rights_embedded">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreRightsSummary => "1"}, :rightsEmbedded]) %>
+      </dd>
+    </dl>
+  </fieldset>
+  <fieldset id="creator_fields">
+    <legend>People Responsible for event</legend>
+        <%= render :partial=>"events/edit_creator", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:pbcoreDescriptionDocument, :pbcoreCreator, :creator) %>
+      <% if params[:action] == "edit" %>
+        <% format = document_partial_name(@document) %>
+      <% end %>
+      <div id="add-image-box">
+        <input id="re-run-action" class="nobutton" type="button" value="Add Creator" onclick=" location.href='<%=url_for(:action => "add", :controller => "events", :content_type => "event", :text_field => "pbcoreDescription_pbcoreCreator", :field_type => "creator") %>'"/> 
+      </div>
+  </fieldset>
+  <fieldset id="part_fields">
+    <legend>Release or Contract Details</legend>
+        <%= render :partial=>"events/edit_release", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:pbcoreDescriptionDocument, :pbcorePart) %>
+      <% if params[:action] == "edit" %>
+        <% format = document_partial_name(@document) %>
+      <% end %>
+      <div id="add-image-box">
+        <input id="re-run-action" class="nobutton" type="button" value="Add Details" onclick=" location.href='<%=url_for(:action => "add", :controller => "events", :content_type => "event", :text_field => "pbcoreDescription_pbcorePart", :field_type => "part") %>'"/> 
+      </div>
   </fieldset>
 </form>
 

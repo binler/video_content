@@ -1,6 +1,6 @@
 require 'net/http'
 require 'mediashelf/active_fedora_helper'
-require "#{RAILS_ROOT}/app/models/pbcore_xml.rb"
+#require "#{RAILS_ROOT}/vendor/pluggins/video_content/app/models/pbcore_xml.rb"
 
 class EventsController < CatalogController
   include Hydra::AssetsControllerHelper
@@ -64,9 +64,23 @@ class EventsController < CatalogController
     if af_model
       @asset = create_and_save_event(af_model)
     end
-    redirect_to url_for(:action=>"edit", :controller=>"events", :label => params[:label], :id=>@asset.pid)
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :content_type => params[:content_type])
   end
 
+  def add
+    @asset = Event.load_instance(params[:id])
+#    @asset.insert_new_node('creator', {"descMetadata"=>"pbcoreDescription_pbcoreCreator"})
+    @asset.insert_new_node(params[:field_type], {"descMetadata"=>params[:text_field]})
+    @asset.save
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid)
+  end
+
+  def removecreator
+    @asset = Event.load_instance(params[:id])
+    @asset.remove_child('creator', params[:creator_counter])
+    @asset.save
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
+  end
 
   def show  
     show_without_customizations

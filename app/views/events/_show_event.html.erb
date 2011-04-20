@@ -20,12 +20,12 @@
       </dd>
     <% end %>
 
-    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreIdentifier]).first.empty? %>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier]).first.empty? %>
       <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreIdentifier], "Event ID:") %>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier], "Event ID:") %>
       </dt>
       <dd class="event_id">
-        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreIdentifier]) %>
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier]) %>
       </dd>
     <% end %>
 

@@ -153,12 +153,6 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 #	  xml.creatorRole(:source=>"", :ref=>"")
 #	}
 
-	# Source
-	xml.pbcoreCreator{
-	  xml.creator
-	  xml.creatorRole(:source=>"", :ref=>"")
-	}
-
 	# Copyrights notice
 	xml.pbcoreRightsSummary{
 	  xml.rightsSummary
@@ -186,20 +180,20 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	}
 	
 	# Contract Term
-	xml.pbcorePart{
-	  xml.pbcoreIdentifier(:source=>"")
-	  xml.pbcoreTitle(:titleType=>"", :source=>"", :version=>"", :annotation=>"")
-	  xml.pbcoreDescription(:descriptionType=>"Event", :descriptionTypeSource=>"pbcoreDescription/descriptionType", :ref=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#summary")
-	  xml.pbcoreContributor{
-	    xml.contributor
-	    xml.contributorRole
-	  }
-	  xml.pbcoreRightsSummary{
-	    xml.rightsSummary
-	    xml.rightsLink
-	    xml.rightsEmbedded
-	  }
-	}
+#	xml.pbcorePart{
+#	  xml.pbcoreIdentifier(:source=>"")
+#	  xml.pbcoreTitle(:titleType=>"", :source=>"", :version=>"", :annotation=>"")
+#	  xml.pbcoreDescription(:descriptionType=>"Event", :descriptionTypeSource=>"pbcoreDescription/descriptionType", :ref=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#summary")
+#	  xml.pbcoreContributor{
+#	    xml.contributor
+#	    xml.contributorRole
+#	  }
+#	  xml.pbcoreRightsSummary{
+#	    xml.rightsSummary
+#	    xml.rightsLink
+#	    xml.rightsEmbedded
+#	  }
+#	}
 
 	# Usage Rights / Permissions
 	xml.pbcoreRightsSummary{
@@ -235,6 +229,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	}
       }
     end
+    return builder.doc.root
   end
 
   def self.digitalfile_template
@@ -311,7 +306,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.pbcoreCreator("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
         "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
-	  xml.creator
+	  xml.creator(:annotation=>"", :ref=>"", :affiliation=>"")
 	  xml.creatorRole(:source=>"", :ref=>"")
 	}
     end

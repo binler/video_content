@@ -15,7 +15,6 @@ class Event < ActiveFedora::Base
   # A place to put extra metadata values
   has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|    
     m.field 'depositor', :string
-    m.field 'collection', :string
   end
 
   has_datastream :name=>"external_file", :type=>ActiveFedora::Datastream, :controlGroup=>'R'
@@ -42,6 +41,14 @@ class Event < ActiveFedora::Base
     ds = self.datastreams_in_memory["descMetadata"]
     result = ds.remove_node(type,index)
     return result
+  end
+
+  def apply_ldap_values(computing_id, person_number)
+    return if computing_id.blank? || person_number.blank?
+    person = Ldap::Person.new(computing_id)
+    desc_ds = self.datastreams_in_memory["descMetadata"]
+    return if desc_ds.nil? 
+    desc_ds.find_by_terms(:pbcoreDescriptionDocument, :pbcoreCreator, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
   end
 
 end
