@@ -21,6 +21,11 @@ class Event < ActiveFedora::Base
 
   alias_method :id, :pid
 
+  def initialize(attrs={})
+    super(attrs)
+    workflow
+  end
+
   def content
     external_file.blank? ? "" : external_file.first.content
   end

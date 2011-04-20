@@ -28,6 +28,7 @@ class EventWorkflow < ActiveRecord::Base
 
   # Having a state machine manage the workflow allows the object to report on its progress
   state_machine :state, :initial => :planned do
+    before_transition :to => :planned, :do => :created_event
     event :film_event do
       transition :planned => :captured
     end
@@ -42,6 +43,10 @@ class EventWorkflow < ActiveRecord::Base
 
     event :approve_for_archival do
       transition :processed => :archived
+    end
+
+    event :created_event do
+      ApplicationMailer.deliver_event_created_notice("rick.johnson@nd.edu")
     end
 
     state :planned do
