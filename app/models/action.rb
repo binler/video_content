@@ -26,4 +26,10 @@ class Action < ActiveRecord::Base
     }
   }
 
+  named_scope :find_by_class_and_action_name, lambda {|class_name, action_name|
+    {
+      :conditions => ["`actions`.`permissible_type` = ? AND `actions`.`name` = ? AND `actions`.`permissible_id` IS NULL", class_name, action_name]
+    }
+  }
+
 end

@@ -14,3 +14,5 @@ admin = Group.find_by_name('root')
   user = User.find_or_create_user_by_login(login)
   user.groups << admin
 end
+
+EventWorkflow.create_class_level_actions
