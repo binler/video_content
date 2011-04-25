@@ -2,11 +2,11 @@
 # If you wish to add smtp_config.rb to source control edit the .gitingore file
 
 # connection settings
-SMTP_HOST            = "smtp.nd.edu"
-SMTP_PORT            = 587
-SMTP_DOMAIN            = "nd.edu"
-SMTP_AUTHENTICATION   = :plain
-SMTP_USER_NAME  = ""
-SMTP_PASSWORD = ""
+SMTP_HOST                 = "smtp.nd.edu"
+SMTP_PORT                 = 587
+SMTP_DOMAIN               = "nd.edu"
+SMTP_AUTHENTICATION_TYPE  = :plain
+SMTP_USER_NAME            = ""
+SMTP_PASSWORD             = ""
 SMTP_ENABLE_STARTTLS_AUTO = true
-
+SMTP_DEBUG_EMAIL_ADDRESS  = "developer@nd.edu"
