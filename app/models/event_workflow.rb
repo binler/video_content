@@ -1,13 +1,18 @@
 # EventWorkflow is an ActiveRecord couterpart to the Event model. There is a 1:1 relationship.
 class EventWorkflow < ActiveRecord::Base
-  has_many :permissions, :as => :permissible
-  has_many :groups, :through => :permissions
+  has_many :actions, :as => :permissible
+  has_many :permissions, :through => :actions
 
   validates_presence_of :pid
+  after_create :publish_permissible_actions
 
   def self.find_or_create_by_pid(pid)
     existing_workflow = EventWorkflow.find_by_pid(pid)
     existing_workflow ? existing_workflow : EventWorkflow.create(:pid => pid)
+  end
+
+  def self.permissible_actions
+    self.workflow_actions + self.state_event_names
   end
 
   def self.state_event_names
@@ -22,13 +27,34 @@ class EventWorkflow < ActiveRecord::Base
     state_machine.states.map {|s| "#{s.name.to_s}?".to_sym }
   end
 
+  def self.workflow_actions
+    [
+      :create_event, :edit_event, :destroy_event,
+      :create_master, :edit_master, :destroy_master,
+      :create_derivative, :edit_derivative, :destroy_derivative
+    ]
+  end
+
   def event
     @event ||= Event.load_instance(pid)
   end
 
+  def refresh_permissible_actions
+    # Ensure that an Action is available for all permissible_actions
+    EventWorkflow.permissible_actions.each do |action|
+      Action.create(:name => action.to_s, :permissible_id => self.id, :permissible_type => self.class.class_name)
+    end
+  end
+  alias_method :publish_permissible_actions, :refresh_permissible_actions
+
+  def event_created_callback
+    ApplicationMailer.deliver_event_created_notice(SMTP_DEBUG_EMAIL_ADDRESS) if Rails.env =~ /^dev/
+  end
+
   # Having a state machine manage the workflow allows the object to report on its progress
   state_machine :state, :initial => :planned do
-    before_transition :to => :planned, :do => :created_event
+    before_transition :to => :planned, :do => :event_created_callback
+
     event :film_event do
       transition :planned => :captured
     end
@@ -37,16 +63,12 @@ class EventWorkflow < ActiveRecord::Base
       transition :captured => :edited
     end
 
-    event :create_derivatives do
+    event :publish_derivatives do
       transition :edited => :processed
     end
 
     event :approve_for_archival do
       transition :processed => :archived
-    end
-
-    event :created_event do
-      ApplicationMailer.deliver_event_created_notice("rick.johnson@nd.edu")
     end
 
     state :planned do

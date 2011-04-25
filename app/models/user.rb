@@ -3,7 +3,8 @@ require 'vendor/plugins/blacklight/app/models/user.rb'
 
 class User < ActiveRecord::Base
   include Blacklight::User::Authlogic
-  has_and_belongs_to_many :groups
+  has_many :assignments, :dependent => :destroy
+  has_many :groups, :through => :assignments, :uniq => true
 
   validates_uniqueness_of :login
 
@@ -14,9 +15,9 @@ class User < ActiveRecord::Base
   named_scope :users_in_hydra_group, lambda {|*group|
     {
       :select     => 'login',
-      :joins      => 'INNER JOIN `groups_users` ON `groups_users`.`user_id` = `users`.`id`
-                      INNER JOIN `groups` ON `groups`.`id` = `groups_users`.`group_id`',
-      :conditions => ["`group`.`is_hydra_role` = ? AND `groups_users`.`group_id` = ?", true, group.flatten.first.id]
+      :joins      => 'INNER JOIN `assignments` ON `assignments`.`user_id` = `users`.`id`
+                      INNER JOIN `groups` ON `groups`.`id` = `assignments`.`group_id`',
+      :conditions => ["`group`.`is_hydra_role` = ? AND `assignments`.`group_id` = ?", true, group.flatten.first.id]
     } unless group.flatten.first.blank?
   }
 
@@ -97,6 +98,10 @@ class User < ActiveRecord::Base
   def add_to_group_by_name(group_name)
     group = Group.find_by_name(group_name)
     add_to_group group
+  end
+  
+  def permissible_actions_on(subject_class, subject = nil)
+    Action.permissible_actions_for(self, subject_class, subject).map{|a| a.name.to_sym }
   end
 
   def name

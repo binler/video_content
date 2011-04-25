@@ -1,8 +1,8 @@
 class Group < ActiveRecord::Base
-  has_and_belongs_to_many :users
-
+  has_many :assignments, :dependent => :destroy
+  has_many :users, :through => :assignments, :uniq => true
   has_many :permissions, :dependent => :destroy
-  has_many :event_workflows, :through => :permissions, :source => :permissible, :source_type => 'EventWorkflow'
+  has_many :actions, :through => :permissions, :uniq => true
 
   validates_presence_of   :name
   validates_uniqueness_of :name
@@ -19,8 +19,8 @@ class Group < ActiveRecord::Base
   named_scope :hydra_groups_for_user, lambda {|*user|
     {
       :select     => 'name',
-      :joins      => 'INNER JOIN `groups_users` ON `groups_users`.`group_id` = `groups`.`id`',
-      :conditions => ["`groups`.`is_hydra_role` = ? AND `groups_users`.`user_id` = ?", true, user.flatten.first.id]
+      :joins      => 'INNER JOIN `assignments` ON `assignments`.`group_id` = `groups`.`id`',
+      :conditions => ["`groups`.`is_hydra_role` = ? AND `assignments`.`user_id` = ?", true, user.flatten.first.id]
     } unless user.flatten.first.blank?
   }
 

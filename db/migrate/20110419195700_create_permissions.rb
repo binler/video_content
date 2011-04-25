@@ -1,17 +1,15 @@
 class CreatePermissions < ActiveRecord::Migration
   def self.up
     create_table :permissions do |t|
-      t.integer :group_id
-      t.integer :permissible_id
-      t.string  :permissible_type
+      t.integer :action_id, :null => false
+      t.integer :group_id,  :null => false
 
       t.timestamps
     end
 
-    add_index :permissions, :id
+    add_index :permissions, :action_id
     add_index :permissions, :group_id
-    add_index :permissions, :permissible_id
-    add_index :permissions, :permissible_type
+    add_index :permissions, [:action_id, :group_id]
   end
 
   def self.down
