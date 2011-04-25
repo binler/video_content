@@ -35,23 +35,6 @@
     </dl>
   </fieldset>
   <fieldset>
-    <legend>Copyright Notice</legend>
-    <dl>
-      <input class="update_description_display" type="hidden" name="description display" action="<%= events_path(params[:id],:content_type=>content_type)%>"/>
-      <dt>
-	<%= fedora_field_label("properties", [:review], "Select Contract:") %>
-      </dt>
-      <dd class="display">
-        <table>
-	  <tr><td><%= custom_radio_button(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreRightsSummary => "0"}, :rightsSummary], :contract_a=>"CONTRACT A")%></td>
-	  <td><%= custom_radio_button(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreRightsSummary => "0"}, :rightsSummary], :contract_b=>"CONTRACT B")%></td></tr>
-	  <tr><td><%= custom_radio_button(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreRightsSummary => "0"}, :rightsSummary], :contract_c=>"CONTRACT C")%></td>
-	  <td><%= custom_radio_button(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreRightsSummary => "0"}, :rightsSummary], :contract_d=>"CONTRACT D")%></td></tr>
-        </table>
-      </dd>
-    </dl>
-  </fieldset>
-  <fieldset>
     <legend>Usage Rights / Permissions</legend>
     <dl>
       <dt>
@@ -91,8 +74,37 @@
         <% format = document_partial_name(@document) %>
       <% end %>
       <div id="add-image-box">
-        <input id="re-run-action" class="nobutton" type="button" value="Add Details" onclick=" location.href='<%=url_for(:action => "add", :controller => "events", :content_type => "event", :text_field => "pbcoreDescription_pbcorePart", :field_type => "part") %>'"/> 
+        <input id="re-run-action" class="nobutton" type="button" value="Add Release/Contract details" onclick=" location.href='<%=url_for(:action => "add", :controller => "events", :content_type => "event", :text_field => "pbcoreDescription_pbcorePart", :field_type => "part") %>'"/> 
       </div>
+  </fieldset>
+  <fieldset>
+    <legend>Copyright Notice</legend>
+    <dl>
+      <input class="update_description_display" type="hidden" name="description display" action="<%= events_path(params[:id],:content_type=>content_type)%>"/>
+      <dt>
+	<%= fedora_field_label("properties", [:review], "Select Copyright:") %>
+      </dt>
+      <dd class="display">
+	<%= fedora_radio_button(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreRightsSummary => "0"}, :rightsSummary], :choices=>{"copyright_a" => "Copyright A &nbsp;","copyright_b" => "Copyright B &nbsp;", "copyright_c" => "Copyright C &nbsp;", "copyright_d" => "Copyright D"})%>
+      </dd>
+      <dt>
+	Upload:
+      </dt>
+      <dd>
+        <% ds_names = @document_fedora.datastreams.keys %>
+        <%- ds_names.each do |ds_name| -%>
+          <%- if ds_name.starts_with?"COPYRIGHTS" -%>
+  	    <%= link_to @document_fedora.datastreams_in_memory[ds_name].label, @document_fedora.datastream_url(ds_name) %><br/>
+          <%- end -%>
+        <%- end -%>
+        <div id="uploads" data-pid="<%= params[:id] %>">
+          <div id='uploader'>
+            <%= render :partial=>"fluid_infusion/uploader" %>
+            <%= render :partial=>"fluid_infusion/uploader_generic_content_objects.js" %>	
+          </div>
+        </div>
+      </dd>
+    </dl>
   </fieldset>
 </form>
 

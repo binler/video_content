@@ -63,6 +63,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
     t.instantiationPart(:ref=>[:instantiationPart_ref])
 
     t.pbcoreInstantiation_ref(:path=>"pbcoreInstantiation"){
+      t.instantiationAnnotation(:ref=>[:annotation_ref])
       t.instantiationIdentifier(:ref=>[:instantiationIdentifier_ref])
       t.essenceTrack(:ref=>[:essenceTrack_ref])
       t.digital(:ref=>[:digital_ref])
@@ -232,7 +233,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
     return builder.doc.root
   end
 
-  def self.digitalfile_template
+  def self.master_template
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.pbcoreInstantiation("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
         "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
@@ -271,6 +272,9 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.instantiationPart("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
         "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
+
+	# Annotation
+	xml.instantiationAnnotation(:annotationType=>"", :ref=>"")
 
 	# ID
 	xml.instantiationIdentifier(:source=>"")
@@ -322,7 +326,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
         node = PbcoreXml.part_template
         nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart)
       when :degitalfile
-        node = PbcoreXml.techdata_template
+        node = PbcoreXml.master_template
         nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcoreInstantiation)
       when :derivative
         node = PbcoreXml.derivative_template
@@ -351,7 +355,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
   def remove_node(node_type, index)
     #TODO: Added code to remove any given node
     case node_type.to_sym
-      when :digitalfile
+      when :master
         remove_node = self.find_by_terms(:pbcoreDescriptionDocument, :pbcoreInstantiation)[index.to_i]
       when :derivative
         remove_node = self.find_by_terms(:pbcoreInstantiation, :instantiationPart)[index.to_i]

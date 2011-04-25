@@ -2,7 +2,7 @@ require 'net/http'
 require 'mediashelf/active_fedora_helper'
 #require "#{RAILS_ROOT}/vendor/pluggins/video_content/app/models/pbcore_xml.rb"
 
-class EventsController < CatalogController
+class MastersController < CatalogController
   include Hydra::AssetsControllerHelper
   include Hydra::FileAssetsHelper  
   include Hydra::RepositoryController  
@@ -11,26 +11,25 @@ class EventsController < CatalogController
   include WhiteListHelper
   include Blacklight::CatalogHelper
   include ApplicationHelper
-  include EventsControllerHelper
+  include MastersControllerHelper
 
   helper :hydra, :metadata, :infusion_view
 
   #before_filter :initialize_collection, :except=>[:index, :new]
-  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :create, :listfiles]
+  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update]
   def index
-    @events = Event.find_by_solr(:all).hits.map{|result| Event.load_instance_from_solr(result["id"])}
+    @events = Master.find_by_solr(:all).hits.map{|result| Master.load_instance_from_solr(result["id"])}
   end
 
   def update
     af_model = retrieve_af_model(params[:content_type])
     unless af_model 
-      af_model = Event
+      af_model = Master
     end
     @document = af_model.find(params[:id])
     updater_method_args = prep_updater_method_args(params)
     result = @document.update_indexed_attributes(updater_method_args[:params], updater_method_args[:opts])
     @document.save
-    apply_depositor_metadata(@document)
     response = Hash["updated"=>[]]
     last_result_value = ""
     result.each_pair do |field_name,changed_values|
@@ -63,45 +62,13 @@ class EventsController < CatalogController
     content_type = params[:content_type]
     af_model = retrieve_af_model(content_type)
     if af_model
-      @asset = create_and_save_event(af_model)
+      @asset = create_and_save_master(af_model, params[:event_id])
     end
-    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :content_type => params[:content_type])
-  end
-
-  def create
-    filemap = Hash.new
-    filemap[:file] = params[:Filedata]
-    filemap[:filename] = params[:Filename]
-    if(filemap[:filename].end_with?"pdf")
-      filemap[:content_type]="application/pdf"
-    end
-    puts "PARAMS: #{params.inspect}"
-    @asset = Event.find(params[:container_id])
-    @asset.add_named_datastream("copyrights",filemap)
-    @asset.save
-    render :nothing => true
-  end
-
-  def add
-    @asset = Event.load_instance(params[:id])
-#    @asset.insert_new_node('creator', {"descMetadata"=>"pbcoreDescription_pbcoreCreator"})
-    @asset.insert_new_node(params[:field_type], {"descMetadata"=>params[:text_field]})
-    @asset.save
-    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :content_type => params[:content_type])
-  end
-
-  def removecreator
-    @asset = Event.load_instance(params[:id])
-    @asset.remove_child('creator', params[:creator_counter])
-    @asset.save
-    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :content_type => params[:content_type], :event_id => params[:event_id])
   end
 
   def show  
     show_without_customizations
-  end
-
-  def destroy
   end
 
 end

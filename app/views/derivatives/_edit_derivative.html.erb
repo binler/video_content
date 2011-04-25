@@ -1,0 +1,63 @@
+<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"derivatives", :content_type=>"derivative")%>" method="post" data-resourceType="<%= content_type %>" accept-charset="utf-8">
+  <fieldset id="work_fields">
+    <legend> Description </legend>
+    <dl>
+      <input class="update_description_display" type="hidden" name="description display" action="<%= events_path(params[:id],:content_type=>content_type)%>"/>
+      <dt>
+	<%= fedora_field_label("properties", [:derivative_type], "Type of Derivative:") %>
+      </dt>
+      <dd class="derivative_type">
+	<%= fedora_radio_button(@document_fedora,"properties", [:derivative_type], :choices=>{"mpeg2" => "DVD (Mpeg2) &nbsp;","h.264" => "Youtube (H.264) &nbsp;", "mp4" => "iTunesU (MP4) &nbsp;", "flash" => "ND Website (Flash) &nbsp;"})%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationIdentifier], "ID:") %>
+      </dt>
+      <dd class="derivative_id">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:instantiationPart, :instantiationIdentifier])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationDate], "Date:") %>
+      </dt>
+      <dd class="filesize">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:instantiationPart, :instantiationDate]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackDuration], "Track Duration:") %>
+      </dt>
+      <dd class="duration">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackDuration]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackDataRate], "Track Data Rate:") %>
+      </dt>
+      <dd class="datarate">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackDataRate]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackAspectRatio], "Aspect Ratio:") %>
+      </dt>
+      <dd class="aspect_ratio">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackAspectRatio]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:instantiationPart, :fileSize], "File Size:") %>
+      </dt>
+      <dd class="filesize">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:instantiationPart, :fileSize]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:instantiationPart, :digital], "File Format:") %>
+      </dt>
+      <dd class="filesize">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:instantiationPart, :digital]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationAnnotation], "Annotation:") %>
+      </dt>
+      <dd class="annotation">
+        <%= fedora_text_area(@document_fedora,"descMetadata", [:instantiationPart, :instantiationAnnotation]) %>
+      </dd>
+    </dl>
+  </fieldset>
+</form>
+

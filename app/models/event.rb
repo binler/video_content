@@ -4,7 +4,7 @@ class Event < ActiveFedora::Base
   
   include Hydra::ModelMethods
   
-  has_bidirectional_relationship "parts", :has_part, :is_part_of
+  has_bidirectional_relationship "members", :has_member, :is_member_of
 
   # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata 
@@ -17,12 +17,18 @@ class Event < ActiveFedora::Base
     m.field 'depositor', :string
   end
 
+  has_datastream :name=>"copyrights",     :type=>ActiveFedora::Datastream, :mimeType=>"application/pdf", :controlGroup=>'M'
+
   has_datastream :name=>"external_file", :type=>ActiveFedora::Datastream, :controlGroup=>'R'
 
   alias_method :id, :pid
 
   def content
     external_file.blank? ? "" : external_file.first.content
+  end
+
+  def datastream_url ds_name="content"
+    "http://fedoraAdmin:fedoraAdmin@localhost:8983/fedora/get/#{pid}/#{ds_name}"
   end
 
   def load_datastream(id)
@@ -47,8 +53,19 @@ class Event < ActiveFedora::Base
     return if computing_id.blank? || person_number.blank?
     person = Ldap::Person.new(computing_id)
     desc_ds = self.datastreams_in_memory["descMetadata"]
-    return if desc_ds.nil? 
-    desc_ds.find_by_terms(:pbcoreDescriptionDocument, :pbcoreCreator, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
+    return if desc_ds.nil?
+    creators = self.datastreams_in_memory["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator, :creator])
+    if creators.include? "#{person.first_name} #{person.last_name}"
+      return
+    else
+      num_of_creators = creators.size
+      if(!(creators[num_of_creators-1].empty?))
+        insert_new_node('creator', opts={})
+      end
+      creators = self.datastreams_in_memory["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator, :creator])
+      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
+      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creatorRole)[person_number].content = "#{person.title}"
+    end
   end
 
 end

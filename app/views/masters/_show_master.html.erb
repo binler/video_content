@@ -1,0 +1,77 @@
+  <fieldset id="work_fields">
+    <legend>Description</legend>
+    <dl>	
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :instantiationIdentifier]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :instantiationIdentifier], "ID:") %>
+      </dt>
+      <dd class="title">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :instantiationIdentifier]) %>
+      </dd>
+    <% end %>
+
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :instantiationTracks]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :instantiationTracks], "Track:") %>
+      </dt>
+      <dd class="event_id">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :instantiationTracks]) %>
+      </dd>
+    <% end %>
+
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackDuration]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackDuration], "Track Duration:") %>
+      </dt>
+      <dd class="date">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackDuration]) %>
+      </dd>
+    <% end %>
+
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackDataRate]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackDataRate], "Track Data Rate:") %>
+      </dt>
+      <dd class="description">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackDataRate]) %>
+      </dd>
+    <% end %>
+
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackAspectRatio]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackAspectRatio], "Aspect Ratio:") %>
+      </dt>
+      <dd class="keyword">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackAspectRatio]) %>
+      </dd>
+    <% end %>
+
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :fileSize]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :fileSize], "File Size:") %>
+      </dt>
+      <dd class="keyword">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :fileSize]) %>
+      </dd>
+    <% end %>
+
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :digital]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :digital], "File Format:") %>
+      </dt>
+      <dd class="keyword">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :digital]) %>
+      </dd>
+    <% end %>
+
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :instantiationAnnotation]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :instantiationAnnotation], "Annotation:") %>
+      </dt>
+      <dd class="annotation">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreInstantiation, :instantiationAnnotation]) %>
+      </dd>
+    <% end %>
+
+    </dl>
+  </fieldset>

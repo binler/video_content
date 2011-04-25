@@ -1,0 +1,56 @@
+<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"masters", :content_type=>"master")%>" method="post" data-resourceType="<%= content_type %>" accept-charset="utf-8">
+  <fieldset id="work_fields">
+    <legend> Description </legend>
+    <dl>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :instantiationIdentifier], "ID:") %>
+      </dt>
+      <dd class="master_id">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreInstantiation, :instantiationIdentifier])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :instantiationTracks], "Track:") %>
+      </dt>
+      <dd class="filesize">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreInstantiation, :instantiationTracks]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackDuration], "Track Duration:") %>
+      </dt>
+      <dd class="duration">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackDuration]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackDataRate], "Track Data Rate:") %>
+      </dt>
+      <dd class="datarate">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackDataRate]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackAspectRatio], "Aspect Ratio:") %>
+      </dt>
+      <dd class="aspect_ratio">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackAspectRatio]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :fileSize], "File Size:") %>
+      </dt>
+      <dd class="filesize">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreInstantiation, :fileSize]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :digital], "File Format:") %>
+      </dt>
+      <dd class="filesize">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreInstantiation, :digital]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreInstantiation, :instantiationAnnotation], "Annotation:") %>
+      </dt>
+      <dd class="annotation">
+        <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreInstantiation, :instantiationAnnotation]) %>
+      </dd>
+    </dl>
+  </fieldset>
+</form>
+
