@@ -33,10 +33,11 @@ class ApplicationController
     
     javascript_includes << ['blacklight', 'application', { :plugin=>:blacklight } ]
     
-    stylesheet_links << ['yui', 'jquery/ui-lightness/jquery-ui-1.8.1.custom.css', 'application', {:plugin=>:blacklight, :media=>'all'}]
+    stylesheet_links << ['yui', 'application', {:plugin=>:blacklight, :media=>'all'}]
     stylesheet_links << ['redmond/jquery-ui-1.8.5.custom.css', {:plugin=>:hydra_repository, :media=>'all'}]      
     stylesheet_links << ['styles', 'hydrangea', "hydrangea-split-button.css", {:plugin=>:hydra_repository, :media=>'all'}]
     stylesheet_links << ['hydra/styles.css', {:plugin=>:hydra_repository, :media=>'all'}]
+    stylesheet_links << ['nd_video', {:media=>'all'}]
   end
       
   def current_user

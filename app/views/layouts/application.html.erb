@@ -30,9 +30,14 @@
         </div>
 
 	  <div id="doc4" class="yui-t2">
+      <div id="banner">
+        <h4><%= link_to image_tag( '/stylesheets/images/und.png', :alt =>'University of Notre Dame', :height => '36', :width => '281'), 'http://nd.edu' %></h4>
+				<%= render :partial => 'shared/session_management' %>
+        <h2><%= link_to 'IDR', root_path %></h2>
+			</div>
 		
 			<div id="hd">
-				<%= render :partial => '/user_util_links.html' %>
+				<%= render :partial => 'shared/actions_menu' %>
 				<%= (params[:controller] == "catalog" and !params[:id]) ? "<span id='results_text'>Search Results</span>" : "" %>
 			</div>
 	    
@@ -48,12 +53,17 @@
 	    </div>
 	    
 		<div id="footer">
-			<div id="container3">
-				<div class="contact_info"> </div> 
+      <div id="container3">
+        <div class="contact_info"> 
+          <a rel="external" href="http://www.library.nd.edu/">University of Notre Dame Hesburgh Libraries</a><br> 
+          221 Hesburgh Library Notre Dame, IN 46556<br>
+          Tel: 574.631.6258 | Fax: 574.631.6772
+        </div>
 			    <div class="aux_links"> </div>
 				<div id="footer_notices">
-				<div id="bottom_text">
-					<div id="hydra_logo"><%= image_tag('powered_by_hydra.png', :width => 80, :height => 50, :alt => "Hydra logo") %></div>
+          <div id="bottom_text">
+            <p>&copy;<%= Time.now.year %> Hesburgh Libraries</p>
+					<%= link_to image_tag('powered_by_hydra.png', :width => 80, :height => 50, :alt => 'The logo for Project Hydra: The lowercase word "hydra" with a tail coming out of the "h" and three, simply-styled dragon heads sprouting out of the "a" and arcing left towards the "d". The image is a light shade of blue.'), 'https://wiki.duraspace.org/display/hydra/The+Hydra+Project' %>
 				</div>
 			</div>
 		</div>

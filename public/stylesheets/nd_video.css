@@ -1,0 +1,99 @@
+#doc4 {
+  background-color:#FFF;
+  background-image:url('images/nd_banner_bg.png');
+  background-position:left top;
+  background-repeat:repeat-x;
+  text-align:left;
+}
+
+#banner{
+  height:116px;
+  margin:0 auto 4px;
+  width:960px;
+}
+
+#banner h4 {
+  float:left;
+  height:38px;
+  margin:0;
+  padding:0;
+}
+
+#banner h4 a {
+  display:inline-block;
+  margin:0;
+  padding:0;
+}
+
+#banner h2 {
+  clear:both;
+  float:left;
+  margin:0;
+  padding:10px 0 0 20px;
+}
+
+#banner h2 a {
+  color:#F9DF8B;
+  font-family:'Palatino Linotype','Book Antiqua',Palatino,serif;
+  font-size:38px;
+  font-weight:normal;
+}
+
+#session-management {
+  float:right;
+  font-family:'Palatino Linotype','Book Antiqua',Palatino,serif;
+  margin:.7em 1em;
+}
+
+#session-management li {
+  list-style-type:none;
+  color:#E6E8F5;
+}
+
+#session-management a:link, #session-management a:visited {
+  border-bottom:1px solid #839DBF;
+  color:#E6E8F5;
+  font-weight:bold;
+  text-decoration:none;
+}
+
+#hd {
+  margin-top:10px;
+}
+
+#results {
+  border:none;
+}
+
+#footer{
+  background-color:#FFF;
+  background-image:url('images/nd_footer_bg.png');
+  background-position:left top;
+  background-repeat:repeat-x;
+}
+
+#footer #container3 {
+  background-color:transparent;
+  background-image:url('images/nd_footer.jpg');
+  background-position:right top;
+  background-repeat:no-repeat;
+  height:100px;
+}
+
+#footer #container3 #bottom_text {
+  color:#7A98D0;
+  float:none;
+  height:70px;
+  margin-bottom:5px;
+  text-align:center;
+  width:100%;
+}
+
+#bottom_text p {
+  margin-top:.5em;
+}
+
+#footer #bottom_text a {
+  text-decoration:none;
+  border-bottom:none;
+}
