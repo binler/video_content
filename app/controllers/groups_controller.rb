@@ -59,6 +59,10 @@ class GroupsController < ApplicationController
       redirect_to @group 
     else
       respond_to do |format|
+        # If all permissions are removed from a group the group_ids attribute is not passed to params
+        params[:group][:permissible_actions] ? @group.no_permissions_granted = false : @group.no_permissions_granted = true
+        (can? :manage_abilities, @group) ? @group.can_have_permissions_updated = true : @group.can_have_permissions_updated = false
+
         if @group.update_attributes(params[:group])
           flash[:notice] = 'Group was successfully updated.'
           format.html { redirect_to(@group) }

@@ -5,19 +5,11 @@ class RoleMapper
   end
 
   def self.roles(username)
-    begin
-      User.find_by_login(username).hydra_group_names
-    rescue ActiveRecord::Error
-      []
-    end
+    User.find_by_login(username).hydra_group_names rescue []
   end
 
   def self.whois(group_name)
-    begin
-      User.user_names_in_hydra_group(Group.find_by_name(group_name))
-    rescue ActiveRecord::Error
-      []
-    end
+    User.user_names_in_hydra_group(Group.find_by_name(group_name)) rescue []
   end
 
 end

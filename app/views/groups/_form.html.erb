@@ -1,4 +1,4 @@
-<% javascript_includes << ["ldap_autocomplete.js"] %>
+<% javascript_includes << ['jquery.selectlist.min.js', 'multiselect.js'] %>
 <%- form_for @group, :html => { :class => 'ar-form' } do |f| -%>
   <%= f.error_messages %>
   <fieldset>
@@ -17,7 +17,7 @@
         Group members listed by NetID. Add more by name or by NetID using the lookup tool.
         <%= f.text_field :user_logins, :class => 'multiple-ldap-autocomplete' %>
       </li>
-  <%- if current_user.in_group?(:root) -%>
+  <%- if can? :manage_abilities, Group -%>
       <li>
         <%= f.label :restricted, 'Restrict group management to Administrative users:' %>
         <%= f.check_box :restricted %>
@@ -25,6 +25,11 @@
       <li>
         <%= f.label :is_hydra_role, 'Group is relevant to hydra application:' %>
         <%= f.check_box :is_hydra_role %>
+      </li>
+      <%# NOTE this will need to be more generic eventually. %>
+      <li>
+        <%= f.label :permissible_actions, 'Group is relevant to hydra application:' %>
+        <%= f.collection_select :permissible_actions, EventWorkflow.permissible_actions, :to_s, :display_name, { :include_blank => true, :selected => @group.action_names_for_class(EventWorkflow).map{|name| name.to_s} }, { :multiple => true, :name => 'group[permissible_actions][event_workflow][]', :class => 'multiselect' } %>
       </li>
     </ol>
   <%- else -%>

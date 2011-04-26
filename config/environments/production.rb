@@ -19,3 +19,6 @@ config.action_view.cache_template_loading            = true
 # config.action_mailer.raise_delivery_errors = false
 
 SSL_ENABLED=true
+
+APPLICATION_HOST = 'your.production.server.com'
+BASE_URI         = ''

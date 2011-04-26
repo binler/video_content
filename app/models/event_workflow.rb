@@ -35,6 +35,12 @@ class EventWorkflow < ActiveRecord::Base
     ]
   end
 
+  def self.create_class_level_actions
+    self.permissible_actions.each do |action_name|
+      Action.create(:name => action_name.to_s, :permissible_type => self.class_name)
+    end
+  end
+
   def event
     @event ||= Event.load_instance(pid)
   end

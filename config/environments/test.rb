@@ -22,3 +22,6 @@ config.action_controller.allow_forgery_protection    = false
 config.action_mailer.delivery_method = :test
 
 SSL_ENABLED=false
+
+APPLICATION_HOST = 'localhost:3000'
+BASE_URI         = ''
