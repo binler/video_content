@@ -11,6 +11,7 @@ class UserSessionsController < ApplicationController
 
   def destroy
     current_user_session.destroy rescue nil
+    reset_session
   end
 
 end
