@@ -75,7 +75,6 @@ class EventsController < CatalogController
     if(filemap[:filename].end_with?"pdf")
       filemap[:content_type]="application/pdf"
     end
-    puts "PARAMS: #{params.inspect}"
     @asset = Event.find(params[:container_id])
     @asset.add_named_datastream("copyrights",filemap)
     @asset.save

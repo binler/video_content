@@ -7,6 +7,9 @@ module DerivativesControllerHelper
     set_collection_type(@asset, content_type)
     @asset.member_of_append(parent_id)
     @asset.update_indexed_attributes({:level=>{0=>level}})
+    if level.eql?"1"
+      @asset.update_indexed_attributes({:derivative_type=>{0=>"DVD"}})
+    end
     @asset.save
     return @asset
   end

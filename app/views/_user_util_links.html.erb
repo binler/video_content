@@ -7,12 +7,12 @@
       <% end %>
       <% if(params[:content_type].eql?"master") %>
         <li onclick="javascript:createAssetNavigateTo(this, '<%= url_for(:action => "new", :controller => "masters", :content_type => "master", :event_id => params[:event_id]) %>');">Add Master</li>
-        <li onclick="javascript:createAssetNavigateTo(this, '<%= url_for(:action => "new", :controller => "derivatives", :content_type => "derivative", :event_id => params[:event_id], :master_id => params[:id]) %>');">Add level-1 Derivative</li>
+        <li onclick="javascript:createAssetNavigateTo(this, '<%= url_for(:action => "new", :controller => "derivatives", :content_type => "derivative", :event_id => params[:event_id], :master_id => params[:id]) %>');">Add DVD</li>
       <% end %>
       <% if(params[:content_type].eql?"derivative") %>
         <li onclick="javascript:createAssetNavigateTo(this, '<%= url_for(:action => "new", :controller => "masters", :content_type => "master", :event_id => params[:event_id]) %>');">Add Master</li>
-        <li onclick="javascript:createAssetNavigateTo(this, '<%= url_for(:action => "new", :controller => "derivatives", :content_type => "derivative", :event_id => params[:event_id], :master_id => params[:master_id]) %>');">Add level-1 Derivative</li>
-        <li onclick="javascript:createAssetNavigateTo(this, '<%= url_for(:action => "new", :controller => "derivatives", :content_type => "derivative", :event_id => params[:event_id], :master_id => params[:master_id], :id => params[:id], :level => "2") %>');">Add level-2 Derivative</li>
+        <li onclick="javascript:createAssetNavigateTo(this, '<%= url_for(:action => "new", :controller => "derivatives", :content_type => "derivative", :event_id => params[:event_id], :master_id => params[:master_id]) %>');">Add DVD</li>
+        <li onclick="javascript:createAssetNavigateTo(this, '<%= url_for(:action => "new", :controller => "derivatives", :content_type => "derivative", :event_id => params[:event_id], :master_id => params[:master_id], :id => params[:id], :level => "2") %>');">Add Derivative</li>
       <% end %>
       <li><%= current_user.login %> (<%= link_to "Log Out", logout_path %>)</li>
     </ul>
