@@ -7,7 +7,11 @@
 	<%= fedora_field_label("properties", [:derivative_type], "Type of Derivative:") %>
       </dt>
       <dd class="derivative_type">
-	<%= fedora_select(@document_fedora,"properties", [:derivative_type], :choices=>{"DVD (Mpeg2)" => "DVD (Mpeg2)","Youtube (H.264)" => "Youtube (H.264)", "iTunesU (MP4)" => "iTunesU (MP4)", "ND Website (Flash)" => "ND Website (Flash)"})%>
+        <%- if(@document_fedora.level.eql?"2") -%>
+	  <%= fedora_select(@document_fedora,"properties", [:derivative_type], :choices=>{"DVD (Mpeg2)" => "DVD (Mpeg2)","Youtube (H.264)" => "Youtube (H.264)", "iTunesU (MP4)" => "iTunesU (MP4)", "ND Website (Flash)" => "ND Website (Flash)"})%>
+        <%- else -%>
+	  <%= get_values_from_datastream(@document_fedora,"properties", [:derivative_type]) %>
+        <%- end -%>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationIdentifier], "ID:") %>
@@ -59,6 +63,14 @@
       <dd class="annotation">
         <%= fedora_text_area(@document_fedora,"descMetadata", [:instantiationPart, :instantiationAnnotation]) %>
       </dd>
+      <%- if(@document_fedora.level.eql?"1") -%>
+        <dt>
+          <%= fedora_field_label("properties", [:chapter], "Chapter:") %>
+        </dt>
+        <dd class="chapter">
+          <%= fedora_text_area(@document_fedora,"properties", [:chapter]) %>
+        </dd>
+      <%- end -%>
     </dl>
   </fieldset>
 </form>

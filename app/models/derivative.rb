@@ -18,6 +18,7 @@ class Derivative < ActiveFedora::Base
     m.field 'depositor', :string
     m.field 'derivative_type', :string
     m.field 'level', :string
+    m.field 'chapter', :string
   end
 
   has_datastream :name=>"external_file", :type=>ActiveFedora::Datastream, :controlGroup=>'R'
@@ -32,6 +33,12 @@ class Derivative < ActiveFedora::Base
     return @level if (defined? @level)
     values = self.fields[:level][:values]
     @level = values.any? ? values.first : ""
+  end
+
+  def chapter
+    return @chapter if (defined? @chapter)
+    values = self.fields[:chapter][:values]
+    @chapter = values.any? ? values.first : ""
   end
 
   def load_datastream(id)

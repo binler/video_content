@@ -6,7 +6,7 @@
         <%= fedora_field_label("properties", [:derivative_type], "Derivative Type:") %>
       </dt>
       <dd class="derivative_type">
-        <%= (get_values_from_datastream(@document_fedora,"properties", [:derivative_type])).to_s.upcase %>
+        <%= get_values_from_datastream(@document_fedora,"properties", [:derivative_type]) %>
       </dd>
     <% end %>
 
@@ -61,7 +61,7 @@
       </dt>
       <dd class="keyword">
         <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :fileSize]) %>
-        <%= (get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :fileSize, :fileSize_unit])).to_s.upcase %>
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :fileSize, :fileSize_unit]) %>
       </dd>
     <% end %>
 
@@ -80,6 +80,15 @@
       </dt>
       <dd class="annotation">
         <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :instantiationAnnotation]) %>
+      </dd>
+    <% end %>
+
+    <% unless get_values_from_datastream(@document_fedora,"properties", [:chapter]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("properties", [:chapter], "Chapter:") %>
+      </dt>
+      <dd class="chapter">
+        <%= get_values_from_datastream(@document_fedora,"properties", [:chapter]) %>
       </dd>
     <% end %>
 
