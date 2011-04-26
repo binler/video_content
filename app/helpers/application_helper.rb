@@ -39,4 +39,18 @@ module ApplicationHelper
     link_to image_tag('/images/masquerade.png', :alt =>'Masquerade', :title => 'Masquerade'), start_masquerade_path(user), { :class => 'icon-link' }
   end
 
+  def edit_and_browse_links
+    result = ""
+    if params[:action] == "edit"
+      result << "<a href=\"#{catalog_path(@document[:id], :viewing_context=>"browse", :content_type=>params["content_type"])}\" class=\"browse toggle\">Browse</a>"
+      result << "<span class=\"edit toggle active\">Edit</span>"
+    else
+      result << "<span class=\"browse toggle active\">Browse</span>"
+      result << "<a href=\"#{edit_catalog_path(@document[:id], :content_type=>params["content_type"])}\" class=\"edit toggle\">Edit</a>"
+    end
+    # result << link_to "Browse", "#", :class=>"browse"
+    # result << link_to "Edit", edit_document_path(@document[:id]), :class=>"edit"
+    return result
+  end
+
 end
