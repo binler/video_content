@@ -5,6 +5,7 @@ class Derivative < ActiveFedora::Base
   include Hydra::ModelMethods
 
   has_bidirectional_relationship "member_of", :is_member_of, :has_member
+  has_bidirectional_relationship "members", :has_member, :is_member_of
   
   # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata 
@@ -16,6 +17,7 @@ class Derivative < ActiveFedora::Base
   has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|    
     m.field 'depositor', :string
     m.field 'derivative_type', :string
+    m.field 'level', :string
   end
 
   has_datastream :name=>"external_file", :type=>ActiveFedora::Datastream, :controlGroup=>'R'
@@ -24,6 +26,12 @@ class Derivative < ActiveFedora::Base
 
   def content
     external_file.blank? ? "" : external_file.first.content
+  end
+
+  def level
+    return @level if (defined? @level)
+    values = self.fields[:level][:values]
+    @level = values.any? ? values.first : ""
   end
 
   def load_datastream(id)

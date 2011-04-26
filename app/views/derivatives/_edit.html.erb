@@ -31,15 +31,7 @@
   <div id="accordion">
     <h2 class="section-title"><a href="#">Derivative</a></h2>
     <%= render :partial => "derivatives/edit_derivative", :locals => { :content_type => "derivative"} %>
-		
-    <h2 class="section-title"><a href="#">Upload Content</a></h2>
-    <div id="uploads" data-pid="<%= params[:id] %>">
-      <h2><a id='toggle-uploader-generic' href="">Upload file</a></h2>
-      <div id='uploader'>
-        <%= render :partial=>"fluid_infusion/uploader" %>
-        <%= render :partial=>"fluid_infusion/uploader_generic_content_objects.js" %>	
-      </div>
-    </div>
+
     <h2 class="section-title"><a href="#">Set permissions</a></h2>
     <div id="permissions">
       <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>

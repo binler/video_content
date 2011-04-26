@@ -81,6 +81,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       t.digital(:ref=>[:digital_ref])
       t.fileSize(:ref=>[:fileSize_ref])
       t.instantiationTracks
+      t.instantiationPart
     }
 
     t.instantiationIdentifier_ref(:path=>"instantiationIdentifier"){
@@ -300,7 +301,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 
 	# Audio and Video configuration
 	xml.instantiationTracks
-
+	xml.instantiationPart
       }
     end
     return builder.doc.root
@@ -325,12 +326,15 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       when :part
         node = PbcoreXml.part_template
         nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart)
-      when :degitalfile
+      when :master
         node = PbcoreXml.master_template
         nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcoreInstantiation)
       when :derivative
         node = PbcoreXml.derivative_template
         nodeset = self.find_by_terms(:pbcoreInstantiation, :instantiationPart)
+      when :derivative_l2
+        node = PbcoreXml.derivative_template
+        nodeset = self.find_by_terms(:instantiationPart, :instantiationPart)
       when :creator
         node = PbcoreXml.creator_template
         nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcoreCreator)

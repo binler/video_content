@@ -2,12 +2,12 @@
   <fieldset id="work_fields">
     <legend> Description </legend>
     <dl>
-      <input class="update_description_display" type="hidden" name="description display" action="<%= events_path(params[:id],:content_type=>content_type)%>"/>
+      <input class="update_description_display" type="hidden" name="description display" action="<%= derivatives_path(params[:id],:content_type=>content_type)%>"/>
       <dt>
 	<%= fedora_field_label("properties", [:derivative_type], "Type of Derivative:") %>
       </dt>
       <dd class="derivative_type">
-	<%= fedora_radio_button(@document_fedora,"properties", [:derivative_type], :choices=>{"mpeg2" => "DVD (Mpeg2) &nbsp;","h.264" => "Youtube (H.264) &nbsp;", "mp4" => "iTunesU (MP4) &nbsp;", "flash" => "ND Website (Flash) &nbsp;"})%>
+	<%= fedora_select(@document_fedora,"properties", [:derivative_type], :choices=>{"DVD (Mpeg2)" => "DVD (Mpeg2)","Youtube (H.264)" => "Youtube (H.264)", "iTunesU (MP4)" => "iTunesU (MP4)", "ND Website (Flash)" => "ND Website (Flash)"})%>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationIdentifier], "ID:") %>
@@ -43,7 +43,9 @@
         <%= fedora_field_label("descMetadata", [:instantiationPart, :fileSize], "File Size:") %>
       </dt>
       <dd class="filesize">
+        <input class="update_description_display" type="hidden" name="description display" action="<%= derivatives_path(params[:id],:content_type=>content_type)%>"/>
         <%= fedora_text_field(@document_fedora,"descMetadata", [:instantiationPart, :fileSize]) %>
+        <%= fedora_select(@document_fedora,"descMetadata", [:instantiationPart, :fileSize, :fileSize_unit], :choices=>{"KB" => "KB","MB" => "MB","GB" => "GB"})%>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:instantiationPart, :digital], "File Format:") %>

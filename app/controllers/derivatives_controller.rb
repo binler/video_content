@@ -62,7 +62,20 @@ class DerivativesController < CatalogController
     content_type = params[:content_type]
     af_model = retrieve_af_model(content_type)
     if af_model
-      @asset = create_and_save_derivative(af_model, params[:master_id])
+      if params.keys.include?"level"
+        if params[:id]
+	  @parent = af_model.load_instance(params[:id])
+	  parent_id = ""
+          if(@parent.level.eql?"1")
+            parent_id = params[:id]
+          else
+	    parent_id = @parent.member_of.first.pid
+	  end
+          @asset = create_and_save_derivative(af_model, parent_id, params[:level])
+        end
+      elsif
+        @asset = create_and_save_derivative(af_model, params[:master_id])
+      end
     end
     redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :content_type => params[:content_type], :master_id => params[:master_id], :event_id => params[:event_id])
   end

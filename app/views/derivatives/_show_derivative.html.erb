@@ -1,6 +1,15 @@
   <fieldset id="work_fields">
     <legend>Description</legend>
-    <dl>	
+    <dl>
+    <% unless get_values_from_datastream(@document_fedora,"properties", [:derivative_type]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("properties", [:derivative_type], "Derivative Type:") %>
+      </dt>
+      <dd class="derivative_type">
+        <%= (get_values_from_datastream(@document_fedora,"properties", [:derivative_type])).to_s.upcase %>
+      </dd>
+    <% end %>
+
     <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :instantiationIdentifier]).first.empty? %>
       <dt>
         <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationIdentifier], "ID:") %>
@@ -52,6 +61,7 @@
       </dt>
       <dd class="keyword">
         <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :fileSize]) %>
+        <%= (get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :fileSize, :fileSize_unit])).to_s.upcase %>
       </dd>
     <% end %>
 
