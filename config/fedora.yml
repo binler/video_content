@@ -10,6 +10,11 @@ test: &TEST
     url: http://fedoraAdmin:fedoraAdmin@127.0.0.1:8983/fedora
   solr:
     url: http://localhost:8983/solr/test
+staging:
+  fedora:
+    url: http://fedoraAdmin:fedoraAdmin@your.staging.server:8080/fedora
+  solr:
+    url: http://your.staging.server:8080/solr 
 production:
   fedora:
     url: http://fedoraAdmin:fedoraAdmin@your.production.server:8080/fedora

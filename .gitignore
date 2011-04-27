@@ -8,6 +8,7 @@ nohup.out
 
 vendor/plugins/haml/init.rb
 vendor/plugins/blacklight/.git
+config/deploy.rb
 config/initializers/ldap_config.rb
 config/initializers/smtp_config.rb
 log/*
@@ -29,6 +30,6 @@ db/*.sqlite3-journal
 .buildpath
 .rvmrc
 
-/.bundle
+/.bundle/config
 /.yardoc
 /doc

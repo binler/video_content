@@ -1,3 +1,7 @@
+/*************************
+* Hydra Styles
+*************************/
+
 #doc4 {
   background-color:#FFF;
   background-image:url('images/nd_banner_bg.png');
@@ -92,6 +96,57 @@ ul#actions-menu li, ul#session-management li {
   border:none;
 }
 
+.prev_next_links {
+  margin:10px 15px 0;
+  text-align:left;
+}
+
+.prev_next_links a {
+  border-width:1px;
+  border-style:solid;
+  border-color:#FFF #666 #FFF #FFF;
+}
+
+.pagination .current {
+  padding:1px 6px;
+  width:1.6em;
+}
+
+.pagination .next_page, .pagination .prev_page {
+  border: 1px solid #FFF;
+  padding:3px 6px;
+  position:relative;
+  margin:0;
+}
+
+.document_edit .document {
+  border-bottom:none;
+}
+
+#compound-form dl {
+  padding:.7em 1.7em 1.7em;
+}
+
+#compound-form dt {
+  margin-top:1em;
+  width:100%;
+}
+
+#compound-form dd {
+  margin-top:.3em;
+  margin-right:0;
+  width:100%;
+}
+
+#compound-form textarea.edit {
+  margin-top:0;
+}
+
+#compound-form input.edit {
+  margin-right:0;
+  width:20em;
+}
+
 #footer{
   background-color:#FFF;
   background-image:url('images/nd_footer_bg.png');
@@ -105,6 +160,10 @@ ul#actions-menu li, ul#session-management li {
   background-position:right top;
   background-repeat:no-repeat;
   height:100px;
+}
+
+#footer .contact_info {
+  margin-top:.5em;
 }
 
 #footer #container3 #bottom_text {
@@ -123,4 +182,72 @@ ul#actions-menu li, ul#session-management li {
 #footer #bottom_text a {
   text-decoration:none;
   border-bottom:none;
+}
+
+/*************************
+* Local Styles
+*************************/
+
+.ar-form label {
+  display:block;
+}
+
+.ar-form input[type="submit"]{
+  font-size:13px;
+}
+
+.ar-form input[type="text"]{
+  width:20em;
+}
+
+.ar-form fieldset {
+  padding:1em;
+}
+
+.ar-form ol li {
+  margin-bottom:.7em;
+}
+
+.ar-form select {
+  padding:3px 1px;
+  margin:3px 0;
+  width:50%;
+}
+
+a.button {
+  border:1px solid #C5DBEC;
+}
+
+.selectlist-list {
+  list-style:none;
+  margin:0;
+  padding:0;
+  width:50%;
+}
+
+.selectlist-item {
+  /* Icon from http://pinvoke.com/ */
+  background:#FFF url(images/cross-circle.png) no-repeat right center;
+  border-color:#EEE #CCC #CCC #EEE;
+  border-width:1px 2px 2px 1px;
+  border-style:solid;
+  cursor:pointer;
+  padding:0.2em 0.3em;
+  margin:1px 0;
+}
+
+.ar-form .selectlist-item {
+  margin:2px 0;
+}
+
+dl.attributes {
+  margin-bottom:1.5em;
+}
+
+ul.ui-autocomplete li {
+  list-style-type:none;
+}
+
+ul.ui-autocomplete li a {
+  text-align:left;
 }

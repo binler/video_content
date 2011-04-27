@@ -8,5 +8,7 @@ test: &TEST
   url: http://127.0.0.1:8983/solr/test
 cucumber:
   <<: *TEST
+staging:
+  url: http://your.staging.server:8080/bl_solr/core0 
 production:
   url: http://your.production.server:8080/bl_solr/core0 
