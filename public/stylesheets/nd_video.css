@@ -1,0 +1,126 @@
+#doc4 {
+  background-color:#FFF;
+  background-image:url('images/nd_banner_bg.png');
+  background-position:left top;
+  background-repeat:repeat-x;
+  text-align:left;
+}
+
+#hd {
+  height:116px;
+  margin:0 auto 10px;
+  width:960px;
+}
+
+#hd h4 {
+  float:left;
+  height:38px;
+  margin:0;
+  padding:0;
+}
+
+#hd h4 a {
+  display:inline-block;
+  margin:0;
+  padding:0;
+}
+
+#hd h2 {
+  clear:both;
+  float:left;
+  margin:0;
+  padding:10px 0 0 20px;
+}
+
+#hd h2 a {
+  color:#F9DF8B;
+  font-family:'Palatino Linotype','Book Antiqua',Palatino,serif;
+  font-size:38px;
+  font-weight:normal;
+}
+
+#hd #actions-menu {
+  margin-top:1.8em;
+}
+
+#hd ul li {
+  cursor:auto;
+}
+
+#actions-menu, #session-management {
+  float:right;
+  font-family:'Palatino Linotype','Book Antiqua',Palatino,serif;
+  margin:.7em 1em;
+}
+
+ul#actions-menu li, ul#session-management li {
+  list-style-type:none;
+  color:#E6E8F5;
+}
+
+#actions-menu a:link, #session-management a:link, #actions-menu a:visited, #session-management a:visited {
+  border-bottom:1px solid #839DBF;
+  color:#E6E8F5;
+  font-weight:bold;
+  text-decoration:none;
+}
+
+#search {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-color:#DEDEDE;
+  height:52px;
+}
+
+#search form {
+  float:left;
+  padding:10px;
+  width:700px;
+}
+
+#search form #q {
+  padding:.3em;
+  width:600px;
+}
+
+#search form input[type="image"]{
+  padding-right:1px;
+}
+
+#results {
+  border:none;
+}
+
+#footer{
+  background-color:#FFF;
+  background-image:url('images/nd_footer_bg.png');
+  background-position:left top;
+  background-repeat:repeat-x;
+}
+
+#footer #container3 {
+  background-color:transparent;
+  background-image:url('images/nd_footer.jpg');
+  background-position:right top;
+  background-repeat:no-repeat;
+  height:100px;
+}
+
+#footer #container3 #bottom_text {
+  color:#7A98D0;
+  float:none;
+  height:70px;
+  margin-bottom:5px;
+  text-align:center;
+  width:100%;
+}
+
+#bottom_text p {
+  margin-top:.5em;
+}
+
+#footer #bottom_text a {
+  text-decoration:none;
+  border-bottom:none;
+}
