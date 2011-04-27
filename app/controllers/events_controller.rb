@@ -89,7 +89,7 @@ class EventsController < CatalogController
     @asset.insert_new_node(params[:field_type], {"descMetadata"=>params[:text_field]})
     creator = @asset.datastreams["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator])
     if(params[:field_type].eql?"creator")
-      @asset.update_indexed_attributes({[:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creator.size)-1}"}, :creatorRole]=>{0=>"publisher"}})
+      @asset.update_indexed_attributes({[:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creator.size)-1}"}, :creatorRole]=>{0=>"producer"}})
     end
     @asset.save
     redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :content_type => params[:content_type])

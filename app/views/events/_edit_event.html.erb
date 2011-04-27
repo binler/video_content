@@ -63,7 +63,7 @@
     <% num_of_creator = get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreCreator]).size %>
       <% curr_creator = 0 %>
       <% while(curr_creator < num_of_creator)  %>
-        <%- if(!(get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]).to_s.eql?"publisher")) -%>
+        <%- if(!(get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]).to_s.eql?"producer")) -%>
         <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator]).first.empty? %>
         <dt>
           <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator], "Creator:")%>
@@ -84,13 +84,13 @@
     </dl>
   </fieldset>
   <fieldset id="creator_fields">
-    <legend>Publisher</legend>
+    <legend>Production Comapany</legend>
       <dl>
       <% cur_creator = 0 %>
       <% while(cur_creator < num_of_creator)  %>
-        <%- if(get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => cur_creator}, :creatorRole]).to_s.eql?"publisher") -%>
+        <%- if(get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => cur_creator}, :creatorRole]).to_s.eql?"producer") -%>
           <dt>
-            <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => cur_creator}, :creator], "Publisher:") %>
+            <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => cur_creator}, :creator], "Company Name:") %>
           </dt>
           <dd class="creator">
             <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => cur_creator}, :creator]) %>
@@ -104,7 +104,7 @@
         <% format = document_partial_name(@document) %>
       <% end %>
       <div id="add-image-box">
-        <input id="re-run-action" class="nobutton" type="button" value="Add Publisher" onclick=" location.href='<%=url_for(:action => "add", :controller => "events", :content_type => "event", :text_field => "pbcoreDescription_pbcoreCreator", :field_type => "creator") %>'"/> 
+        <input id="re-run-action" class="nobutton" type="button" value="Add Production Company" onclick=" location.href='<%=url_for(:action => "add", :controller => "events", :content_type => "event", :text_field => "pbcoreDescription_pbcoreCreator", :field_type => "creator") %>'"/> 
       </div>
   </fieldset>
   <fieldset id="part_fields">

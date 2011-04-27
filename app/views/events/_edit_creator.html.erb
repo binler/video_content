@@ -6,7 +6,7 @@
   <dl class="image_tag" id="<%= base_id %>">
     <ul>
       <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_counter}, :creator], "Publisher:") %>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_counter}, :creator], "Company Name:") %>
       </dt>
       <dd class="creator">
         <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_counter}, :creator]) %>

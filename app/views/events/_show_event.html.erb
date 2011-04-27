@@ -107,7 +107,7 @@
       <% num_of_creator = get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreCreator]).size %>
       <% curr_creator = 0 %>
       <% while(curr_creator < num_of_creator)  %>
-        <%- if(!(get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]).to_s.eql?"publisher")) -%>
+        <%- if(!(get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]).to_s.eql?"producer")) -%>
         <dt>
           <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator], "Creator:")%>
 	</dt>
@@ -126,11 +126,11 @@
     </dl>
   </fieldset>
   <fieldset>
-    <legend>Publishers</legend>
+    <legend>Production Company</legend>
     <dl>
       <% curr_creator = 0 %>
       <% while(curr_creator < num_of_creator)  %>
-        <%- if(get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]).to_s.eql?"publisher") -%>
+        <%- if(get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]).to_s.eql?"producer") -%>
         <dt>
           <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator], "Creator:")%>
 	</dt>
