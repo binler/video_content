@@ -1,0 +1,27 @@
+    <h2 class="section-title">List of Derivatives</h2>
+    <%- response = @response if response.nil? -%>
+    <%- collection_obj = @document_fedora -%>
+    <%- arr = Array.new -%>
+    <%- if(collection_obj.members.size > 0 ) -%>
+      <%- collection_obj.members(:rows=> "1024").each_with_index do |doc, counter| -%>
+        <%- item = Derivative.load_instance(doc.pid) -%>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= counter+1 %>. <%= link_to (item.derivative_id.empty? ? item.pid : item.derivative_id), catalog_path(item.pid, :event_id => params[:event_id], :master_id => params[:master_id].nil? ? params[:id] : params[:master_id], :content_type => "derivative") %>
+        <dl style="position:relative;left:100px;">
+	  <table>
+            <% unless get_values_from_datastream(item, "properties", [:derivative_type]).first.empty? %>
+	    <tr>
+	      <td> Derivative Type: </td><td><%= get_values_from_datastream(item, "properties", [:derivative_type]) %></td>
+	    </tr>
+	    <% end %>
+            <% unless get_values_from_datastream(item, "descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackDuration]).first.empty? %>
+	    <tr>
+	      <td> Duration: </td><td><%= get_values_from_datastream(item, "descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackDuration]) %></td>
+	    </tr>
+	    <% end %>
+          </table>
+        </dl>
+	<hr/>
+      <%- end -%>
+    <%- else -%>
+      <p> No Derivatives available </p>
+    <%- end -%>

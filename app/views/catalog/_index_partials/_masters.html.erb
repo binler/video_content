@@ -1,0 +1,27 @@
+    <h2 class="section-title">Master Files</h2>
+    <%- response = @response if response.nil? -%>
+    <%- collection_obj = @document_fedora -%>
+    <%- arr = Array.new -%>
+    <%- if(collection_obj.members.size > 0 ) -%>
+      <%- collection_obj.members(:rows=> "1024").each_with_index do |doc, counter| -%>
+        <%- item = Master.load_instance(doc.pid) -%>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= counter+1 %>. <%= link_to (item.master_id.empty? ? item.pid : item.master_id), catalog_path(item.pid, :event_id => params[:id], :content_type => "master") %>
+        <dl style="position:relative;left:100px;">
+	  <table>
+            <% unless get_values_from_datastream(item,"descMetadata", [:pbcoreInstantiation, :instantiationTracks]).first.empty? %>
+	    <tr>
+	      <td> Track: </td><td><%= get_values_from_datastream(item, "descMetadata", [:pbcoreInstantiation, :instantiationTracks]) %></td>
+	    </tr>
+	    <% end %>
+            <% unless get_values_from_datastream(item,"descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackDuration]).first.empty? %>
+	    <tr>
+	      <td> Duration: </td><td><%= get_values_from_datastream(item, "descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackDuration]) %></td>
+	    </tr>
+	    <% end %>
+          </table>
+        </dl>
+	<hr/>
+      <%- end -%>
+    <%- else -%>
+      <p> No Master Files available for this event </p>
+    <%- end -%>

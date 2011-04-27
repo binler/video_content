@@ -108,18 +108,20 @@
       <% curr_creator = 0 %>
       <% while(curr_creator < num_of_creator)  %>
         <%- if(!(get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]).to_s.eql?"producer")) -%>
-        <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator], "Creator:")%>
-	</dt>
-        <dd>
-          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator]) %>
-        </dd>
-        <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole], "Role:")%>
-	</dt>
-        <dd>
-          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]) %>
-        </dd>
+          <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator]).first.empty? %>
+            <dt>
+              <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator], "Creator:")%>
+	    </dt>
+            <dd>
+              <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator]) %>
+            </dd>
+            <dt>
+              <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole], "Role:")%>
+	    </dt>
+            <dd>
+              <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]) %>
+            </dd>
+          <% end %>
         <% end %>
         <% curr_creator = curr_creator + 1 %>
       <% end %>
@@ -131,18 +133,20 @@
       <% curr_creator = 0 %>
       <% while(curr_creator < num_of_creator)  %>
         <%- if(get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]).to_s.eql?"producer") -%>
-        <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator], "Creator:")%>
-	</dt>
-        <dd>
-          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator]) %>
-        </dd>
-        <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole], "Role:")%>
-	</dt>
-        <dd>
-          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]) %>
-        </dd>
+          <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator]).first.empty? %>
+            <dt>
+              <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator], "Creator:")%>
+	    </dt>
+            <dd>
+              <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator]) %>
+            </dd>
+            <dt>
+              <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole], "Role:")%>
+	    </dt>
+            <dd>
+              <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]) %>
+            </dd>
+          <% end %>
         <% end %>
         <% curr_creator = curr_creator + 1 %>
       <% end %>
@@ -154,30 +158,38 @@
       <% num_of_part = get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart]).size %>
       <% curr_part = 0 %>
       <% while(curr_part < num_of_part)  %>
-	<dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreContributor, :contributor], "Contributor:")%>
-	</dt>
-        <dd>
-          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreContributor, :contributor]) %>
-        </dd>
-        <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsSummary], "Summary:")%>
-	</dt>
-        <dd>
-          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsSummary]) %>
-        </dd>
-        <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsLink], "Link:")%>
-	</dt>
-        <dd>
-          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsLink]) %>
-        </dd>
-	<dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsEmbedded], "Embedded:")%>
-	</dt>
-        <dd>
-          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsEmbedded]) %>
-        </dd>
+        <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreContributor, :contributor]).first.empty? %>
+	  <dt>
+            <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreContributor, :contributor], "Contributor:")%>
+	  </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreContributor, :contributor]) %>
+          </dd>
+        <% end %>
+        <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsSummary]).first.empty? %>
+          <dt>
+            <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsSummary], "Summary:")%>
+	  </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsSummary]) %>
+          </dd>
+        <% end %>
+        <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsLink]).first.empty? %>
+          <dt>
+            <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsLink], "Link:")%>
+	  </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsLink]) %>
+          </dd>
+        <% end %>
+        <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsEmbedded]).first.empty? %>
+	  <dt>
+            <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsEmbedded], "Embedded:")%>
+	  </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsEmbedded]) %>
+          </dd>
+        <% end %>
         <% curr_part = curr_part + 1 %>
       <% end %>
     </dl>

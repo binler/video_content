@@ -26,6 +26,12 @@ class Master < ActiveFedora::Base
     external_file.blank? ? "" : external_file.first.content
   end
 
+  def master_id
+    return @master_id if (defined? @master_id)
+    values = self.datastreams["descMetadata"].term_values(:pbcoreInstantiation, :instantiationIdentifier)
+    @master_id = values.any? ? values.first : ""
+  end
+
   def load_datastream(id)
     resource = self.load_instance(id)
     content = resource.content

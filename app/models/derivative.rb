@@ -41,6 +41,12 @@ class Derivative < ActiveFedora::Base
     @chapter = values.any? ? values.first : ""
   end
 
+  def derivative_id
+    return @derivative_id if (defined? @derivative_id)
+    values = self.datastreams["descMetadata"].term_values(:instantiationPart, :instantiationIdentifier)
+    @derivative_id = values.any? ? values.first : ""
+  end
+
   def load_datastream(id)
     resource = self.load_instance(id)
     content = resource.content

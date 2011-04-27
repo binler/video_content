@@ -1,0 +1,7 @@
+  <%- if @document_fedora.class == Event -%>
+    <%= render :partial => "catalog/_index_partials/masters" %>
+  <%- else -%>
+    <%= render :partial => "catalog/_index_partials/derivatives" %>
+  <%- end -%>
+
+
