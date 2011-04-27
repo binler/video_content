@@ -16,7 +16,7 @@ class EventsController < CatalogController
   helper :hydra, :metadata, :infusion_view
 
   #before_filter :initialize_collection, :except=>[:index, :new]
-  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :create, :listfiles]
+  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :create, :download]
   def index
     @events = Event.find_by_solr(:all).hits.map{|result| Event.load_instance_from_solr(result["id"])}
   end
@@ -68,6 +68,7 @@ class EventsController < CatalogController
     redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :content_type => params[:content_type])
   end
 
+  # Creates new datastream with name COPYRIGHTS for each file upload
   def create
     filemap = Hash.new
     filemap[:file] = params[:Filedata]
@@ -81,6 +82,7 @@ class EventsController < CatalogController
     render :nothing => true
   end
 
+  # Adds a new node for contributors
   def add
     @asset = Event.load_instance(params[:id])
 #    @asset.insert_new_node('creator', {"descMetadata"=>"pbcoreDescription_pbcoreCreator"})
@@ -89,15 +91,21 @@ class EventsController < CatalogController
     redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :content_type => params[:content_type])
   end
 
-  def removecreator
-    @asset = Event.load_instance(params[:id])
-    @asset.remove_child('creator', params[:creator_counter])
-    @asset.save
-    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
-  end
+#  def removecreator
+#    @asset = Event.load_instance(params[:id])
+#    @asset.remove_child('creator', params[:creator_counter])
+#    @asset.save
+#    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
+#  end
 
   def show  
     show_without_customizations
+  end
+
+  def download
+    af_model = retrieve_af_model(params[:content_type])
+    @file_asset = af_model.find(params[:id])
+    send_datastream @file_asset.datastreams_in_memory["#{params[:ds_name]}"]
   end
 
   def destroy

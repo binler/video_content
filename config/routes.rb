@@ -14,7 +14,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :get, :only=>:show  
   map.resources :webauths, :protocol => ((defined?(SSL_ENABLED) and SSL_ENABLED) ? 'https' : 'http')
-  map.resources :events, { :member => { :add => :get, :removecreator => :get, :create => :post, :listfiles => :get } }
+  map.resources :events, { :member => { :add => :get, :removecreator => :get, :create => :post, :listfiles => :get, :download => :get } }
   map.resources :masters
   map.resources :derivatives
 
