@@ -107,6 +107,10 @@ ul#actions-menu li, ul#session-management li {
   height:100px;
 }
 
+#footer .contact_info {
+  margin-top:.5em;
+}
+
 #footer #container3 #bottom_text {
   color:#7A98D0;
   float:none;
