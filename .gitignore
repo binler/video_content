@@ -30,6 +30,6 @@ db/*.sqlite3-journal
 .buildpath
 .rvmrc
 
-/.bundle
+/.bundle/config
 /.yardoc
 /doc
