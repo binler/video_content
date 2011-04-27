@@ -25,22 +25,15 @@
   
     <body  onload="$('#facet_author').closest('div').hide();<% if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>$('input#q').focus();<% end %>">
 
-        <div id="container1_links"></div>
-        <div id="container1_login">
-        </div>
-
 	  <div id="doc4" class="yui-t2">
-      <div id="banner">
+
+			<div id="hd">
         <h4><%= link_to image_tag( '/stylesheets/images/und.png', :alt =>'University of Notre Dame', :height => '36', :width => '281'), 'http://nd.edu' %></h4>
 				<%= render :partial => 'shared/session_management' %>
         <h2><%= link_to 'IDR', root_path %></h2>
-			</div>
-		
-			<div id="hd">
 				<%= render :partial => 'shared/actions_menu' %>
-				<%= (params[:controller] == "catalog" and !params[:id]) ? "<span id='results_text'>Search Results</span>" : "" %>
 			</div>
-	    
+
 	    <div id="bd">
 
       	<div id="yui-main">

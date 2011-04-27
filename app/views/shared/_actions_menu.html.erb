@@ -1,17 +1,29 @@
 <%- if current_user -%>
-  <ul id="actions">
-    <li onclick="javascript:createAssetNavigateTo(this, '<%= url_for(:action => "new", :controller => "events", :content_type => "event") %>');">Add an Event</li>
-    <%- if params[:content_type].eql?"event" -%>
-      <li onclick="javascript:createAssetNavigateTo(this, '<%= url_for(:action => "new", :controller => "masters", :content_type => "master", :event_id => params[:id]) -%>');">Add Master</li>
+  <ul id="actions-menu">
+    <%- if can? :create_event, EventWorkflow -%>
+      <li><%= link_to 'Add an Event', new_event_path( :content_type => 'event') %></li>
     <%- end -%>
-    <%- if(params[:content_type].eql?"master") -%>
-      <li onclick="javascript:createAssetNavigateTo(this, '<%= url_for(:action => "new", :controller => "masters", :content_type => "master", :event_id => params[:event_id]) -%>');">Add Master</li>
-      <li onclick="javascript:createAssetNavigateTo(this, '<%= url_for(:action => "new", :controller => "derivatives", :content_type => "derivative", :event_id => params[:event_id], :master_id => params[:id]) -%>');">Add DVD</li>
+    <%- if ( params[:content_type] =~ /event|master|derivative/ ) && (can? :create_master, EventWorkflow) -%>
+      <li><%= link_to 'Add a Master', new_master_path(
+                                                       :content_type => 'master',
+                                                       :event_id     => ( params[:event_id] ? params[:event_id] : params[:id] )
+                                                     ) %></li>
     <%- end -%>
-    <%- if(params[:content_type].eql?"derivative") -%>
-      <li onclick="javascript:createAssetNavigateTo(this, '<%= url_for(:action => "new", :controller => "masters", :content_type => "master", :event_id => params[:event_id]) -%>');">Add Master</li>
-      <li onclick="javascript:createAssetNavigateTo(this, '<%= url_for(:action => "new", :controller => "derivatives", :content_type => "derivative", :event_id => params[:event_id], :master_id => params[:master_id]) -%>');">Add DVD</li>
-      <li onclick="javascript:createAssetNavigateTo(this, '<%= url_for(:action => "new", :controller => "derivatives", :content_type => "derivative", :event_id => params[:event_id], :master_id => params[:master_id], :id => params[:id], :level => "2") -%>');">Add Derivative</li>
+    <%- if ( params[:content_type] =~ /master|derivative/ ) && (can? :create_derivative, EventWorkflow) -%>
+      <li><%= link_to 'Add a DVD', new_derivative_path(
+                                                        :content_type => 'derivative',
+                                                        :event_id     => params[:event_id],
+                                                        :master_id    => ( params[:master_id] ? params[:master_id] : params[:id] )
+                                                      ) %></li>
+    <%- end -%>
+    <%- if ( params[:content_type] == 'derivative' ) && (can? :create_derivative, EventWorkflow) -%>
+      <li><%= link_to 'Add a Derivative', new_derivative_path(
+                                                               :content_type => 'derivative',
+                                                               :event_id     => params[:event_id],
+                                                               :master_id    => params[:master_id],
+                                                               :id           => params[:id],
+                                                               :level        => 2
+                                                             ) %></li>
     <%- end -%>
   </ul>
 <%- end -%>
