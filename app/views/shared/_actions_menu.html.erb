@@ -1,5 +1,8 @@
 <%- if current_user -%>
   <ul id="actions-menu">
+    <%- if can? :manage, Group -%>
+      <li><%= link_to 'Manage Groups', groups_path %></li>
+    <%- end -%>
     <%- if can? :create_event, EventWorkflow -%>
       <li><%= link_to 'Add an Event', new_event_path( :content_type => 'event') %></li>
     <%- end -%>

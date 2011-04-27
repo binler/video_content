@@ -1,7 +1,8 @@
-<% javascript_includes << ['jquery.selectlist.min.js', 'multiselect.js'] %>
+<% javascript_includes << ['jquery.selectlist.min.js', 'multiselect.js', 'ldap_autocomplete.js'] %>
 <%- form_for @group, :html => { :class => 'ar-form' } do |f| -%>
   <%= f.error_messages %>
   <fieldset>
+    <legend>Attributes</legend>
     <ol>
       <li>
       <%- if @group.for_cancan? -%>
@@ -28,7 +29,7 @@
       </li>
       <%# NOTE this will need to be more generic eventually. %>
       <li>
-        <%= f.label :permissible_actions, 'Group is relevant to hydra application:' %>
+        <%= f.label :permissible_actions, 'Actions this Group can perform on an Event:' %>
         <%= f.collection_select :permissible_actions, EventWorkflow.permissible_actions, :to_s, :display_name, { :include_blank => true, :selected => @group.action_names_for_class(EventWorkflow).map{|name| name.to_s} }, { :multiple => true, :name => 'group[permissible_actions][event_workflow][]', :class => 'multiselect' } %>
       </li>
     </ol>

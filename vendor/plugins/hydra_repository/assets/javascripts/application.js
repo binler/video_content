@@ -11,7 +11,8 @@ jQuery(document).ready(function($) {
 	$(".libra_buttons ul, .home_buttons ul").mouseleave(function(){
 		$(this).hide();
 	});
-	
+
+  $('.button').button();
 });
 
 
