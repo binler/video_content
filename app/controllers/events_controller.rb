@@ -16,7 +16,7 @@ class EventsController < CatalogController
   helper :hydra, :metadata, :infusion_view
 
   #before_filter :initialize_collection, :except=>[:index, :new]
-  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :create, :download]
+  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :create, :add, :download]
   def index
     @events = Event.find_by_solr(:all).hits.map{|result| Event.load_instance_from_solr(result["id"])}
   end
@@ -82,11 +82,15 @@ class EventsController < CatalogController
     render :nothing => true
   end
 
-  # Adds a new node for contributors
+  # Adds a new node for contributors or publishers
   def add
     @asset = Event.load_instance(params[:id])
 #    @asset.insert_new_node('creator', {"descMetadata"=>"pbcoreDescription_pbcoreCreator"})
     @asset.insert_new_node(params[:field_type], {"descMetadata"=>params[:text_field]})
+    creator = @asset.datastreams["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator])
+    if(params[:field_type].eql?"creator")
+      @asset.update_indexed_attributes({[:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creator.size)-1}"}, :creatorRole]=>{0=>"publisher"}})
+    end
     @asset.save
     redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :content_type => params[:content_type])
   end

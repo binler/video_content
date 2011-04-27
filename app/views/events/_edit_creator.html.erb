@@ -4,17 +4,12 @@
 
 <li>
   <dl class="image_tag" id="<%= base_id %>">
+    <ul>
       <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_counter}, :creator], "Creator:") %>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_counter}, :creator], "Publisher:") %>
       </dt>
       <dd class="creator">
         <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_counter}, :creator]) %>
-      </dd>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_counter}, :creatorRole], "Creator Role:") %>
-      </dt>
-      <dd class="creator_role">
-        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_counter}, :creatorRole]) %>
       </dd>
     </ul>
     <% if ( (params[:action] == "edit" || params[:action] == "create")) %>

@@ -59,7 +59,53 @@
   </fieldset>
   <fieldset id="creator_fields">
     <legend>People Responsible for event</legend>
-        <%= render :partial=>"events/edit_creator", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:pbcoreDescriptionDocument, :pbcoreCreator, :creator) %>
+    <dl>
+    <% num_of_creator = get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreCreator]).size %>
+      <% curr_creator = 0 %>
+      <% while(curr_creator < num_of_creator)  %>
+        <%- if(!(get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]).to_s.eql?"publisher")) -%>
+        <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator]).first.empty? %>
+        <dt>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator], "Creator:")%>
+	</dt>
+        <dd>
+          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator]) %>
+        </dd>
+        <dt>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole], "Role:")%>
+	</dt>
+        <dd>
+          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]) %>
+        </dd>
+        <% end %>
+        <% end %>
+        <% curr_creator = curr_creator + 1 %>
+      <% end %>
+    </dl>
+  </fieldset>
+  <fieldset id="creator_fields">
+    <legend>Publisher</legend>
+      <dl>
+      <% cur_creator = 0 %>
+      <% while(cur_creator < num_of_creator)  %>
+        <%- if(get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => cur_creator}, :creatorRole]).to_s.eql?"publisher") -%>
+          <dt>
+            <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => cur_creator}, :creator], "Publisher:") %>
+          </dt>
+          <dd class="creator">
+            <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => cur_creator}, :creator]) %>
+          </dd>
+        <%- end -%>
+        <% cur_creator = cur_creator + 1 %>
+      <%- end -%>
+      </dl>
+      <hr/>
+      <% if params[:action] == "edit" %>
+        <% format = document_partial_name(@document) %>
+      <% end %>
+      <div id="add-image-box">
+        <input id="re-run-action" class="nobutton" type="button" value="Add Publisher" onclick=" location.href='<%=url_for(:action => "add", :controller => "events", :content_type => "event", :text_field => "pbcoreDescription_pbcoreCreator", :field_type => "creator") %>'"/> 
+      </div>
   </fieldset>
   <fieldset id="part_fields">
     <legend>Release or Contract Details</legend>
