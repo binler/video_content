@@ -140,12 +140,6 @@
             <dd>
               <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator]) %>
             </dd>
-            <dt>
-              <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole], "Role:")%>
-	    </dt>
-            <dd>
-              <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]) %>
-            </dd>
           <% end %>
         <% end %>
         <% curr_creator = curr_creator + 1 %>

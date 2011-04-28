@@ -18831,7 +18831,7 @@ fluid_1_2 = fluid_1_2 || {};
         flashURL: "../../../lib/swfupload/flash/swfupload.swf",
         flashButtonPeerId: "",
         postParams: {},
-        fileSizeLimit: "20480",
+        fileSizeLimit: "0",
         fileTypes: "*",
         fileTypesDescription: null,
         fileUploadLimit: 0,
