@@ -1,0 +1,22 @@
+<!-- div add link -->
+<div>
+  <form id="new_link_metadata" action="<%= url_for(:action=>"create", :controller=>"external_assets")%>" method="post" data-resourceType="external_asset" accept-charset="utf8">
+    <table>
+      <tr>
+        <input type="hidden" name="container_id" value="<%=params[:id]%>">
+	<td><%= fedora_field_label("properties", [:uri], "Link:") %>&nbsp;<input name="dsLocation" value=""></td>
+        <td><%= fedora_field_label("properties", [:label], "Label:") %>&nbsp;<input name="label" value=""></td>
+      </tr>
+      <tr><td><input type="submit" value="Add New Link"></td></tr>
+    </table>
+  </form>
+</div>
+<!-- end div add link -->
+<!-- div list existing external links -->
+<div>
+  <!--ul -->
+    <!--li--><!-- Label Text Field --><!--Link Text Field--><!--'X' button to delete--><!--end li-->
+    <!--li--><!-- ... --><!--end li-->
+  <!--end ul-->
+</div>
+<!-- end div list existing external links -->

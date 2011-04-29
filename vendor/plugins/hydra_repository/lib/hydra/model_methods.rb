@@ -12,7 +12,6 @@ module Hydra::ModelMethods
     rights_ds.update_indexed_attributes([:edit_access, :person]=>depositor_id) unless rights_ds.nil?
     
     apply_ldap_values(depositor_id, 0)
-    
     return true
   end
   
@@ -84,7 +83,7 @@ module Hydra::ModelMethods
     return if computing_id.blank? || person_number.blank?
     person = Ldap::Person.new(computing_id)
     desc_ds = self.datastreams_in_memory["descMetadata"]
-    return if desc_ds.nil?
+    return if desc_ds.nil? || !desc_ds.class.respond_to?(:terminology)
     if desc_ds.class.terminology.has_term?(:person, :computing_id)
       desc_ds.find_by_terms(:person, :computing_id)[person_number].content = person.computing_id
     end    
