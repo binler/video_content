@@ -1,0 +1,12 @@
+<%- unless @link_objects.nil? || @link_objects.hits.empty? -%>
+  <h2>Links</h2>
+  <%# if params[:deletable] == "true" -%>
+    <%#<ul>%>
+      <%#render :partial=>'deletable_result', :collection=>@link_objects.hits %>
+    <%#</ul>%>
+  <%# else -%>
+    <table>
+      <%=render :partial=>'external_assets/result', :collection=>@link_objects.hits %>
+    </table>
+  <%# end -%>  
+<%- end -%>

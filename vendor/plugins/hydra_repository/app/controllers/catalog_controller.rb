@@ -16,6 +16,10 @@ class CatalogController
     #fedora_object = ActiveFedora::Base.load_instance(params[:id])
     #params[:action] = "edit"
     #@downloadables = downloadables( @document_fedora )
+    @link_objects = @document_fedora.file_objects(:response_format=>:solr)
+    @link_objects.each do |result|
+      @link_objects.delete(result) unless result["has_model_s"] && result["has_model_s"].include?("info:fedora/afmodel:ExternalAsset")
+    end
     show_without_customizations
     enforce_edit_permissions
   end

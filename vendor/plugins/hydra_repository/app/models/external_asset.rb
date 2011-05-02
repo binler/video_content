@@ -5,7 +5,7 @@ class ExternalAsset < ActiveFedora::Base
   has_relationship "is_member_of_collection", :has_collection_member, :inbound => true
   has_bidirectional_relationship "part_of", :is_part_of, :has_part
 
-  has_datastream :name=>"link", :type=>ActiveFedora::Datastream, :controlGroup=>'E'
+  has_datastream :name=>"link", :type=>ActiveFedora::Datastream, :controlGroup=>'R'
 
   # deletes the object identified by pid if it does not have any objects asserting has_collection_member
   def self.garbage_collect(pid)
@@ -47,7 +47,11 @@ class ExternalAsset < ActiveFedora::Base
       link_append({:dsLocation=>uri})
     end
   end
-      
+
+  def content_url
+    datastreams_in_memory["descMetadata"].identifier_values.first
+  end
+
   # Mimic the relationship accessor that would be created if a containers relationship existed
   # Decided to create this method instead because it combines more than one relationship list
   # from is_member_of_collection and part_of
