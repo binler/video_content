@@ -6,6 +6,7 @@ module MastersControllerHelper
     apply_depositor_metadata(@asset)
     set_collection_type(@asset, content_type)
     @asset.member_of_append(parent_id)
+    @asset.datastreams["rightsMetadata"].update_permissions({"group"=>{"public"=>"read"}})
     @asset.save
     return @asset
   end

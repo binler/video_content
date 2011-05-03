@@ -17,7 +17,7 @@ class Event < ActiveFedora::Base
     m.field 'depositor', :string
   end
 
-  has_datastream :name=>"copyrights",     :type=>ActiveFedora::Datastream, :controlGroup=>'M'
+  has_datastream :name=>"transcripts",     :type=>ActiveFedora::Datastream, :controlGroup=>'M'
 
   has_datastream :name=>"external_file", :type=>ActiveFedora::Datastream, :controlGroup=>'R'
 

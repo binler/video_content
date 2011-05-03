@@ -20,7 +20,7 @@
         <%= fedora_text_field(@document_fedora,"descMetadata", [:instantiationPart, :instantiationIdentifier])%>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationDate], "Date:") %>
+        <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationDate], "Creation Date:") %>
       </dt>
       <dd class="filesize">
         <%= fedora_text_field(@document_fedora,"descMetadata", [:instantiationPart, :instantiationDate]) %>
@@ -54,14 +54,20 @@
       <dt>
         <%= fedora_field_label("descMetadata", [:instantiationPart, :digital], "File Format:") %>
       </dt>
-      <dd class="filesize">
+      <dd class="fileformat">
         <%= fedora_text_field(@document_fedora,"descMetadata", [:instantiationPart, :digital]) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationAnnotation], "Annotation:") %>
+        <%= fedora_field_label("descMetadata", [:instantiationPart, {:instantiationAnnotation => "0"}, :text], "Description:") %>
       </dt>
-      <dd class="annotation">
-        <%= fedora_text_area(@document_fedora,"descMetadata", [:instantiationPart, :instantiationAnnotation]) %>
+      <dd class="description">
+        <%= fedora_text_area(@document_fedora,"descMetadata", [:instantiationPart, {:instantiationAnnotation => "0"}, :text]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:instantiationPart, {:instantiationAnnotation => "1"}, :text], "Retention Schedule:") %>
+      </dt>
+      <dd class="retention_schedule">
+        <%= fedora_text_area(@document_fedora,"descMetadata", [:instantiationPart, {:instantiationAnnotation => "1"}, :text]) %>
       </dd>
       <%- if(@document_fedora.level.eql?"1") -%>
         <dt>

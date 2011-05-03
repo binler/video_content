@@ -4,35 +4,12 @@
 
 <li>
   <dl class="image_tag" id="<%= base_id %>">
+    <ul>
       <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => release_counter}, :pbcoreContributor, :contributor], "Contributor:") %>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreContributor => "#{release_counter}"}, :contributor], "Name:") %>
       </dt>
       <dd class="contributor">
-        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => release_counter}, :pbcoreContributor, :contributor]) %>
-      </dd>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => release_counter}, :pbcoreContributor, :contributorRole], "Contributor Role:") %>
-      </dt>
-      <dd class="contributor_role">
-        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => release_counter}, :pbcoreContributor, :contributorRole]) %>
-      </dd>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => release_counter}, :pbcoreRightsSummary, :rightsSummary], "RightsSummary:") %>
-      </dt>
-      <dd class="rights_summary">
-        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => release_counter}, :pbcoreRightsSummary, :rightsSummary]) %>
-      </dd>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => release_counter}, :pbcoreRightsSummary, :rightsLink], "RightsLink:") %>
-      </dt>
-      <dd class="rights_link">
-        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => release_counter}, :pbcoreRightsSummary, :rightsLink]) %>
-      </dd>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => release_counter}, :pbcoreRightsSummary, :rightsEmbedded], "RightsEmbedded:") %>
-      </dt>
-      <dd class="rights_embedded">
-        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => release_counter}, :pbcoreRightsSummary, :rightsEmbedded]) %>
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreContributor => "#{release_counter}"}, :contributor]) %>
       </dd>
     </ul>
     <% if ( (params[:action] == "edit" || params[:action] == "create")) %>

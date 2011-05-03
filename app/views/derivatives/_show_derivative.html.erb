@@ -21,7 +21,7 @@
 
     <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :instantiationDate]).first.empty? %>
       <dt>
-        <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationDate], "Date:") %>
+        <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationDate], "Creation Date:") %>
       </dt>
       <dd class="event_id">
         <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :instantiationDate]) %>
@@ -74,12 +74,21 @@
       </dd>
     <% end %>
 
-    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :instantiationAnnotation]).first.empty? %>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, {:instantiationAnnotation => "0"}, :text]).first.empty? %>
       <dt>
-        <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationAnnotation], "Annotation:") %>
+        <%= fedora_field_label("descMetadata", [:instantiationPart, {:instantiationAnnotation => "0"}, :text], "Description:") %>
       </dt>
-      <dd class="annotation">
-        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :instantiationAnnotation]) %>
+      <dd class="description">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, {:instantiationAnnotation => "0"}, :text]) %>
+      </dd>
+    <% end %>
+
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, {:instantiationAnnotation => "1"}, :text]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:instantiationPart, {:instantiationAnnotation => "1"}, :text], "Retention Schedule:") %>
+      </dt>
+      <dd class="retention_schedule">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, {:instantiationAnnotation => "1"}, :text]) %>
       </dd>
     <% end %>
 

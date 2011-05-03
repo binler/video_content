@@ -57,10 +57,15 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       }
       t.pbcoreDescription
       t.pbcoreContributor(:ref=>[:pbcoreContributor_ref])
+      t.pbcoreCreator(:ref=>[:pbcoreCreator_ref])
       t.pbcoreRightsSummary(:ref=>[:pbcoreRightsSummary_ref])
+      t.pbcoreAnnotation
     }
+    
+    t.pbcoreContributor(:ref=>[:pbcoreContributor_ref])
+
     t.pbcoreInstantiation(:ref=>[:pbcoreInstantiation_ref])
-    t.instantiationPart(:ref=>[:instantiationPart_ref])
+#    t.instantiationPart(:ref=>[:instantiationPart_ref])
 
     t.pbcoreInstantiation_ref(:path=>"pbcoreInstantiation"){
       t.instantiationAnnotation(:ref=>[:annotation_ref])
@@ -72,8 +77,12 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       t.instantiationPart
     }
 
-    t.instantiationPart_ref(:path=>"instantiationPart"){
-      t.instantiationAnnotation(:ref=>[:annotation_ref])
+    t.instantiationPart{
+      t.instantiationAnnotation{
+        t.text(:path=>'text()')
+        t.annotation_type(:path=>{:attribute=>"annotationType"})
+        t.annotation_reference(:path=>{:attribute=>"ref"})
+      }
       t.instantiationLocation
       t.instantiationDate
       t.instantiationIdentifier(:ref=>[:instantiationIdentifier_ref])
@@ -100,6 +109,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       t.fileSize_unit(:path=>{:attribute=>"unitOfMeassure"})
     }
     t.annotation_ref(:path=>"instantiationAnnotation"){
+      t.annotation(:path=>"text()")
       t.annotation_type(:path=>{:attribute=>"annotationType"})
       t.annotation_reference(:path=>{:attribute=>"ref"})
     }
@@ -149,61 +159,45 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	  xml.creatorRole(:source=>"", :ref=>"")
 	}
 
-	# Secorndary Creator
-#	xml.pbcoreCreator{
-#	  xml.creator
-#	  xml.creatorRole(:source=>"", :ref=>"")
-#	}
-
-	# Copyrights notice
-	xml.pbcoreRightsSummary{
-	  xml.rightsSummary
-	  xml.rightsLink
-	  xml.rightsEmbedded
-	}
-
 	# Keywords
 	xml.pbcoreSubject(:subjectType=>"", :source=>"")
 
-	# Model Release
+	# Production Company
 	xml.pbcorePart{
 	  xml.pbcoreIdentifier(:source=>"")
 	  xml.pbcoreTitle(:titleType=>"", :source=>"", :version=>"", :annotation=>"")
 	  xml.pbcoreDescription(:descriptionType=>"Event", :descriptionTypeSource=>"pbcoreDescription/descriptionType", :ref=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#summary")
-	  xml.pbcoreContributor{
-	    xml.contributor
-	    xml.contributorRole
+	  xml.pbcoreCreator{
+	    xml.creator
+	    xml.creatorRole("producer")
 	  }
+
+	  #Contract
 	  xml.pbcoreRightsSummary{
 	    xml.rightsSummary
-	    xml.rightsLink
-	    xml.rightsEmbedded
 	  }
-	}
-	
-	# Contract Term
-#	xml.pbcorePart{
-#	  xml.pbcoreIdentifier(:source=>"")
-#	  xml.pbcoreTitle(:titleType=>"", :source=>"", :version=>"", :annotation=>"")
-#	  xml.pbcoreDescription(:descriptionType=>"Event", :descriptionTypeSource=>"pbcoreDescription/descriptionType", :ref=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#summary")
-#	  xml.pbcoreContributor{
-#	    xml.contributor
-#	    xml.contributorRole
-#	  }
-#	  xml.pbcoreRightsSummary{
-#	    xml.rightsSummary
-#	    xml.rightsLink
-#	    xml.rightsEmbedded
-#	  }
-#	}
 
-	# Usage Rights / Permissions
+	  # Usage rights
+	  xml.pbcoreRightsSummary{
+	    xml.rightsSummary
+	  }
+
+	  # Comments about the production company [and | or] contract and rights
+          xml.pbcoreAnnotation
+	}
+
+	#Speakers
+	xml.pbcoreContributor{
+	  xml.contributor
+	  xml.contributorRole("speaker")
+	}
+
+	# Speaker contract
 	xml.pbcoreRightsSummary{
 	  xml.rightsSummary
-	  xml.rightsLink
-	  xml.rightsEmbedded
 	}
 
+	#Speaker Comments
 	xml.pbcoreAnnotation(:annotationType=>"", :ref=>"")
 
 	# Child Elements
@@ -229,6 +223,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	  xml.rightsLink
 	  xml.rightsEmbedded
 	}
+        xml.pbcoreAnnotation
       }
     end
     return builder.doc.root
@@ -274,9 +269,6 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       xml.instantiationPart("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
         "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
 
-	# Annotation
-	xml.instantiationAnnotation(:annotationType=>"", :ref=>"")
-
 	# ID
 	xml.instantiationIdentifier(:source=>"")
 
@@ -301,6 +293,13 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 
 	# Audio and Video configuration
 	xml.instantiationTracks
+
+	# Decription
+	xml.instantiationAnnotation(:annotationType=>"", :ref=>"")
+
+	# Retention Schedule
+	xml.instantiationAnnotation(:annotationType=>"", :ref=>"")
+
 	xml.instantiationPart
       }
     end
@@ -313,6 +312,17 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
         "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
 	  xml.creator(:annotation=>"", :ref=>"", :affiliation=>"")
 	  xml.creatorRole(:source=>"", :ref=>"")
+	}
+    end
+    return builder.doc.root
+  end
+
+  def self.contributor_template
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.pbcoreContributor("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
+        "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
+	  xml.contributor
+	  xml.contributorRole("speaker")
 	}
     end
     return builder.doc.root
@@ -338,6 +348,9 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       when :creator
         node = PbcoreXml.creator_template
         nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcoreCreator)
+      when :contributor
+        node = PbcoreXml.contributor_template
+        nodeset = self.find_by_terms(:pbcoreDescriptionDocument, {:pbcorePart => "1"}, :pbcoreContributor)
       else
         ActiveFedora.logger.warn("#{type} is not a valid argument for EadXml.insert_node")
         node = nil

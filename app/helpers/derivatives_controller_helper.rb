@@ -6,6 +6,8 @@ module DerivativesControllerHelper
     apply_depositor_metadata(@asset)
     set_collection_type(@asset, content_type)
     @asset.member_of_append(parent_id)
+    @asset.datastreams["rightsMetadata"].update_permissions({"group"=>{"public"=>"read"}})
+    @asset.save
     @asset.update_indexed_attributes({:level=>{0=>level}})
     if level.eql?"1"
       @asset.update_indexed_attributes({:derivative_type=>{0=>"DVD"}})

@@ -30,11 +30,14 @@ class EventsController < CatalogController
     updater_method_args = prep_updater_method_args(params)
     result = @document.update_indexed_attributes(updater_method_args[:params], updater_method_args[:opts])
     @document.save
+    logger.debug("OPTS: #{updater_method_args[:opts].inspect}")
+    logger.debug("Result: #{result.inspect}")
     apply_depositor_metadata(@document)
     response = Hash["updated"=>[]]
     last_result_value = ""
     result.each_pair do |field_name,changed_values|
       changed_values.each_pair do |index,value|
+	logger.debug("field_name = #{field_name}, index = #{index}, value = #{value}")
         response["updated"] << {"field_name"=>field_name,"index"=>index,"value"=>value} 
         last_result_value = value
       end
@@ -73,13 +76,11 @@ class EventsController < CatalogController
     filemap = Hash.new
     filemap[:file] = params[:Filedata]
     filemap[:filename] = params[:Filename]
-    if(filemap[:filename].end_with?"pdf")
-      filemap[:content_type]="application/pdf"
-    end
     @asset = Event.find(params[:container_id])
-    @asset.add_named_datastream("copyrights",filemap)
+    @asset.add_named_datastream("transcripts",filemap)
     @asset.save
     render :nothing => true
+#    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :content_type => params[:content_type])
   end
 
   # Adds a new node for contributors or publishers
@@ -87,8 +88,8 @@ class EventsController < CatalogController
     @asset = Event.load_instance(params[:id])
 #    @asset.insert_new_node('creator', {"descMetadata"=>"pbcoreDescription_pbcoreCreator"})
     @asset.insert_new_node(params[:field_type], {"descMetadata"=>params[:text_field]})
-    creator = @asset.datastreams["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator])
     if(params[:field_type].eql?"creator")
+      creator = @asset.datastreams["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator])
       @asset.update_indexed_attributes({[:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creator.size)-1}"}, :creatorRole]=>{0=>"producer"}})
     end
     @asset.save
