@@ -58,5 +58,32 @@ $(document).ready(function(){
       }
     );
 
+  $.each(
+    $( '.ldap-autocomplete' )
+      .autocomplete({
+        source: function( request, response ) {
+          $.getJSON( '/ldap_query', {
+            term: extractLast( request.term )
+          }, response );
+        },
+        minLength: 3,
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          this.value = ui.item.name + ' (' + ui.item.netid + ')';
+          return false;
+        }
+      }), function(){
+      $(this).data( 'autocomplete' )._renderItem = function( ul, item ) {
+        return $( '<li></li>' )
+          .data( 'item.autocomplete', item )
+          .append( '<a>' +  item.name + ' (' + item.netid + ')</a>' )
+          .appendTo( ul );
+        };
+      }
+    );
+
 });
 })(jQuery);
