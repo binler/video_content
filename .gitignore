@@ -11,6 +11,7 @@ vendor/plugins/blacklight/.git
 config/deploy.rb
 config/initializers/ldap_config.rb
 config/initializers/smtp_config.rb
+config/deploy.rb
 log/*
 coverage.data
 coverage/*

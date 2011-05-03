@@ -15,6 +15,11 @@ staging:
     url: http://fedoraAdmin:fedoraAdmin@your.staging.server:8080/fedora
   solr:
     url: http://your.staging.server:8080/solr 
+pre_production:
+  fedora:
+    url: http://fedoraAdmin:fedoraAdmin@your.pre_production.server:8080/fedora
+  solr:
+    url: http://your.pre_production.server:8080/solr 
 production:
   fedora:
     url: http://fedoraAdmin:fedoraAdmin@your.production.server:8080/fedora

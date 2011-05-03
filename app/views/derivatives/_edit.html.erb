@@ -21,16 +21,12 @@
     <div id="loading" style="display:none;">
       <img src="/plugin_assets/hydra_repository/images/ajax-loader.gif" width="32" height="32" alt="Saving..." />
     </div>
-    <% if flash[:notice] %>
-      <div class="notice">
-        <%= flash[:notice] %>
-      </div>
-    <% end %>
 
     <div id="compound-form">
       <h2 class="section-title"><a href="#">Derivative</a></h2>
       <%= render :partial => "derivatives/edit_derivative", :locals => { :content_type => "derivative"} %>
-
+      <h2 class="section-title"><a href="#">Links</a></h2>
+      <%= render :partial => "external_assets/edit", :locals => { :content_type => "derivative", :redirected=>true} %>
     </div>
   </div>
 </div>

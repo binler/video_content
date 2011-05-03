@@ -39,39 +39,39 @@ GEM
     cancan (1.5.1)
     columnize (0.3.2)
     crack (0.1.8)
-    cucumber (0.10.0)
+    cucumber (0.10.2)
       builder (>= 2.1.2)
-      diff-lcs (~> 1.1.2)
-      gherkin (~> 2.3.2)
-      json (~> 1.4.6)
-      term-ansicolor (~> 1.0.5)
+      diff-lcs (>= 1.1.2)
+      gherkin (>= 2.3.5)
+      json (>= 1.4.6)
+      term-ansicolor (>= 1.0.5)
     cucumber-rails (0.3.2)
       cucumber (>= 0.8.0)
-    curb (0.7.12)
-    database_cleaner (0.6.4)
+    curb (0.7.15)
+    daemons (1.1.3)
+    database_cleaner (0.6.7)
     diff-lcs (1.1.2)
-    equivalent-xml (0.1.6)
-      nokogiri
+    equivalent-xml (0.2.6)
+      nokogiri (>= 1.4.3)
     facets (2.8.4)
-    gherkin (2.3.3)
-      json (~> 1.4.6)
-    haml (3.0.25)
-    httparty (0.7.4)
+    gherkin (2.3.7)
+      json (>= 1.4.6)
+    haml (3.1.1)
+    httparty (0.7.7)
       crack (= 0.1.8)
-    json (1.4.6)
+    json (1.5.1)
     json_pure (1.5.1)
     linecache (0.43)
-    marc (0.4.1)
-    mediashelf-loggable (0.4.0)
+    marc (0.4.2)
+    mediashelf-loggable (0.4.2)
     mime-types (1.16)
     mocha (0.9.12)
     multipart-post (1.1.0)
+    mysql (2.8.1)
     nokogiri (1.4.3.1)
-    om (1.0.2)
-      facets
-      facets
-      nokogiri
+    om (1.2.4)
       nokogiri (>= 1.4.2)
+      om
     rack (1.0.1)
     rack-test (0.5.7)
       rack (>= 1.0)
@@ -88,10 +88,10 @@ GEM
       builder (>= 2.1.2)
     rsolr-ext (0.12.1)
       rsolr (>= 0.12.1)
-    rspec (1.3.1)
-    rspec-rails (1.3.3)
+    rspec (1.3.2)
+    rspec-rails (1.3.4)
       rack (>= 1.0.0)
-      rspec (= 1.3.1)
+      rspec (~> 1.3.1)
     ruby-debug (0.10.4)
       columnize (>= 0.1)
       ruby-debug-base (~> 0.10.4.0)
@@ -101,21 +101,24 @@ GEM
     rubycas-client (2.2.1)
       activesupport
     solr-ruby (0.0.8)
-    solrizer (1.0.1)
+    solrizer (1.0.4)
+      daemons
       mediashelf-loggable
       mediashelf-loggable
       nokogiri
       nokogiri
       nokogiri
-      om
       om (>= 1.0.0)
+      om
+      stomp
       xml-simple
-    solrizer-fedora (1.0.1)
+    solrizer-fedora (1.0.3)
       active-fedora (>= 2.0.0)
       rsolr
       solrizer (>= 1.0.0)
     sqlite3-ruby (1.2.5)
-    state_machine (0.10.0)
+    state_machine (0.10.4)
+    stomp (1.1.8)
     term-ansicolor (1.0.5)
     trollop (1.16.2)
     webrat (0.7.3)
@@ -123,8 +126,8 @@ GEM
       rack (>= 1.0)
       rack-test (>= 0.5.3)
     will_paginate (2.3.15)
-    xml-simple (1.0.14)
-    yard (0.6.4)
+    xml-simple (1.0.15)
+    yard (0.6.8)
 
 PLATFORMS
   ruby
@@ -153,6 +156,7 @@ DEPENDENCIES
   mime-types
   mocha
   multipart-post
+  mysql (= 2.8.1)
   nokogiri (= 1.4.3.1)
   om (>= 1.0.1)
   rack

@@ -10,5 +10,7 @@ cucumber:
   <<: *TEST
 staging:
   url: http://your.staging.server:8080/bl_solr/core0 
+pre_production:
+  url: http://your.pre_production.server:8080/bl_solr/core0 
 production:
   url: http://your.production.server:8080/bl_solr/core0 
