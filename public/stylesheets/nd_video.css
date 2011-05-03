@@ -24,9 +24,19 @@
 }
 
 #hd h4 a {
+  color:#E8EDF0;
   display:inline-block;
+  font-family:'Palatino Linotype','Book Antiqua',Palatino,serif;
+  letter-spacing:.1em;
   margin:0;
-  padding:0;
+  padding:10px 20px;
+  text-transform:uppercase;
+}
+
+#hd h4 a span {
+  font-style:italic;
+  padding:0 .2em;
+  text-transform:none;
 }
 
 #hd h2 {
