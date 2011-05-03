@@ -78,8 +78,13 @@ class ExternalAssetsController < ApplicationController
       end
 
       if @downloadable
+        #logger.debug("External asset: #{@external_asset.inspect}")
         unless @external_asset.link.empty?
           redirect_to "#{@external_asset.link.first.url}/content"
+        else
+          logger.warn("Link undefined for external asset: " + params[:id])
+          flash[:notice]= "Link undefined for external asset."
+          redirect_to(:action => 'index', :q => nil , :f => nil)
         end
       else
         flash[:notice]= "You do not have sufficient access privileges to download this document, which has been marked private."

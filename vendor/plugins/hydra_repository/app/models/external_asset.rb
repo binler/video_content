@@ -5,7 +5,11 @@ class ExternalAsset < ActiveFedora::Base
   has_relationship "is_member_of_collection", :has_collection_member, :inbound => true
   has_bidirectional_relationship "part_of", :is_part_of, :has_part
 
-  has_datastream :name=>"link", :type=>ActiveFedora::Datastream, :controlGroup=>'R'
+  #has_datastream :name=>"link", :type=>ActiveFedora::Datastream, :controlGroup=>'R'
+  has_datastream :name=>"redirected_link", :type=>ActiveFedora::Datastream, :controlGroup=>'R'
+  has_datastream :name=>"external_link", :type=>ActiveFedora::Datastream, :controlGroup=>'E'
+
+  attr_accessor :redirected
 
   # deletes the object identified by pid if it does not have any objects asserting has_collection_member
   def self.garbage_collect(pid)
@@ -16,6 +20,24 @@ class ExternalAsset < ActiveFedora::Base
       end
     rescue
     end
+  end
+
+  #Pass in attribute :redirected=>true if you would like it to be a redirected datastream
+  def initialize(attr={})
+    super
+    @redirected = (attr.has_key?(:redirected) && attr[:redirected] == true || !redirected_link.empty?)
+  end
+
+  def link
+    @redirected ? self.redirected_link : self.external_link
+  end
+
+  def link_ids
+    @redirected ? self.redirected_link_ids : self.external_link_ids
+  end
+
+  def link_append(*args)
+    @redirected ? self.redirected_link_append(*args) : self.external_link_append(*args)
   end
 
   def uri
@@ -42,7 +64,11 @@ class ExternalAsset < ActiveFedora::Base
   def uri=(uri)
     datastreams_in_memory["descMetadata"].identifier_values = uri
     if link.first
-      update_named_datastream("link",{:dsid=>link.first.dsid,:dsLocation=>uri})
+      if @redirected
+        update_named_datastream("redirected_link",{:dsid=>link.first.dsid,:dsLocation=>uri})
+      else
+        update_named_datastream("external_link",{:dsid=>link.first.dsid,:dsLocation=>uri})
+      end
     else
       link_append({:dsLocation=>uri})
     end

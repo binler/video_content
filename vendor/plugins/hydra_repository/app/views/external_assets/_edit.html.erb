@@ -1,17 +1,5 @@
-<!-- div add link -->
-<div>
-  <form id="new_link_metadata" action="<%= url_for(:action=>"create", :controller=>"external_assets")%>" method="post" data-resourceType="external_asset" accept-charset="utf8">
-    <table>
-      <tr>
-        <input type="hidden" name="container_id" value="<%=params[:id]%>">
-	<td><%= fedora_field_label("properties", [:uri], "URL:") %>&nbsp;<input name="dsLocation" value=""></td>
-        <td><%= fedora_field_label("properties", [:label], "Label:") %>&nbsp;<input name="label" value=""></td>
-      </tr>
-      <tr><td><input type="submit" value="Add New Link"></td></tr>
-    </table>
-  </form>
-</div>
-<!-- end div add link -->
+<fieldset id="link_fields">
+    <legend> Links </legend>
 <!-- div list existing external links -->
 <div>
   <%= render :partial => "external_assets/index", :locals => { :content_type => "derivative", :container_id => params[:id]} %>
@@ -21,3 +9,25 @@
   <!--end ul-->
 </div>
 <!-- end div list existing external links -->
+<!-- div add link -->
+<fieldset id="new_link">
+<legend>New Link</legend>
+<div>
+  <form id="new_link_metadata" action="<%= url_for(:action=>"create", :controller=>"external_assets")%>" method="post" data-resourceType="external_asset" accept-charset="utf8">
+    <table>
+      <tr>
+        <%- redirected = params[:redirected] if params[:redirected] && @redirected.nil? -%>
+        <%- if redirected -%>
+          <input type="hidden" name="redirected" value="<%=redirected%>">
+        <%- end -%>
+        <input type="hidden" name="container_id" value="<%=params[:id]%>">
+	<td><%= fedora_field_label("properties", [:uri], "URL:") %>&nbsp;<input name="dsLocation" value=""></td>
+        <td><%= fedora_field_label("properties", [:label], "Label:") %>&nbsp;<input name="label" value=""></td>
+      </tr>
+      <tr><td><input type="submit" value="Add New Link"></td></tr>
+    </table>
+  </form>
+</div>
+</fieldset>
+</fieldset>
+<!-- end div add link -->
