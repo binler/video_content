@@ -1,10 +1,19 @@
 # SQLite version 3.x
 #   gem install sqlite3-ruby (not necessary on OS X Leopard)
-development: &DEV
+mysql_settings: &mysql_settings
+  adapter:   mysql
+  encoding:  utf8
+  reconnect: false
+  pool:      5
+
+sqlite_settings: &sqlite_settings
   adapter: sqlite3
-  database: db/development.sqlite3
-  pool: 5
+  pool:    5
   timeout: 5000
+
+development: &DEV
+  <<: *sqlite_settings
+  database: db/development.sqlite3
 
 dev_cached:
   <<: *DEV
@@ -13,22 +22,26 @@ dev_cached:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test: &TEST
-  adapter: sqlite3
+  <<: *sqlite_settings
   database: db/test.sqlite3
-  pool: 5
-  timeout: 5000
 
 staging:
-  adapter: sqlite3
+  <<: *sqlite_settings
   database: db/staging.sqlite3
-  pool: 5
-  timeout: 5000
+
+pre_production:
+  <<: *mysql_settings
+  host:     your.database.server
+  database: pre_production
+  username: username
+  password: Str0ng_paSsworD!
 
 production:
-  adapter: sqlite3
-  database: db/production.sqlite3
-  pool: 5
-  timeout: 5000
+  <<: *mysql_settings
+  host:     your.database.server
+  database: production
+  username: username
+  password: Str0ng_paSsworD!
 
 cucumber:
   <<: *TEST
