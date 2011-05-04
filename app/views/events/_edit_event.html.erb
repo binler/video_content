@@ -66,7 +66,7 @@
     </dl>
   </fieldset>
   <fieldset id="creator_fields">
-    <legend>Production Comapany</legend>
+    <legend>Production Company</legend>
       <dl>
         <dt>
           <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreCreator, :creator], "Company Name:") %>
@@ -93,43 +93,48 @@
 	</dd>
       </dl>
   </fieldset>
-  <fieldset id="part_fields">
+  <fieldset id="speakers"><%# NOTE that the id 'speakers' is referenced in the events_controller %>
     <legend>Speakers</legend>
-      <%= render :partial=>"events/edit_release", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:pbcoreDescriptionDocument, :pbcoreContributor) %>
+      <ul id="speaker-listing">
+        <%= render :partial=>"events/edit_release", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:pbcoreDescriptionDocument, :pbcoreContributor) %>
+      </ul>
       <% if params[:action] == "edit" %>
         <% format = document_partial_name(@document) %>
       <% end %>
-      <div id="add-image-box">
-        <input id="re-run-action" class="nobutton" type="button" value="Add More Speakers" onclick=" location.href='<%=url_for(:action => "add", :controller => "events", :content_type => "event", :text_field => "pbcoreDescription_pbcoreContributor", :field_type => "contributor") %>'"/> 
+      <div id="add-speaker">
+        <input id="re-run-action" class="nobutton button" type="button" value="Add A Speaker" onclick=" location.href='<%=url_for(:action => "add", :controller => "events", :content_type => "event", :text_field => "pbcoreDescription_pbcoreContributor", :field_type => "contributor") %>'"/> 
       </div>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation], "Comments:") %>
-      </dt>
-      <dd class="comments">
-        <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation]) %>
-      </dd>
-      <dt>
-      </dt>
-      <dd class="copyrights">
-        <%= fedora_checkbox(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreRightsSummary, :rightsSummary])%> Contract on File
-      </dd>
+      <dl>
+        <dt>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation], "Comments:") %>
+        </dt>
+        <dd class="comments">
+          <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation]) %>
+        </dd>
+        <dt>
+        </dt>
+        <dd class="copyrights">
+          <%= fedora_checkbox(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreRightsSummary, :rightsSummary])%> Contract on File
+        </dd>
+      </dl>
   </fieldset>
 
   <fieldset id="transcripts">
     <legend>Transcript Uploads</legend>
     <dl>
-      <dt>
-	Uploaded Transcripts:
-      </dt>
+      <dt>Uploaded Transcripts:</dt>
       <dd>
-        <% ds_names = @document_fedora.datastreams.keys %>
+        <%- ds_names = @document_fedora.datastreams.keys -%>
+        <ul class="transcripts">
         <%- ds_names.each do |ds_name| -%>
           <%- if ds_name.starts_with?"TRANSCRIPTS" -%>
-  	    <%= link_to @document_fedora.datastreams_in_memory[ds_name].label, url_for(:action => "download", :controller => "events", :ds_name => ds_name, :content_type => "event") %><br/>
+          <li>
+            <%= link_to @document_fedora.datastreams_in_memory[ds_name].label, url_for(:action => "download", :controller => "events", :ds_name => ds_name, :content_type => "event") %>
+          </li>
           <%- end -%>
         <%- end -%>
+        </ul>
       </dd>
-      <dt></dt>
       <dd>
         <div id='uploads' data-pid="<%= params[:id] %>">
           <div id='uploader'>
@@ -142,4 +147,3 @@
   </fieldset>
   
 </form>
-

@@ -2,7 +2,7 @@
     <legend> Links </legend>
 <!-- div list existing external links -->
 <div>
-  <%= render :partial => "external_assets/index", :locals => { :content_type => "derivative", :container_id => params[:id]} %>
+  <%= render :partial => "external_assets/index", :locals => { :content_type => params[:content_type], :container_id => params[:id]} %>
   <!--ul -->
     <!--li--><!-- Label Text Field --><!--Link Text Field--><!--'X' button to delete--><!--end li-->
     <!--li--><!-- ... --><!--end li-->

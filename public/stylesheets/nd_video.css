@@ -1,4 +1,11 @@
 /*************************
+* Global Styles
+*************************/
+:focus {
+  outline:none;
+}
+
+/*************************
 * Hydra Styles
 *************************/
 
@@ -134,7 +141,7 @@ ul#actions-menu li, ul#session-management li {
 }
 
 #compound-form dl {
-  padding:.7em 1.7em 1.7em;
+  padding:.3em 1.7em 1.7em;
 }
 
 #compound-form dt {
@@ -155,6 +162,42 @@ ul#actions-menu li, ul#session-management li {
 #compound-form input.edit {
   margin-right:0;
   width:20em;
+}
+
+#compound-form select.metadata-dd {
+  font-size: 1em;
+  padding:3px 1px;
+  width:50%;
+}
+
+#compound-form #re-run-action {
+  color:#2E6E9E;
+}
+
+#compound-form .filesize ol,
+#compound-form .filesize li {
+  display:inline;
+}
+
+#compound-form .filesize select {
+  width:4em;
+}
+
+#speaker-listing {
+  margin-left:0;
+}
+
+#speaker-listing li {
+  border-bottom:1px solid #EEE;
+  list-style-type:none;
+}
+
+#speaker-listing dl li {
+  border-bottom:none;
+}
+
+#add-speaker {
+  padding:0.3em 1.7em;
 }
 
 #footer{
@@ -192,6 +235,17 @@ ul#actions-menu li, ul#session-management li {
 #footer #bottom_text a {
   text-decoration:none;
   border-bottom:none;
+}
+
+/*************************
+* Fluid Override
+*************************/
+.fl-uploader-queue-wrapper .fl-uploader-file-actions {
+  width:2em;
+}
+
+.fl-uploader-queue th {
+  width:100%;
 }
 
 /*************************

@@ -16,10 +16,7 @@ class CatalogController
     #fedora_object = ActiveFedora::Base.load_instance(params[:id])
     #params[:action] = "edit"
     #@downloadables = downloadables( @document_fedora )
-    @link_objects = @document_fedora.file_objects(:response_format=>:solr)
-    @link_objects.each do |result|
-      @link_objects.delete(result) unless result["has_model_s"] && result["has_model_s"].include?("info:fedora/afmodel:ExternalAsset")
-    end
+    setup_link_objects
     show_without_customizations
     enforce_edit_permissions
   end
@@ -67,6 +64,7 @@ class CatalogController
       the_model = DcDocument
     end
     @document_fedora = the_model.load_instance(params[:id])
+    setup_link_objects
     params = {:qt=>"dismax",:q=>"*:*",:rows=>"0",:facet=>"true", :facets=>{:fields=>Blacklight.config[:facet][:field_names]}}
     @facet_lookup = Blacklight.solr.find params
     enforce_read_permissions
@@ -120,6 +118,13 @@ class CatalogController
   
   def setup_next_document
     @next_document = (session[:search][:counter] && session[:search][:counter].to_i > 1) ? setup_document_by_counter(session[:search][:counter].to_i + 1) : nil
+  end
+
+  def setup_link_objects
+    @link_objects = @document_fedora.file_objects(:response_format=>:solr)
+    @link_objects.each do |result|
+      @link_objects.delete(result) unless result["has_model_s"] && result["has_model_s"].include?("info:fedora/afmodel:ExternalAsset")
+    end
   end
 
 end
