@@ -30,6 +30,8 @@
     <div id="compound-form">
       <h2 class="section-title"><a href="#">Master File</a></h2>
       <%= render :partial => "masters/edit_master", :locals => { :content_type => "master"} %>
+      <h2 class="section-title"><a href="#">Links</a></h2>
+      <%= render :partial => "external_assets/edit", :locals => { :content_type => "master", :redirected=>true} %>
     </div>
   </div>
 </div>
