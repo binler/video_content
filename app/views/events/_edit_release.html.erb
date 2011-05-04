@@ -1,21 +1,17 @@
-<% release = edit_release %>
-<% release_counter = edit_release_counter %>
-<% base_id = "release_#{release_counter}" %>
-
-<li>
-  <dl class="image_tag" id="<%= base_id %>">
-    <ul>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreContributor => "#{release_counter}"}, :contributor], "Name:") %>
-      </dt>
-      <dd class="contributor">
-        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreContributor => "#{release_counter}"}, :contributor]) %>
-      </dd>
-    </ul>
-    <% if ( (params[:action] == "edit" || params[:action] == "create")) %>
-        <%= field_selectors_for("descMetadata", [{:creator=>release_counter}]) %>  
-	<%= link_to("", url_for(:action => "removecreator", :controller => "events", :creator_counter=>release_counter), :class => "destructive destroy_image") %>
-    <% end %>
-  </dl>
-</li>
-<hr/>
+<%- release = edit_release -%>
+<%- release_counter = edit_release_counter -%>
+<%- base_id = "release_#{release_counter}" -%>
+  <li>
+    <dl class="container" id="<%= base_id %>">
+        <dt>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreContributor => "#{release_counter}"}, :contributor], "Name:") %>
+        </dt>
+        <dd class="contributor">
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreContributor => "#{release_counter}"}, :contributor]) %>
+          <%- if ( (params[:action] == "edit" || params[:action] == "create")) -%>
+              <%= field_selectors_for("descMetadata", [{:creator=>release_counter}]) %>  
+              <%= link_to("", url_for(:action => "removecreator", :controller => "events", :creator_counter=>release_counter), :class => "destructive destroy_image") %>
+          <%- end -%>
+        </dd>
+    </dl>
+  </li>

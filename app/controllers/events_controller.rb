@@ -93,7 +93,16 @@ class EventsController < CatalogController
       @asset.update_indexed_attributes({[:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creator.size)-1}"}, :creatorRole]=>{0=>"producer"}})
     end
     @asset.save
-    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :content_type => params[:content_type])
+
+    url_params = {
+      :action       => 'edit',
+      :controller   => 'catalog',
+      :id           => @asset.pid,
+      :content_type => params[:content_type]
+    }
+    # NOTE anchor tag is defined in edit event view code
+    url_params[:anchor] = 'speakers' if params[:content_type] == 'event'
+    redirect_to url_for(url_params)
   end
 
 #  def removecreator
