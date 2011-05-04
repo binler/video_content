@@ -51,7 +51,27 @@ class Master < ActiveFedora::Base
   end
 
   def apply_ldap_values(computing_id, person_number)
-    return nil
+    return if computing_id.blank? || person_number.blank?
+    person = Ldap::Person.new(computing_id)
+    evt = Event.load_instance(self.member_of.first.pid)
+    desc_ds = evt.datastreams_in_memory["descMetadata"]
+    return if desc_ds.nil?
+    creators = evt.datastreams_in_memory["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator, :creator])
+    if creators.include? "#{self.pid}"
+      return
+    else
+      if(!(creators[creators.size-1].empty?))
+        evt.insert_new_node('creator', opts={})
+      end
+      creators = evt.datastreams_in_memory["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator, :creator])
+      desc_ds = evt.datastreams_in_memory["descMetadata"]
+      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
+      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creatorRole)[person_number].content = "#{person.title}"
+      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creator, :creator_annotation)[person_number].content = "creator"
+      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creatorRole, :creatorRole_annotation)[person_number].content = "#{self.pid}"
+      puts evt.datastreams["descMetadata"].to_xml
+      evt.save
+    end
   end
   
 end

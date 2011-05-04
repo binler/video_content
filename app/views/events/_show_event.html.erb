@@ -51,23 +51,28 @@
   <fieldset>
     <legend>People Responsible for Event</legend>
     <dl>
-      <% num_of_creator = get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreCreator]).size %>
+    <% num_of_creator = get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreCreator]).size %>
       <% curr_creator = 0 %>
+      <% previous_creator = "" %>
       <% while(curr_creator < num_of_creator)  %>
         <%- if(!(get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]).to_s.eql?"producer")) -%>
           <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator]).first.empty? %>
-            <dt>
-              <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator], "Name:")%>
-	    </dt>
-            <dd>
-              <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator]) %>
-            </dd>
-            <dt>
-              <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole], "Role:")%>
-	    </dt>
-            <dd>
-              <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]) %>
-            </dd>
+            <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator]).eql?(previous_creator) %>
+              <dt>
+                <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator], "Creator:")%>
+	      </dt>
+              <dd>
+                <%= previous_creator = get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creator]) %>
+              </dd>
+	      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]).first.empty? %>
+                <dt>
+                  <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole], "Role:")%>
+	        </dt>
+                <dd>
+                  <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => curr_creator}, :creatorRole]) %>
+                </dd>
+              <% end %>
+            <% end %>
           <% end %>
         <% end %>
         <% curr_creator = curr_creator + 1 %>

@@ -39,6 +39,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       t.creatorRole{
 	t.creatorRole_source(:path=>{:attribute=>"source"})
 	t.creatorRole_reference(:path=>{:attribute=>"ref"})
+	t.creatorRole_annotation(:path=>{:attribute=>"annotation"})
       }
     }
     t.pbcoreContributor_ref(:path=>"pbcoreContributor"){
@@ -155,8 +156,8 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 
 	# Creator
 	xml.pbcoreCreator{
-	  xml.creator(:annotation=>"", :ref=>"", :affiliation=>"")
-	  xml.creatorRole(:source=>"", :ref=>"")
+	  xml.creator(:affiliation=>"", :ref=>"", :annotation=>"")
+	  xml.creatorRole(:source=>"", :ref=>"", :annotation=>"")
 	}
 
 	# Keywords
@@ -310,8 +311,8 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.pbcoreCreator("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
         "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
-	  xml.creator(:annotation=>"", :ref=>"", :affiliation=>"")
-	  xml.creatorRole(:source=>"", :ref=>"")
+	  xml.creator(:affiliation=>"", :ref=>"", :annotation=>"")
+	  xml.creatorRole(:source=>"", :ref=>"", :annotation=>"")
 	}
     end
     return builder.doc.root

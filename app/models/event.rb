@@ -63,13 +63,14 @@ class Event < ActiveFedora::Base
     if creators.include? "#{person.first_name} #{person.last_name}"
       return
     else
-      num_of_creators = creators.size
-      if(!(creators[num_of_creators-1].empty?))
-        insert_new_node('creator', opts={})
+      if(!(creators[creators.size-1].empty?))
+        self.insert_new_node('creator', opts={})
       end
       creators = self.datastreams_in_memory["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator, :creator])
       desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
       desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creatorRole)[person_number].content = "#{person.title}"
+      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creator, :creator_annotation)[person_number].content = "creator"
+      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creatorRole, :creatorRole_annotation)[person_number].content = "#{self.pid}"
     end
   end
 

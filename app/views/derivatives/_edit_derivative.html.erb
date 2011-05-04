@@ -1,7 +1,38 @@
-<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"derivatives", :content_type=>"derivative")%>" method="post" data-resourceType="<%= content_type %>" accept-charset="utf-8">
-  <fieldset id="work_fields">
-    <legend> Description </legend>
+<fieldset id="work_fields">
+  <legend> Description </legend>
+  <% event_obj = @document_fedora.parent_event %>
+  <% num_of_creators = event_obj.datastreams["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator]).size %>
+  <% i = 0 %>
+  <% owner_index = 0 %>
+  <% creator_index = 0 %>
+  <% while i < num_of_creators do %>
+    <%- if((get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => i}, :creatorRole, :creatorRole_annotation])).to_s.eql?(@document_fedora.pid.to_s)) -%>
+      <%- if((get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"creator") -%>
+        <% creator_index = i %>
+      <%- elsif((get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"owner") -%>
+	<% owner_index = i %>
+      <%- end -%>
+    <%- end -%>
+    <% i = i+1 %>
+  <%- end -%>
+  <form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"events", :content_type=>"event", :id=>event_obj.pid)%>" method="post" data-resourceType="<%= content_type %>" accept-charset="utf-8">
     <dl>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => owner_index}, :creator], "Owner:") %>
+      </dt>
+      <dd class="owner">
+        <%= fedora_text_field(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => owner_index}, :creator]) %>
+      </dd>
+    </dl>
+  </form>
+  <form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"derivatives", :content_type=>"derivative")%>" method="post" data-resourceType="<%= content_type %>" accept-charset="utf-8">
+    <dl>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_index}, :creator], "Creator:") %>
+      </dt>
+      <dd class="creator">
+        <%= get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_index}, :creator]) %>
+      </dd>
       <input class="update_description_display" type="hidden" name="description display" action="<%= derivatives_path(params[:id],:content_type=>content_type)%>"/>
       <dt>
 	<%= fedora_field_label("properties", [:derivative_type], "Type of Derivative:") %>
@@ -22,7 +53,7 @@
       <dt>
         <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationDate], "Creation Date:") %>
       </dt>
-      <dd class="filesize">
+      <dd class="date">
         <%= fedora_text_field(@document_fedora,"descMetadata", [:instantiationPart, :instantiationDate]) %>
       </dd>
       <dt>
@@ -78,6 +109,5 @@
         </dd>
       <%- end -%>
     </dl>
-  </fieldset>
-</form>
-
+  </form>
+</fieldset>

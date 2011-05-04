@@ -1,6 +1,37 @@
-  <fieldset id="work_fields">
-    <legend>Description</legend>
+<fieldset id="work_fields">
+  <legend>Description</legend>
+  <% event_obj = @document_fedora.parent_event %>
+  <% num_of_creators = event_obj.datastreams["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator]).size %>
+  <% i = 0 %>
+  <% owner_index = 0 %>
+  <% creator_index = 0 %>
+  <% while i < num_of_creators do %>
+    <%- if((get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => i}, :creatorRole, :creatorRole_annotation])).to_s.eql?(@document_fedora.pid.to_s)) -%>
+      <%- if((get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"creator") -%>
+        <% creator_index = i %>
+      <%- elsif((get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"owner") -%>
+	<% owner_index = i %>
+      <%- end -%>
+    <%- end -%>
+    <% i = i+1 %>
+  <%- end -%>
     <dl>
+    <% unless get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => owner_index}, :creator]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => owner_index}, :creator], "Owner:") %>
+      </dt>
+      <dd class="owner">
+	<%= get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => owner_index}, :creator]) %>
+      </dd>
+    <% end %>
+    <% unless get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_index}, :creator]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_index}, :creator], "Creator:") %>
+      </dt>
+      <dd class="creator">
+        <%= get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_index}, :creator]) %>
+      </dd>
+    <% end %>
     <% unless get_values_from_datastream(@document_fedora,"properties", [:derivative_type]).first.empty? %>
       <dt>
         <%= fedora_field_label("properties", [:derivative_type], "Derivative Type:") %>

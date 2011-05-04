@@ -47,6 +47,43 @@ class Derivative < ActiveFedora::Base
     @derivative_id = values.any? ? values.first : ""
   end
 
+  #returns the parent event for this derivative
+  def parent_event
+    parent = self.member_of.first
+    counter = 0
+    while (parent.respond_to?(:member_of)) do
+      parent = parent.member_of.first
+      puts "parent: #{parent.pid}"
+    end
+    return parent
+  end
+
+  def apply_ldap_values(computing_id, person_number)
+    return if computing_id.blank? || person_number.blank?
+    person = Ldap::Person.new(computing_id)
+    evt = Event.load_instance(parent_event.pid)
+    desc_ds = evt.datastreams_in_memory["descMetadata"]
+    return if desc_ds.nil?
+    creators = evt.datastreams_in_memory["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator, :creator])
+    if creators.include? "#{self.pid}"
+      return
+    else
+      if(!(creators[(creators.size)-1].empty?))
+        evt.insert_new_node('creator', opts={})
+      end
+      creators = evt.datastreams_in_memory["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator, :creator])
+      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
+      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creatorRole)[person_number].content = "#{person.title}"
+      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creator, :creator_annotation)[person_number].content = "creator"
+      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creatorRole, :creatorRole_annotation)[person_number].content = "#{self.pid}"
+      evt.insert_new_node('creator', opts={})
+      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{creators.size}"}, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
+      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{creators.size}"}, :creatorRole, :creatorRole_annotation)[person_number].content = "#{self.pid}"
+      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{creators.size}"}, :creator, :creator_annotation)[person_number].content = "owner"
+      evt.save
+    end
+  end
+
   def load_datastream(id)
     resource = self.load_instance(id)
     content = resource.content
@@ -63,10 +100,6 @@ class Derivative < ActiveFedora::Base
     ds = self.datastreams_in_memory["descMetadata"]
     result = ds.remove_node(type,index)
     return result
-  end
-
-  def apply_ldap_values(computing_id, person_number)
-    return nil
   end
   
 end
