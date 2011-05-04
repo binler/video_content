@@ -1,10 +1,6 @@
 <% javascript_includes << "/plugin_assets/fluid-infusion/infusion-1.2-src/lib/jquery/ui/js/jquery.ui.accordion.js" %>
-<% stylesheet_links << "../plugin_assets/hydra_repository/javascripts/fancybox/jquery.fancybox-1.3.1.css" %>
 <% javascript_includes << 'custom' %>
 <% javascript_includes << "catalog/show" %>
-<% javascript_includes << "fancybox/jquery.fancybox-1.3.1.pack.js" %>
-<% javascript_includes << "generics_fancybox.js" %>
-<% stylesheet_links << "../javascripts/fancybox/jquery.fancybox-1.3.1.css" %>
 
 <style type="text/css" media="screen">
   input.editable-edit, input.textile-edit {display:none}
@@ -15,6 +11,7 @@
   <div id="accordion">
 	<h2 class="section-title"><a href="#">Master File</a></h2>
 	<%= render :partial => "masters/show_master", :locals => {:content_type => "derivative"} %>
+        <%= render :partial => "external_assets/show", :locals => { :content_type => "derivative"} %>
   </div>
 
 </div>
