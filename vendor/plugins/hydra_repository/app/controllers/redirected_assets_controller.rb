@@ -80,7 +80,7 @@ class RedirectedAssetsController < ApplicationController
       if @downloadable
         #logger.debug("Redirected asset: #{@redirected_asset.inspect}")
         unless @redirected_asset.link.empty?
-          redirect_to "#{@redirected_asset.link.first.url}/content"
+          redirect_to "#{@redirected_asset.uri}"
         else
           logger.warn("Link undefined for redirected asset: " + params[:id])
           flash[:notice]= "Link undefined for redirected asset."

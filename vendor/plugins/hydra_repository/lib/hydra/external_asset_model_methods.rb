@@ -2,7 +2,7 @@ module Hydra::ExternalAssetModelMethods
   
   def uri
     #assume either a redirected or external link
-    link.first.attributes[:dsLocation] if link.first
+    "#{Fedora::Repository.instance.base_url}/get/#{pid}/#{link.first.dsid}" if link.first
   end
 
   def label_values=(value)
