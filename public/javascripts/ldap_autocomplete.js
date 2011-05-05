@@ -59,7 +59,7 @@ $(document).ready(function(){
     );
 
   $.each(
-    $( '.ldap-autocomplete' )
+    $( '.ldap-autocomplete, .ldap-lookup input.editable-edit' )
       .autocomplete({
         source: function( request, response ) {
           $.getJSON( '/ldap_query', {
