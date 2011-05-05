@@ -83,7 +83,7 @@ class EventsController < CatalogController
 #    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :content_type => params[:content_type])
   end
 
-  # Adds a new node for contributors or publishers
+  # Adds a new node for contributors or production company
   def add
     @asset = Event.load_instance(params[:id])
 #    @asset.insert_new_node('creator', {"descMetadata"=>"pbcoreDescription_pbcoreCreator"})

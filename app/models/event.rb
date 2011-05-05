@@ -54,6 +54,14 @@ class Event < ActiveFedora::Base
     return result
   end
 
+  def event_id
+    return @event_id if (defined? @event_id)
+    values = self.datastreams["descMetadata"].term_values(:pbcoreDescriptionDocument, :pbcoreIdentifier)
+    @event_id = values.any? ? values.first : ""
+  end
+
+  alias_method :composite_id, :event_id
+
   def apply_ldap_values(computing_id, person_number)
     return if computing_id.blank? || person_number.blank?
     person = Ldap::Person.new(computing_id)

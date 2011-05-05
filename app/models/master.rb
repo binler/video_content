@@ -50,6 +50,14 @@ class Master < ActiveFedora::Base
     return result
   end
 
+  def master_id
+    return @master_id if (defined? @master_id)
+    values = self.datastreams["descMetadata"].term_values(:pbcoreInstantiation, :instantiationIdentifier)
+    @master_id = values.any? ? values.first : ""
+  end
+
+  alias_method :composite_id, :master_id
+
   def apply_ldap_values(computing_id, person_number)
     return if computing_id.blank? || person_number.blank?
     person = Ldap::Person.new(computing_id)

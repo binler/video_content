@@ -47,6 +47,8 @@ class Derivative < ActiveFedora::Base
     @derivative_id = values.any? ? values.first : ""
   end
 
+  alias_method :composite_id, :derivative_id
+
   #returns the parent event for this derivative
   def parent_event
     parent = self.member_of.first

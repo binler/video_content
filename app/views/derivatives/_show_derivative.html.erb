@@ -46,7 +46,13 @@
         <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationIdentifier], "ID:") %>
       </dt>
       <dd class="title">
-        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :instantiationIdentifier]) %>
+        <% composite_id = "" %>
+	<% cur_obj = @document_fedora %>
+        <%- while(cur_obj.respond_to?(:member_of)) -%>
+	  <% cur_obj = cur_obj.member_of.first %>
+	  <% composite_id = "#{cur_obj.composite_id}#{composite_id}" %>
+	<%- end -%>
+        <%= composite_id %><%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :instantiationIdentifier]) %>
       </dd>
     <% end %>
 
