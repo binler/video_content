@@ -1,0 +1,8 @@
+<fieldset id="link_fields">
+    <legend> Links </legend>
+<!-- div list existing redirected links -->
+<div>
+  <%= render :partial => "redirected_assets/index", :locals => { :content_type => params[:content_type], :container_id => params[:id]} %>
+</div>
+<!-- end div list existing redirected links -->
+</fieldset>

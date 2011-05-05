@@ -1,0 +1,29 @@
+<fieldset id="link_fields">
+    <legend> Links </legend>
+<!-- div list existing external links -->
+<div>
+  <%= render :partial => "redirected_assets/index", :locals => { :content_type => params[:content_type], :container_id => params[:id]} %>
+  <!--ul -->
+    <!--li--><!-- Label Text Field --><!--Link Text Field--><!--'X' button to delete--><!--end li-->
+    <!--li--><!-- ... --><!--end li-->
+  <!--end ul-->
+</div>
+<!-- end div list existing redirected links -->
+<!-- div add link -->
+<fieldset id="new_link">
+<legend>New Link</legend>
+<div>
+  <form id="new_link_metadata" action="<%= url_for(:action=>"create", :controller=>"redirected_assets")%>" method="post" data-resourceType="redirected_asset" accept-charset="utf8">
+    <table>
+      <tr>
+        <input type="hidden" name="container_id" value="<%=params[:id]%>">
+	<td><%= fedora_field_label("properties", [:uri], "URL:") %>&nbsp;<input name="dsLocation" value=""></td>
+        <td><%= fedora_field_label("properties", [:label], "Label:") %>&nbsp;<input name="label" value=""></td>
+      </tr>
+      <tr><td><input type="submit" value="Add New Link"></td></tr>
+    </table>
+  </form>
+</div>
+</fieldset>
+</fieldset>
+<!-- end div add link -->
