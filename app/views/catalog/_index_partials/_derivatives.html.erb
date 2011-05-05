@@ -13,9 +13,9 @@
 	      <td> Derivative Type: </td><td><%= get_values_from_datastream(item, "properties", [:derivative_type]) %></td>
 	    </tr>
 	    <% end %>
-            <% unless get_values_from_datastream(item, "descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackDuration]).first.empty? %>
+            <% unless get_values_from_datastream(item, "descMetadata", [:instantiationPart, :instantiationDate]).first.empty? %>
 	    <tr>
-	      <td> Duration: </td><td><%= get_values_from_datastream(item, "descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackDuration]) %></td>
+	      <td> Creation Date: </td><td><%= get_values_from_datastream(item, "descMetadata", [:instantiationPart, :instantiationDate]) %></td>
 	    </tr>
 	    <% end %>
           </table>

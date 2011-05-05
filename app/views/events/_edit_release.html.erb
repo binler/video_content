@@ -1,17 +1,30 @@
 <%- release = edit_release -%>
 <%- release_counter = edit_release_counter -%>
 <%- base_id = "release_#{release_counter}" -%>
+<%- if get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => release_counter}, :pbcoreContributor, :contributorRole]).inspect.include?("speaker") -%>
   <li>
     <dl class="container" id="<%= base_id %>">
         <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreContributor => "#{release_counter}"}, :contributor], "Name:") %>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "#{release_counter}"}, :pbcoreContributor, :contributor], "Name:") %>
         </dt>
         <dd class="contributor">
-          <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreContributor => "#{release_counter}"}, :contributor]) %>
-          <%- if ( (params[:action] == "edit" || params[:action] == "create")) -%>
-              <%= field_selectors_for("descMetadata", [{:creator=>release_counter}]) %>  
-              <%= link_to("", url_for(:action => "removecreator", :controller => "events", :creator_counter=>release_counter), :class => "destructive destroy_image") %>
-          <%- end -%>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "#{release_counter}"}, :pbcoreContributor, :contributor]) %>
+        </dd>
+	<dt>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation], "Comments:") %>
+        </dt>
+        <dd class="comments">
+          <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "#{release_counter}"}, :pbcoreAnnotation]) %>
+        </dd>
+        <dt>
+        </dt>
+        <dd class="copyrights">
+          <%= fedora_checkbox(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "#{release_counter}"}, :pbcoreRightsSummary, :rightsSummary])%> Contract on File
         </dd>
     </dl>
+    <%- if ( (params[:action] == "edit" || params[:action] == "create")) -%>
+      <%= field_selectors_for("descMetadata", [{:creator=>release_counter}]) %>  
+      <%= link_to("", url_for(:action => "removecreator", :controller => "events", :creator_counter=>release_counter), :class => "destructive destroy_image") %>
+    <%- end -%>
   </li>
+<%- end -%>

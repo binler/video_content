@@ -69,16 +69,16 @@
     <legend>Production Company</legend>
       <dl>
         <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreCreator, :creator], "Company Name:") %>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, :pbcoreCreator, :creator], "Company Name:") %>
         </dt>
         <dd class="creator">
-          <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreCreator, :creator]) %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, :pbcoreCreator, :creator]) %>
         </dd>
         <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreAnnotation], "Comments:") %>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, :pbcoreAnnotation], "Comments:") %>
         </dt>
         <dd class="comments">
-          <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreAnnotation]) %>
+          <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, :pbcoreAnnotation]) %>
         </dd>
         <dt>
         </dt>
@@ -96,29 +96,15 @@
   <fieldset id="speakers"><%# NOTE that the id 'speakers' is referenced in the events_controller %>
     <legend>Speakers</legend>
       <ul id="speaker-listing">
-        <%= render :partial=>"events/edit_release", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:pbcoreDescriptionDocument, :pbcoreContributor) %>
+        <%= render :partial=>"events/edit_release", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:pbcoreDescriptionDocument, :pbcorePart) %>
       </ul>
       <% if params[:action] == "edit" %>
         <% format = document_partial_name(@document) %>
       <% end %>
       <div id="add-speaker">
-        <input id="re-run-action" class="nobutton button" type="button" value="Add A Speaker" onclick=" location.href='<%=url_for(:action => "add", :controller => "events", :content_type => "event", :text_field => "pbcoreDescription_pbcoreContributor", :field_type => "contributor") %>'"/> 
+        <input id="re-run-action" class="nobutton button" type="button" value="Add A Speaker" onclick=" location.href='<%=url_for(:action => "add", :controller => "events", :content_type => "event", :text_field => "pbcoreDescription_pbcorePart", :field_type => "contributor") %>'"/> 
       </div>
-      <dl>
-        <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation], "Comments:") %>
-        </dt>
-        <dd class="comments">
-          <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation]) %>
-        </dd>
-        <dt>
-        </dt>
-        <dd class="copyrights">
-          <%= fedora_checkbox(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreRightsSummary, :rightsSummary])%> Contract on File
-        </dd>
-      </dl>
   </fieldset>
-
   <fieldset id="transcripts">
     <legend>Transcript Uploads</legend>
     <dl>

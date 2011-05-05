@@ -82,36 +82,36 @@
   <fieldset>
     <legend>Production Company</legend>
     <dl>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreCreator, :creator]).first.empty? %>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, :pbcoreCreator, :creator]).first.empty? %>
         <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreCreator, :creator], "Name of the Company:")%>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, :pbcoreCreator, :creator], "Name of the Company:")%>
 	</dt>
         <dd>
-          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreCreator, :creator]) %>
+          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, :pbcoreCreator, :creator]) %>
         </dd>
       <% end %>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreAnnotation]).first.empty? %>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, :pbcoreAnnotation]).first.empty? %>
         <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreAnnotation], "Comments:")%>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, :pbcoreAnnotation], "Comments:")%>
 	</dt>
         <dd>
-          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreAnnotation]) %>
+          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, :pbcoreAnnotation]) %>
         </dd>
       <% end %>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, {:pbcoreRightsSummary => "0"}, :rightsSummary]).first.empty? %>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, {:pbcoreRightsSummary => "0"}, :rightsSummary]).first.empty? %>
         <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, {:pbcoreRightsSummary => "0"}, :rightsSummary], "Contract on File:")%>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, {:pbcoreRightsSummary => "0"}, :rightsSummary], "Contract on File:")%>
 	</dt>
         <dd>
-          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, {:pbcoreRightsSummary => "0"}, :rightsSummary]) %>
+          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, {:pbcoreRightsSummary => "0"}, :rightsSummary]) %>
         </dd>
       <% end %>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, {:pbcoreRightsSummary => "1"}, :rightsSummary]).first.empty? %>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, {:pbcoreRightsSummary => "1"}, :rightsSummary]).first.empty? %>
         <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, {:pbcoreRightsSummary => "1"}, :rightsSummary], "Usage Rights:")%>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, {:pbcoreRightsSummary => "1"}, :rightsSummary], "Usage Rights:")%>
 	</dt>
         <dd>
-          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, {:pbcoreRightsSummary => "1"}, :rightsSummary]) %>
+          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, {:pbcoreRightsSummary => "1"}, :rightsSummary]) %>
         </dd>
       <% end %>
     </dl>
@@ -119,34 +119,36 @@
   <fieldset>
     <legend>Speakers</legend>
     <dl>
-      <% num_of_part = get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreContributor]).size %>
+      <% num_of_part = get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart]).size %>
       <% curr_part = 0 %>
       <% while(curr_part < num_of_part)  %>
-        <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreContributor => curr_part}, :contributor]).first.empty? %>
-	  <dt>
-            <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreContributor, :contributor], "Speaker Name:")%>
-	  </dt>
-          <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcoreContributor => curr_part}, :contributor]) %>
-          </dd>
+	<%- if get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreContributor, :contributorRole]).inspect.include?("speaker") -%>
+          <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreContributor, :contributor]).first.empty? %>
+	    <dt>
+              <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreContributor, :contributor], "Speaker Name:")%>
+  	    </dt>
+            <dd>
+              <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreContributor, :contributor]) %>
+            </dd>
+          <% end %>
+          <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreAnnotation]).first.empty? %>
+            <dt>
+              <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreAnnotation], "Comments:")%>
+	    </dt>
+            <dd>
+              <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreAnnotation]) %>
+            </dd>
+          <% end %>
+          <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsSummary]).first.empty? %>
+            <dt>
+              <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsSummary], "Contract on File:")%>
+	    </dt>
+            <dd>
+              <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => curr_part}, :pbcoreRightsSummary, :rightsSummary]) %>
+            </dd>
+          <% end %>
         <% end %>
         <% curr_part = curr_part + 1 %>
-      <% end %>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation]).first.empty? %>
-        <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation], "Comments:")%>
-	</dt>
-        <dd>
-          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation]) %>
-        </dd>
-      <% end %>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreRightsSummary, :rightsSummary]).first.empty? %>
-        <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreRightsSummary, :rightsSummary], "Contract on File:")%>
-	</dt>
-        <dd>
-          <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreRightsSummary, :rightsSummary]) %>
-        </dd>
       <% end %>
     </dl>
   </fieldset>

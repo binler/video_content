@@ -188,18 +188,37 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	}
 
 	#Speakers
-	xml.pbcoreContributor{
-	  xml.contributor
-	  xml.contributorRole("speaker")
-	}
+#	xml.pbcoreContributor{
+#	  xml.contributor
+#	  xml.contributorRole("speaker")
+#	}
 
 	# Speaker contract
-	xml.pbcoreRightsSummary{
-	  xml.rightsSummary
-	}
+#	xml.pbcoreRightsSummary{
+#	  xml.rightsSummary
+#	}
 
 	#Speaker Comments
-	xml.pbcoreAnnotation(:annotationType=>"", :ref=>"")
+#	xml.pbcoreAnnotation(:annotationType=>"", :ref=>"")
+
+	#Speaker Section
+	xml.pbcorePart{
+
+	  xml.pbcoreIdentifier(:source=>"")
+	  xml.pbcoreTitle(:titleType=>"", :source=>"", :version=>"", :annotation=>"")
+	  xml.pbcoreDescription(:descriptionType=>"Event", :descriptionTypeSource=>"pbcoreDescription/descriptionType", :ref=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#summary")
+
+	  xml.pbcoreContributor{
+	    xml.contributor
+	    xml.contributorRole("speaker")
+	  }
+	  
+	  xml.pbcoreRightsSummary{
+	    xml.rightsSummary
+	  }
+	  
+	  xml.pbcoreAnnotation
+	}
 
 	# Child Elements
 	xml.pbcoreInstantiation
@@ -217,12 +236,10 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	xml.pbcoreDescription(:descriptionType=>"Event", :descriptionTypeSource=>"pbcoreDescription/descriptionType", :ref=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#summary")
 	xml.pbcoreContributor{
 	  xml.contributor
-	  xml.contributorRole
+	  xml.contributorRole("speaker")
 	}
 	xml.pbcoreRightsSummary{
 	  xml.rightsSummary
-	  xml.rightsLink
-	  xml.rightsEmbedded
 	}
         xml.pbcoreAnnotation
       }
@@ -350,8 +367,9 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
         node = PbcoreXml.creator_template
         nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcoreCreator)
       when :contributor
-        node = PbcoreXml.contributor_template
-        nodeset = self.find_by_terms(:pbcoreDescriptionDocument, {:pbcorePart => "1"}, :pbcoreContributor)
+        node = PbcoreXml.part_template
+#        nodeset = self.find_by_terms(:pbcoreDescriptionDocument, {:pbcorePart => "1"}, :pbcoreContributor)
+        nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart)
       else
         ActiveFedora.logger.warn("#{type} is not a valid argument for EadXml.insert_node")
         node = nil
