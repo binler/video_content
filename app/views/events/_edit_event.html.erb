@@ -108,24 +108,36 @@
         <input id="re-run-action" class="nobutton button" type="button" value="Add A Speaker" onclick=" location.href='<%=url_for(:action => "add", :controller => "events", :content_type => "event", :text_field => "pbcoreDescription_pbcorePart", :field_type => "contributor") %>'"/> 
       </div>
   </fieldset>
-  <fieldset id="transcripts">
-    <legend>Transcript Uploads</legend>
+  <fieldset id="files">
+    <legend>Uploads (Transcripts, Press Releases, Program, etc.)</legend>
     <dl>
-      <dt>Uploaded Transcripts:</dt>
-      <dd>
-        <%- ds_names = @document_fedora.datastreams.keys -%>
-        <ul class="transcripts">
-        <%- ds_names.each do |ds_name| -%>
-          <%- if ds_name.starts_with?"TRANSCRIPTS" -%>
-          <li>
-            <%= link_to @document_fedora.datastreams_in_memory[ds_name].label, url_for(:action => "download", :controller => "events", :ds_name => ds_name, :content_type => "event") %>
-          </li>
-          <%- end -%>
-        <%- end -%>
-        </ul>
+      <dt>Uploaded Files:</dt>
+      <dd>        
       </dd>
       <dd>
         <div id='uploads' data-pid="<%= params[:id] %>">
+          <table id="file_assets" class="multipleEdit">
+	  <tr>
+	    <th>File Name</th>
+	    <th>Size</th>
+	    <th>Uploaded</th>
+	  </tr>
+	  
+	  <% @document_fedora.file_objects(:response_format=>:solr).each do |result| %>
+	  <tr class="file_asset" id=<%= result["id"] %>>
+	    <td>
+	      <%= link_to result[solr_name("title", :text)], file_asset_path(result["id"]) %>
+	    </td>
+	    <td>
+	      <%= result[solr_name("extent", :text)] %>
+	    </td>
+	    <td>
+	      <% dt = DateTime.parse(result[ solr_name("system_create", :date)] ) %>
+	      <%= format_date dt %>
+	    </td>
+	  </tr>
+	  <% end %>		
+	</table>	  
           <div id='uploader'>
             <%= render :partial=>"fluid_infusion/uploader" %>
             <%= render :partial=>"fluid_infusion/uploader_generic_content_objects.js" %>

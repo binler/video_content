@@ -5,7 +5,7 @@
       
                  options: {
                     // Set the uploadURL to the URL for posting files to your server.
-                    uploadURL: "<%= events_path('upload', :container_id=> params[:container_id], :only_path => false) %>",
+                    uploadURL: "<%= file_assets_path('upload', :container_id=> params[:container_id], :only_path => false) %>",
       
                     // This option points to the location of the SWFUpload Flash object that ships with Fluid Infusion.
                     flashURL: "<%= image_path("../infusion/lib/swfupload/flash/swfupload.swf", :plugin=>"fluid-infusion") %>"

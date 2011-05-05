@@ -17,8 +17,6 @@ class Event < ActiveFedora::Base
     m.field 'depositor', :string
   end
 
-  has_datastream :name=>"transcripts",     :type=>ActiveFedora::Datastream, :controlGroup=>'M'
-
   alias_method :id, :pid
 
   def initialize(attrs={})

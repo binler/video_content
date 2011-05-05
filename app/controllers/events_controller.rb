@@ -73,11 +73,7 @@ class EventsController < CatalogController
 
   # Creates new datastream with name COPYRIGHTS for each file upload
   def create
-    filemap = Hash.new
-    filemap[:file] = params[:Filedata]
-    filemap[:filename] = params[:Filename]
     @asset = Event.find(params[:container_id])
-    @asset.add_named_datastream("transcripts",filemap)
     @asset.save
     render :nothing => true
 #    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :content_type => params[:content_type])
