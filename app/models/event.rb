@@ -19,8 +19,6 @@ class Event < ActiveFedora::Base
 
   has_datastream :name=>"transcripts",     :type=>ActiveFedora::Datastream, :controlGroup=>'M'
 
-  has_datastream :name=>"external_file", :type=>ActiveFedora::Datastream, :controlGroup=>'R'
-
   alias_method :id, :pid
 
   def initialize(attrs={})
