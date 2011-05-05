@@ -64,6 +64,11 @@
   margin-top:1.8em;
 }
 
+.ie6 #hd #actions-menu,
+.ie7 #hd #actions-menu {
+  clear:both;
+}
+
 #hd ul li {
   cursor:auto;
 }
