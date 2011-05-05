@@ -55,7 +55,7 @@ class RedirectedAssetsController < ApplicationController
       flash[:notice] = "Failed to create link: invalid url"
       logger.error("Failed to create link: #{e.message}")
     end
-    redirect_to catalog_path(params[:container_id])
+    redirect_to catalog_path(params[:container_id],:anchor=>'link_fields')
   end
 
    def show
