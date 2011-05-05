@@ -35,12 +35,17 @@ class Group < ActiveRecord::Base
 
   attr_accessor :permissible_actions, :no_permissions_granted, :can_have_permissions_updated
 
+  def self.find_or_create_hydra_group_by_name(name)
+    existing_group = Group.find_by_name(name)
+    existing_group ? existing_group : Group.create( :name => name, :is_hydra_role => true )
+  end
+
   def self.hydra_group_names
     hydra_groups.map {|group| group.name}
   end
 
   def pretty_name
-    name ? name.titleize : ''
+    name ? name.humanize.titleize : ''
   end
 
   def user_logins

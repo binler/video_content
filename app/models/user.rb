@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
   def self.create_from_ldap(netid)
     person       = self.ldap_lookup(netid)
     account_type = self.type_from_affiliation(person[LDAP_DEPARTMENT].first)
-    new_user = User.new(
+    User.create(
       :login        => person[LDAP_USER_ID.to_sym].first,
       :email        => "#{person[LDAP_USER_ID.to_sym].first}@nd.edu",
       :first_name   => person[LDAP_FIRST_NAME.to_sym].first,
@@ -68,8 +68,6 @@ class User < ActiveRecord::Base
       :nickname     => person[LDAP_PREFERRED_NAME.to_sym].first,
       :account_type => account_type
     )
-    new_user.save!
-    new_user
   end
 
   def self.find_or_create_user_by_login(login)
