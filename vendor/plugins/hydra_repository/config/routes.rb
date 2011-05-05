@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
      map.resources :file_assets
      map.resources :external_assets
+     map.resources :redirected_assets
           
      # This creates routes named asset_file_assets, new_asset_file_asset, etc.
      # The routes map to the :file_assets controller with the param :container_id 

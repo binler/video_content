@@ -2,6 +2,7 @@
 <% javascript_includes << infusion_javascripts(:default_no_jquery, :extras=>[:inline_editor_integrations], :debug=>true, :render_html=>false) %>
 <% javascript_includes << ["jquery.jeditable.mini.js", "date-picker/js/datepicker", "jquery.form.js", 'custom', "catalog/edit", "jquery.hydraMetadata.js", "jquery.notice.js", {:plugin=>:hydra_repository}] %>
 <% javascript_includes << "/plugin_assets/fluid-infusion/infusion/components/undo/js/Undo.js" %>
+<% javascript_includes << 'ldap_autocomplete.js' %>
 <%# For slider controls %>
 <% javascript_includes << ["select_to_ui_slider/selectToUISlider.jQuery.js", {:plugin=>:hydra_repository}] %>
 <% stylesheet_links << ["../plugin_assets/hydra_repository/javascripts/select_to_ui_slider/css/ui.slider.extras.css"] %>
@@ -10,6 +11,7 @@
   <script type="text/javascript">
     $(document).ready(function() {
       $(document).catalogEdit();
+      $('.ldap-autocomplete input.editable-edit').datepicker({ dateFormat: 'yy-mm-dd' });
     });
   </script>
 <% end %>
@@ -23,7 +25,7 @@
       <h2 class="section-title"><a href="#">Derivative</a></h2>
       <%= render :partial => "derivatives/edit_derivative", :locals => { :content_type => "derivative"} %>
       <h2 class="section-title"><a href="#">Links</a></h2>
-      <%= render :partial => "external_assets/edit", :locals => { :content_type => "derivative", :redirected=>true} %>
+      <%= render :partial => "redirected_assets/edit", :locals => { :content_type => "derivative"} %>
     </div>
   </div>
 </div>

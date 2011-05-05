@@ -20,7 +20,7 @@
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => owner_index}, :creator], "Owner:") %>
       </dt>
-      <dd class="owner">
+      <dd class="owner ldap-lookup">
         <%= fedora_text_field(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => owner_index}, :creator]) %>
       </dd>
     </dl>

@@ -4,8 +4,8 @@
       <%#render :partial=>'deletable_result', :collection=>@redirected_objects.hits %>
     <%#</ul>%>
   <%# else -%>
-    <table id="external_assets" class="multipleEdit">
-      <%=render :partial=>'external_assets/result', :collection=>@redirected_objects.hits %>
+    <table id="redirected_assets" class="multipleEdit">
+      <%=render :partial=>'redirected_assets/result', :collection=>@redirected_objects.hits %>
     </table>
   <%# end -%>
 <%- else -%>
