@@ -12,7 +12,8 @@
 <% extra_head_content << capture do %>
   <script type="text/javascript">
     $(document).ready(function() {
-      $(document).catalogEdit();
+        $(document).catalogEdit();
+        $('.iso-datepicker input.editable-edit').datepicker({ dateFormat: 'yy-mm-dd' });
     });
   </script>
 <% end %>
