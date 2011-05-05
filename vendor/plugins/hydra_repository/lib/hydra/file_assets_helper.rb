@@ -46,7 +46,13 @@ module Hydra::FileAssetsHelper
       when "ImageAsset"
         ImageAsset
       else
-        FileAsset
+        #adding to allow a custom model instead of ones above
+        begin 
+          constantize(params[:type])
+        rescue
+          #if constantize throws an exception that means the custom type does not exist and just use FileAsset
+          FileAsset
+        end
       end
     elsif params.has_key?(:Filename)
       chosen_type = choose_model_by_filename( params[:Filename] )
