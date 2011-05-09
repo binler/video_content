@@ -1,15 +1,25 @@
 class RoleMapper
 
   def self.role_names
-    Group.hydra_group_names
+    EventWorkflow.hydra_role_names
   end
 
   def self.roles(username)
-    User.find_by_login(username).hydra_group_names rescue []
+    begin
+      user = User.find_by_login(username)
+      raise "No user found with username: #{username}" if user.nil?
+      ability = Ability.new(user)
+      role_names.reject{ |role| ability.cannot? role.to_sym, EventWorkflow }
+    rescue
+      []
+    end
   end
 
-  def self.whois(group_name)
-    User.user_names_in_hydra_group(Group.find_by_name(group_name)) rescue []
+  # NOTE this method will only return logins for users assigned to groups where
+  # their permissions have been granted explicitly to Classes. Instance assignments
+  # are not tracked nor are permissions defined by CanCan rules e.g. root users.
+  def self.whois(action)
+    User.logins_permitted_to_perform_action(action).map{|u| u.login}.uniq rescue []
   end
 
 end

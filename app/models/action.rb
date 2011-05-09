@@ -26,10 +26,44 @@ class Action < ActiveRecord::Base
     }
   }
 
+  named_scope :permissible_class_actions_for_login, lambda {|*args|
+    login = args.flatten
+    {
+      :select     => '`actions`.`name`, `actions`.`permissible_type`',
+      :joins      => 'INNER JOIN `permissions` ON `permissions`.`action_id` = `actions`.`id`
+                      INNER JOIN `groups` ON `permissions`.`group_id` = `groups`.`id`
+                      INNER JOIN `assignments` ON `groups`.`id` = `assignments`.`group_id`
+                      INNER JOIN `users` ON `assignments`.`user_id` = `users`.`id`',
+      :conditions => ["`users`.`login` = ? AND `actions`.`permissible_id` IS NULL", login ]
+    }
+  }
+
+  named_scope :permissible_instance_actions_for_login, lambda {|*args|
+    login = args.flatten
+    {
+      :select     => '`actions`.`name`, `actions`.`permissible_type`, `actions`.`permissible_id`',
+      :joins      => 'INNER JOIN `permissions` ON `permissions`.`action_id` = `actions`.`id`
+                      INNER JOIN `groups` ON `permissions`.`group_id` = `groups`.`id`
+                      INNER JOIN `assignments` ON `groups`.`id` = `assignments`.`group_id`
+                      INNER JOIN `users` ON `assignments`.`user_id` = `users`.`id`',
+      :conditions => ["`users`.`login` = ? AND `actions`.`permissible_id` IS NOT NULL", login ]
+    }
+  }
+
+
   named_scope :find_by_class_and_action_name, lambda {|class_name, action_name|
     {
       :conditions => ["`actions`.`permissible_type` = ? AND `actions`.`name` = ? AND `actions`.`permissible_id` IS NULL", class_name, action_name]
     }
   }
+
+  named_scope :available_actions, {
+    :select     => '`actions`.`name`',
+    :conditions => ['`actions`.`permissible_id` IS NULL']
+  }
+
+  def self.available_action_names
+    available_actions.map{|action| action.name}
+  end
 
 end

@@ -21,6 +21,18 @@ class User < ActiveRecord::Base
     } unless group.flatten.first.blank?
   }
 
+  named_scope :logins_permitted_to_perform_action, lambda {|*args|
+    action_name = args.flatten
+    {
+      :select     => '`users`.`login`',
+      :joins      => 'INNER JOIN `assignments` ON `users`.`id` = `assignments`.`user_id`
+                      INNER JOIN `groups` ON `assignments`.`group_id` = `groups`.`id`
+                      INNER JOIN `permissions` ON `groups`.`id` = `permissions`.`group_id`
+                      INNER JOIN `actions` ON `permissions`.`action_id` = `actions`.`id`',
+      :conditions => ["`actions`.`name` = ? AND `actions`.`permissible_id` IS NULL", action_name ]
+    }
+  }
+
   attr_accessor :invalid_netid, :no_groups_selected
 
   def self.ldap_lookup(netid)
@@ -85,8 +97,8 @@ class User < ActiveRecord::Base
   end
   alias_method :nd, :nd?
 
-  def in_group?(group)
-    RoleMapper.roles(self.login).include? group.to_s
+  def in_group?(group_name)
+    groups.include? Group.find_by_name(group_name.to_s)
   end
 
   def add_to_group(group)
