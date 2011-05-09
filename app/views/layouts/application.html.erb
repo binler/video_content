@@ -24,6 +24,13 @@
 	</head>
   
     <body  onload="$('#facet_author').closest('div').hide();<% if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>$('input#q').focus();<% end %>">
+    <%- if is_masquerading? -%>
+      <div id="masquerade-controls">
+        <div id="stop-masquerade">
+          <%= link_to 'Stop Masquerade', stop_masquerade_path %>
+        </div>
+      </div>
+    <%- end -%>
 
 	  <div id="doc4" class="yui-t2">
 
