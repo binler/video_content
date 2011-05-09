@@ -1,4 +1,5 @@
 <% stylesheet_links << "../plugin_assets/hydra_repository/javascripts/date-picker/css/datepicker" %>
+<%- javascript_includes << ["jquery.hydraProgressBox.js", {:plugin=>:hydra_repository, :media=>"all"}] %>
 <% javascript_includes << infusion_javascripts(:default_no_jquery, :extras=>[:inline_editor_integrations], :debug=>true, :render_html=>false) %>
 <% javascript_includes << ["jquery.jeditable.mini.js", "date-picker/js/datepicker", "jquery.form.js", 'custom', "catalog/edit", "jquery.hydraMetadata.js", "jquery.notice.js", {:plugin=>:hydra_repository}] %>
 <% javascript_includes << "/plugin_assets/fluid-infusion/infusion/components/undo/js/Undo.js" %>
