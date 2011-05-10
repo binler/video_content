@@ -40,7 +40,7 @@ module Hydra::AccessControlsEnforcement
 
       unless current_user.nil?
         # Role scope is limited by permission type
-        RoleMapper.roles(current_user.login).each do |role|
+        RoleMapper.roles(current_ability).each do |role|
           permission_types.each do |type|
             field_queries << "_query_:\"#{type}_access_group_t:#{role}\"" if role.split('_').first == type
           end
