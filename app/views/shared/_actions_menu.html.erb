@@ -3,21 +3,27 @@
     <%- if can? :manage, Group -%>
       <li><%= link_to 'Manage Groups', groups_path %></li>
     <%- end -%>
-    <%- if can? :create_event, EventWorkflow -%>
-      <li><%= link_to 'Add an Event', new_event_path( :content_type => 'event') %></li>
-    <%- end -%>
-    <%- if ( params[:content_type] =~ /event|master|derivative/ ) && (can? :create_master, EventWorkflow) -%>
-      <li><%= link_to 'Add a Master', new_master_path(
-                                                       :content_type => 'master',
-                                                       :event_id     => ( params[:event_id] ? params[:event_id] : params[:id] )
-                                                     ) %></li>
-    <%- end -%>
-    <%- if ( params[:content_type] =~ /master|derivative/ ) && (can? :create_derivative, EventWorkflow) -%>
-      <li><%= link_to 'Add a Derivative', new_derivative_path(
-                                                        :content_type => 'derivative',
-                                                        :event_id     => params[:event_id],
-                                                        :master_id    => ( params[:master_id] ? params[:master_id] : params[:id] )
-                                                      ) %></li>
+    <%- if defined?(@document_fedora) -%>
+      <%- content_type = @document_fedora.class.to_s.downcase -%>
+      <%- if ( content_type == 'event' ) && (can? :create_master, EventWorkflow) -%>
+        <li><%= link_to 'Add a Master', new_master_path(
+                                                         :content_type => 'master',
+                                                         :event_id     => ( params[:event_id] ? params[:event_id] : params[:id] )
+                                                       ) %></li>
+      <%- end -%>
+      <%- if ( content_type =~ /master|derivative/ ) && (can? :create_derivative, EventWorkflow) -%>
+        <%- new_derivative_params = {
+                          :content_type => 'derivative',
+                          :event_id     => params[:event_id],
+                          :master_id    => ( params[:master_id] ? params[:master_id] : params[:id] )
+        } -%>
+        <%- new_derivative_params.merge!({ :id => params[:id], :level => 2 }) if content_type == 'derivative' -%>
+        <li><%= link_to 'Add a Derivative', new_derivative_path( new_derivative_params ) %></li>
+      <%- end -%>
+    <%- else -%>
+      <%- if can? :create_event, EventWorkflow -%>
+        <li><%= link_to 'Add an Event', new_event_path( :content_type => 'event') %></li>
+      <%- end -%>
     <%- end -%>
   </ul>
 <%- end -%>
