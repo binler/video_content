@@ -5,7 +5,7 @@
         Parent:
       </dt>
       <dd class="parent">
-	  <%= link_to !(@document_fedora.member_of.first.master_id.empty?) ? @document_fedora.member_of.first.master_id : @document_fedora.member_of.first.pid, catalog_path(@document_fedora.member_of.first.pid, :content_type => "event") %>
+	  <%= link_to !(@document_fedora.member_of.first.event_id.empty?) ? @document_fedora.member_of.first.event_id : @document_fedora.member_of.first.pid, catalog_path(@document_fedora.member_of.first.pid, :content_type => "event") %>
       </dd>	
     <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier]).first.empty? %>
       <dt>
