@@ -9,9 +9,6 @@ module DerivativesControllerHelper
     @asset.datastreams["rightsMetadata"].update_permissions(Derivative.default_permissions_hash)
     @asset.save
     @asset.update_indexed_attributes({:level=>{0=>level}})
-#    if level.eql?"1"
-#      @asset.update_indexed_attributes({:derivative_type=>{0=>"DVD"}})
-#    end
     @asset.save
     return @asset
   end
