@@ -28,7 +28,7 @@ class Master < ActiveFedora::Base
 
   def master_id
     return @master_id if (defined? @master_id)
-    values = self.datastreams["descMetadata"].term_values(:pbcoreInstantiation, :instantiationIdentifier)
+    values = self.datastreams["descMetadata"].term_values(:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier)
     @master_id = values.any? ? values.first : ""
   end
 
@@ -50,35 +50,47 @@ class Master < ActiveFedora::Base
     return result
   end
 
-  def master_id
-    return @master_id if (defined? @master_id)
-    values = self.datastreams["descMetadata"].term_values(:pbcoreInstantiation, :instantiationIdentifier)
-    @master_id = values.any? ? values.first : ""
-  end
-
   alias_method :composite_id, :master_id
 
   def apply_ldap_values(computing_id, person_number)
     return if computing_id.blank? || person_number.blank?
     person = Ldap::Person.new(computing_id)
-    evt = Event.load_instance(self.member_of.first.pid)
-    desc_ds = evt.datastreams_in_memory["descMetadata"]
+    desc_ds = self.datastreams_in_memory["descMetadata"]
     return if desc_ds.nil?
-    creators = evt.datastreams_in_memory["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator, :creator])
-    if creators.include? "#{self.pid}"
+    creators = self.datastreams_in_memory["descMetadata"].get_values([:pbcorePart, :pbcoreCreator, :creator])
+    j = 0
+    creator_index = 0
+    while(j < creators.size)
+      if(desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{j}"}, :creator, :creator_annotation)[person_number].content.to_s.eql?"creator")
+	creator_index = j
+      end
+      j = j + 1
+    end
+    if creators.include? "#{person.first_name} #{person.last_name}"
       return
     else
-      if(!(creators[creators.size-1].empty?))
-        evt.insert_new_node('creator', opts={})
+      if((!(creators[creator_index].empty?)))
+        self.insert_new_node('creator_event', opts={})
+	desc_ds = self.datastreams_in_memory["descMetadata"]
+	creators = self.datastreams_in_memory["descMetadata"].get_values([:pbcorePart, :pbcoreCreator, :creator])
+	creator_index = creators.size - 1
+	desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{(creators.size) -1}"}, :creator, :creator_annotation)[person_number].content = "creator"
       end
-      creators = evt.datastreams_in_memory["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator, :creator])
-      desc_ds = evt.datastreams_in_memory["descMetadata"]
-      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
-      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creatorRole)[person_number].content = "#{person.title}"
-      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creator, :creator_annotation)[person_number].content = "creator"
-      desc_ds.find_by_terms(:pbcoreDescriptionDocument, {:pbcoreCreator => "#{(creators.size) -1}"}, :creatorRole, :creatorRole_annotation)[person_number].content = "#{self.pid}"
-      puts evt.datastreams["descMetadata"].to_xml
-      evt.save
+      desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{creator_index}"}, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
+      desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{creator_index}"}, :creatorRole)[person_number].content = "#{person.title}"
+      # Create owner when the object is created.
+      desc_ds = self.datastreams_in_memory["descMetadata"]
+      i = 0
+      owner_index = 0
+      while(i < creators.size)
+	if(desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{i}"}, :creator, :creator_annotation)[person_number].content.to_s.eql?"owner")
+	  owner_index = i
+	end
+	i = i + 1
+      end
+      if(desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{owner_index}"}, :creator, :creator_annotation)[person_number].content.to_s.eql?"owner")
+        desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{owner_index}"}, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
+      end
     end
   end
   

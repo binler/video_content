@@ -8,14 +8,14 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= counter+1 %>. <%= link_to (item.master_id.empty? ? item.pid : item.master_id), catalog_path(item.pid, :event_id => params[:id], :content_type => "master") %>
         <dl style="position:relative;left:100px;">
 	  <table>
-            <% unless get_values_from_datastream(item,"descMetadata", [:pbcoreInstantiation, :instantiationTracks]).first.empty? %>
+            <% unless get_values_from_datastream(item,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationTracks]).first.empty? %>
 	    <tr>
-	      <td> Track: </td><td><%= get_values_from_datastream(item, "descMetadata", [:pbcoreInstantiation, :instantiationTracks]) %></td>
+	      <td> Track: </td><td><%= get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationTracks]) %></td>
 	    </tr>
 	    <% end %>
-            <% unless get_values_from_datastream(item,"descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackDuration]).first.empty? %>
+            <% unless get_values_from_datastream(item,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackDuration]).first.empty? %>
 	    <tr>
-	      <td> Duration: </td><td><%= get_values_from_datastream(item, "descMetadata", [:pbcoreInstantiation, :essenceTrack, :essenceTrackDuration]) %></td>
+	      <td> Duration: </td><td><%= get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackDuration]) %></td>
 	    </tr>
 	    <% end %>
           </table>

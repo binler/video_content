@@ -77,6 +77,12 @@
         <dd class="creator">
           <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, :pbcoreCreator, :creator]) %>
         </dd>
+	<dt>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, :pbcoreDescription], "Production Notes:") %>
+        </dt>
+        <dd class="production_notes">
+          <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, :pbcoreDescription]) %>
+        </dd>
         <dt>
           <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "0"}, :pbcoreAnnotation], "Comments:") %>
         </dt>

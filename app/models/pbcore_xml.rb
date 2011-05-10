@@ -46,52 +46,50 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       t.contributor
       t.contributorRole
     }
-    t.pbcorePart{
+    t.pbcorePart_ref(:path=>"pbcorePart"){
       t.pbcoreIdentifier{
         t.pbcoreIdentifier_source(:path=>{:attribute=>"source"})
       }
       t.pbcoreTitle{
         t.pbcoreTitle_type(:path=>{:attribute=>"titleType"})
-        t.pbcoreTitle_annotation(:path=>{:attribute=>"annotation"})
-	t.pbcoreTitle_source(:path=>{:attribute=>"source"})
-        t.pbcoreTitle_version(:path=>{:attribute=>"version"})
       }
       t.pbcoreDescription
+      t.pbcoreRelation(:path=>"pbcoreRelation"){
+	t.pbcoreRelationType
+	t.pbcoreRelationIdentifier
+      }
       t.pbcoreContributor(:ref=>[:pbcoreContributor_ref])
       t.pbcoreCreator(:ref=>[:pbcoreCreator_ref])
       t.pbcoreRightsSummary(:ref=>[:pbcoreRightsSummary_ref])
-      t.pbcoreAnnotation
+      t.pbcoreAnnotation{
+#        t.text(:path=>'text()')
+        t.annotation_type(:path=>{:attribute=>"annotationType"})
+        t.annotation_reference(:path=>{:attribute=>"ref"})
+      }
+      t.pbcoreInstantiation(:ref=>[:pbcoreInstantiation_ref])
+    }
+
+    t.pbcorePart(:ref=>[:pbcorePart_ref]){
+      t.pbcorePart(:ref=>[:pbcorePart_ref]){
+	t.pbcorePart(:ref=>[:pbcorePart_ref])
+      }
     }
     
     t.pbcoreContributor(:ref=>[:pbcoreContributor_ref])
 
-    t.pbcoreInstantiation(:ref=>[:pbcoreInstantiation_ref])
-#    t.instantiationPart(:ref=>[:instantiationPart_ref])
-
     t.pbcoreInstantiation_ref(:path=>"pbcoreInstantiation"){
-      t.instantiationAnnotation(:ref=>[:annotation_ref])
-      t.instantiationIdentifier(:ref=>[:instantiationIdentifier_ref])
-      t.essenceTrack(:ref=>[:essenceTrack_ref])
-      t.digital(:ref=>[:digital_ref])
-      t.fileSize(:ref=>[:fileSize_ref])
-      t.instantiationTracks
-      t.instantiationPart
-    }
-
-    t.instantiationPart{
+      t.instantiationDate
+      t.instantiationLocation
       t.instantiationAnnotation{
         t.text(:path=>'text()')
         t.annotation_type(:path=>{:attribute=>"annotationType"})
         t.annotation_reference(:path=>{:attribute=>"ref"})
       }
-      t.instantiationLocation
-      t.instantiationDate
       t.instantiationIdentifier(:ref=>[:instantiationIdentifier_ref])
       t.essenceTrack(:ref=>[:essenceTrack_ref])
       t.digital(:ref=>[:digital_ref])
       t.fileSize(:ref=>[:fileSize_ref])
       t.instantiationTracks
-      t.instantiationPart
     }
 
     t.instantiationIdentifier_ref(:path=>"instantiationIdentifier"){
@@ -114,25 +112,6 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       t.annotation_type(:path=>{:attribute=>"annotationType"})
       t.annotation_reference(:path=>{:attribute=>"ref"})
     }
-#
-#    t.pbcoreInstantiation_ref(:path=>"pbcoreInstantiation"){
-#      t.instantiationIdentifier{
-#        t.instantiationIdentifier_source(:path=>{:attribute=>"source"})
-#      }
-#      t.essenceTrack(:path=>"instantiationEssenceTrack"){
-#	t.essenceTrackDuration
-#	t.essenceTrackDataRate
-#	t.essenceTrackAspectRatio
-#      }
-#      t.digital(:path=>"instantiationDigital"){
-#	t.digital_source(:path=>{:attribute=>"source"})
-#	t.digital_reference(:path=>{:attribute=>"ref"})
-#      }
-#      t.fileSize(:path=>"instantiationFileSize"){
-#	t.fileSize_reference(:path=>{:attribute=>"unitOfMeassure"})
-#      }
-#     t.instantiationTracks
-#    }
   end
 
   def self.event_template
@@ -166,8 +145,8 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	# Production Company
 	xml.pbcorePart{
 	  xml.pbcoreIdentifier(:source=>"")
-	  xml.pbcoreTitle(:titleType=>"", :source=>"", :version=>"", :annotation=>"")
-	  xml.pbcoreDescription(:descriptionType=>"Event", :descriptionTypeSource=>"pbcoreDescription/descriptionType", :ref=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#summary")
+	  xml.pbcoreTitle
+	  xml.pbcoreDescription
 	  xml.pbcoreCreator{
 	    xml.creator
 	    xml.creatorRole("producer")
@@ -187,26 +166,12 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
           xml.pbcoreAnnotation
 	}
 
-	#Speakers
-#	xml.pbcoreContributor{
-#	  xml.contributor
-#	  xml.contributorRole("speaker")
-#	}
-
-	# Speaker contract
-#	xml.pbcoreRightsSummary{
-#	  xml.rightsSummary
-#	}
-
-	#Speaker Comments
-#	xml.pbcoreAnnotation(:annotationType=>"", :ref=>"")
-
 	#Speaker Section
 	xml.pbcorePart{
 
 	  xml.pbcoreIdentifier(:source=>"")
-	  xml.pbcoreTitle(:titleType=>"", :source=>"", :version=>"", :annotation=>"")
-	  xml.pbcoreDescription(:descriptionType=>"Event", :descriptionTypeSource=>"pbcoreDescription/descriptionType", :ref=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#summary")
+	  xml.pbcoreTitle
+	  xml.pbcoreDescription
 
 	  xml.pbcoreContributor{
 	    xml.contributor
@@ -221,7 +186,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	}
 
 	# Child Elements
-	xml.pbcoreInstantiation
+#	xml.pbcoreInstantiation
       }
     end
     return builder.doc
@@ -232,8 +197,8 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       xml.pbcorePart("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
         "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
 	xml.pbcoreIdentifier(:source=>"")
-	xml.pbcoreTitle(:titleType=>"", :source=>"", :version=>"", :annotation=>"")
-	xml.pbcoreDescription(:descriptionType=>"Event", :descriptionTypeSource=>"pbcoreDescription/descriptionType", :ref=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#summary")
+	xml.pbcoreTitle
+	xml.pbcoreDescription
 	xml.pbcoreContributor{
 	  xml.contributor
 	  xml.contributorRole("speaker")
@@ -249,34 +214,45 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 
   def self.master_template
     builder = Nokogiri::XML::Builder.new do |xml|
-      xml.pbcoreInstantiation("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
+      xml.pbcorePart("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
         "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
-
-	# ID
-	xml.instantiationIdentifier(:source=>"")
-
-	# Annotation
-	xml.instantiationAnnotation(:annotationType=>"", :ref=>"")
-
-	# Duration, Data rate & Aspect ratio of the video
-	xml.instantiationEssenceTrack{
-	  xml.essenceTrackDuration
-	  xml.essenceTrackDataRate
-	  xml.essenceTrackAspectRatio
+	xml.pbcoreIdentifier(:source=>"")
+	xml.pbcoreTitle
+	xml.pbcoreDescription
+	xml.pbcoreRelation{
+          xml.pbcoreRelationType
+          xml.pbcoreRelationIdentifier
+        }
+	xml.pbcoreCreator{
+	  xml.creator(:affiliation=>"", :ref=>"", :annotation=>"creator")
+	  xml.creatorRole
 	}
-
-	# File Format
-	xml.instantiationDigital(:source=>"", :ref=>"")
-
-	# File Size
-	xml.instantiationFileSize(:unitOfMeassure=>"")
-
-	# Audio and Video configuration
-	xml.instantiationTracks
-
+	xml.pbcoreCreator{
+	  xml.creator(:affiliation=>"", :ref=>"", :annotation=>"owner")
+	  xml.creatorRole
+	}
+	xml.pbcoreInstantiation{
+	  # ID
+	  xml.instantiationIdentifier(:source=>"")
+	  # Duration, Data rate & Aspect ratio of the video
+	  xml.instantiationEssenceTrack{
+	    xml.essenceTrackDuration
+	    xml.essenceTrackDataRate
+	    xml.essenceTrackAspectRatio
+	  }
+	  # File Format
+	  xml.instantiationDigital(:source=>"", :ref=>"")
+	  # File Size
+	  xml.instantiationFileSize(:unitOfMeassure=>"")
+	  # Audio and Video configuration
+	  xml.instantiationTracks
+	  # Description
+	  xml.instantiationAnnotation(:annotationType=>"", :ref=>"")
+	  # Retention Schedule
+	  xml.instantiationAnnotation(:annotationType=>"", :ref=>"")
+	}
 	# Derivatives (child element)
-	xml.instantiationPart
-
+	xml.pbcorePart
       }
     end
     return builder.doc.root
@@ -284,42 +260,48 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 
   def self.derivative_template
     builder = Nokogiri::XML::Builder.new do |xml|
-      xml.instantiationPart("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
+      xml.pbcorePart("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
         "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
-
-	# ID
-	xml.instantiationIdentifier(:source=>"")
-
-	# Asset Creation Date
-	xml.instantiationDate
-
-	# Location
-	xml.instantiationLocation
-
-	# Duration, Data rate & Aspect ratio of the video
-	xml.instantiationEssenceTrack{
-	  xml.essenceTrackDuration
-	  xml.essenceTrackDataRate
-	  xml.essenceTrackAspectRatio
+	xml.pbcoreIdentifier(:source=>"")
+	xml.pbcoreTitle
+	xml.pbcoreDescription
+	
+	xml.pbcoreCreator{
+	  xml.creator(:affiliation=>"", :ref=>"", :annotation=>"creator")
+	  xml.creatorRole
 	}
-
-	# File Format
-	xml.instantiationDigital(:source=>"", :ref=>"")
-
-	# File Size
-	xml.instantiationFileSize(:unitOfMeassure=>"")
-
-	# Audio and Video configuration
-	xml.instantiationTracks
-
-	# Decription
-	xml.instantiationAnnotation(:annotationType=>"", :ref=>"")
-
-	# Retention Schedule
-	xml.instantiationAnnotation(:annotationType=>"", :ref=>"")
-
-	xml.instantiationPart
+	xml.pbcoreCreator{
+	  xml.creator(:affiliation=>"", :ref=>"", :annotation=>"owner")
+	  xml.creatorRole
+	}
+        xml.pbcoreInstantiation{
+	  # ID
+	  xml.instantiationIdentifier(:source=>"")
+	  # Asset Creation Date
+	  xml.instantiationDate
+	  # Location
+	  xml.instantiationLocation
+	  # Duration, Data rate & Aspect ratio of the video
+	  xml.instantiationEssenceTrack{
+	    xml.essenceTrackDuration
+	    xml.essenceTrackDataRate
+	    xml.essenceTrackAspectRatio
+	  }
+	  # File Format
+	  xml.instantiationDigital(:source=>"", :ref=>"")
+   	  # File Size
+	  xml.instantiationFileSize(:unitOfMeassure=>"")
+	  # Audio and Video configuration
+	  xml.instantiationTracks
+	  # Decription
+	  xml.instantiationAnnotation(:annotationType=>"", :ref=>"")
+	  # Retention Schedule
+	  xml.instantiationAnnotation(:annotationType=>"", :ref=>"")
+	}
+	# Derivatives (child element)
+	xml.pbcorePart
       }
+
     end
     return builder.doc.root
   end
@@ -356,22 +338,24 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
         nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart)
       when :master
         node = PbcoreXml.master_template
-        nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcoreInstantiation)
+        nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart)
       when :derivative
         node = PbcoreXml.derivative_template
-        nodeset = self.find_by_terms(:pbcoreInstantiation, :instantiationPart)
+        nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart, :pbcorePart)
       when :derivative_l2
         node = PbcoreXml.derivative_template
-        nodeset = self.find_by_terms(:instantiationPart, :instantiationPart)
+        nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart, :pbcorePart, :pbcorePart)
       when :creator
         node = PbcoreXml.creator_template
         nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcoreCreator)
+      when :creator_master
+        node = PbcoreXml.creator_template
+        nodeset = self.find_by_terms(:pbcorePart, :pbcoreCreator)
       when :contributor
         node = PbcoreXml.part_template
-#        nodeset = self.find_by_terms(:pbcoreDescriptionDocument, {:pbcorePart => "1"}, :pbcoreContributor)
         nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart)
       else
-        ActiveFedora.logger.warn("#{type} is not a valid argument for EadXml.insert_node")
+        ActiveFedora.logger.warn("#{type} is not a valid argument for PbcoreXml.insert_node")
         node = nil
         index = nil
     end
@@ -392,9 +376,9 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
     #TODO: Added code to remove any given node
     case node_type.to_sym
       when :master
-        remove_node = self.find_by_terms(:pbcoreDescriptionDocument, :pbcoreInstantiation)[index.to_i]
+        remove_node = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart, :pbcoreInstantiation)[index.to_i]
       when :derivative
-        remove_node = self.find_by_terms(:pbcoreInstantiation, :instantiationPart)[index.to_i]
+        remove_node = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart, :pbcoreDescriptionDocument, :pbcorePart)[index.to_i]
       when :creator
         remove_node = self.find_by_terms(:pbcoreInstantiation, :pbcoreCreator)[index.to_i]
       when :part

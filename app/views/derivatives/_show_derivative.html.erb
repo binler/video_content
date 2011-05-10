@@ -1,35 +1,33 @@
 <fieldset id="work_fields">
   <legend>Description</legend>
   <% event_obj = @document_fedora.parent_event %>
-  <% num_of_creators = event_obj.datastreams["descMetadata"].get_values([:pbcoreDescriptionDocument, :pbcoreCreator]).size %>
+  <% num_of_creators = @document_fedora.datastreams["descMetadata"].get_values([:pbcorePart, :pbcoreCreator]).size %>
   <% i = 0 %>
   <% owner_index = 0 %>
   <% creator_index = 0 %>
   <% while i < num_of_creators do %>
-    <%- if((get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => i}, :creatorRole, :creatorRole_annotation])).to_s.eql?(@document_fedora.pid.to_s)) -%>
-      <%- if((get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"creator") -%>
-        <% creator_index = i %>
-      <%- elsif((get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"owner") -%>
-	<% owner_index = i %>
-      <%- end -%>
+    <%- if((get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"creator") -%>
+      <% creator_index = i %>
+    <%- elsif((get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"owner") -%>
+      <% owner_index = i %>
     <%- end -%>
     <% i = i+1 %>
   <%- end -%>
     <dl>
-    <% unless get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => owner_index}, :creator]).first.empty? %>
+    <% unless get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator]).first.empty? %>
       <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => owner_index}, :creator], "Owner:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator], "Owner:") %>
       </dt>
       <dd class="owner">
-	<%= get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => owner_index}, :creator]) %>
+	<%= get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator]) %>
       </dd>
     <% end %>
-    <% unless get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_index}, :creator]).first.empty? %>
+    <% unless get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator]).first.empty? %>
       <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_index}, :creator], "Creator:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => creator_index}, :creator], "Creator:") %>
       </dt>
       <dd class="creator">
-        <%= get_values_from_datastream(event_obj, "descMetadata", [:pbcoreDescriptionDocument, {:pbcoreCreator => creator_index}, :creator]) %>
+        <%= get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => creator_index}, :creator]) %>
       </dd>
     <% end %>
     <% unless get_values_from_datastream(@document_fedora,"properties", [:derivative_type]).first.empty? %>
@@ -41,9 +39,9 @@
       </dd>
     <% end %>
 
-    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :instantiationIdentifier]).first.empty? %>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier]).first.empty? %>
       <dt>
-        <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationIdentifier], "ID:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier], "ID:") %>
       </dt>
       <dd class="title">
         <% composite_id = "" %>
@@ -52,80 +50,80 @@
 	  <% cur_obj = cur_obj.member_of.first %>
 	  <% composite_id = "#{cur_obj.composite_id}#{composite_id}" %>
 	<%- end -%>
-        <%= composite_id %><%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :instantiationIdentifier]) %>
+        <%= composite_id %><%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier]) %>
       </dd>
     <% end %>
 
-    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :instantiationDate]).first.empty? %>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate]).first.empty? %>
       <dt>
-        <%= fedora_field_label("descMetadata", [:instantiationPart, :instantiationDate], "Creation Date:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate], "Creation Date:") %>
       </dt>
       <dd class="event_id">
-        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :instantiationDate]) %>
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate]) %>
       </dd>
     <% end %>
 
-    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackDuration]).first.empty? %>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackDuration]).first.empty? %>
       <dt>
-        <%= fedora_field_label("descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackDuration], "Track Duration:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackDuration], "Track Duration:") %>
       </dt>
       <dd class="date">
-        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackDuration]) %>
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackDuration]) %>
       </dd>
     <% end %>
 
-    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackDataRate]).first.empty? %>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackDataRate]).first.empty? %>
       <dt>
-        <%= fedora_field_label("descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackDataRate], "Track Data Rate:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackDataRate], "Track Data Rate:") %>
       </dt>
       <dd class="description">
-        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackDataRate]) %>
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackDataRate]) %>
       </dd>
     <% end %>
 
-    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackAspectRatio]).first.empty? %>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackAspectRatio]).first.empty? %>
       <dt>
-        <%= fedora_field_label("descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackAspectRatio], "Aspect Ratio:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackAspectRatio], "Aspect Ratio:") %>
       </dt>
       <dd class="keyword">
-        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :essenceTrack, :essenceTrackAspectRatio]) %>
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackAspectRatio]) %>
       </dd>
     <% end %>
 
-    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :fileSize]).first.empty? %>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :fileSize]).first.empty? %>
       <dt>
-        <%= fedora_field_label("descMetadata", [:instantiationPart, :fileSize], "File Size:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :fileSize], "File Size:") %>
       </dt>
       <dd class="keyword">
-        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :fileSize]) %>
-        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :fileSize, :fileSize_unit]) %>
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :fileSize]) %>
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :fileSize, :fileSize_unit]) %>
       </dd>
     <% end %>
 
-    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :digital]).first.empty? %>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :digital]).first.empty? %>
       <dt>
-        <%= fedora_field_label("descMetadata", [:instantiationPart, :digital], "File Format:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :digital], "File Format:") %>
       </dt>
       <dd class="keyword">
-        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, :digital]) %>
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :digital]) %>
       </dd>
     <% end %>
 
-    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, {:instantiationAnnotation => "0"}, :text]).first.empty? %>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "0"}, :text]).first.empty? %>
       <dt>
-        <%= fedora_field_label("descMetadata", [:instantiationPart, {:instantiationAnnotation => "0"}, :text], "Description:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "0"}, :text], "Description:") %>
       </dt>
       <dd class="description">
-        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, {:instantiationAnnotation => "0"}, :text]) %>
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "0"}, :text]) %>
       </dd>
     <% end %>
 
-    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, {:instantiationAnnotation => "1"}, :text]).first.empty? %>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]).first.empty? %>
       <dt>
-        <%= fedora_field_label("descMetadata", [:instantiationPart, {:instantiationAnnotation => "1"}, :text], "Retention Schedule:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text], "Retention Schedule:") %>
       </dt>
       <dd class="retention_schedule">
-        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:instantiationPart, {:instantiationAnnotation => "1"}, :text]) %>
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]) %>
       </dd>
     <% end %>
 
