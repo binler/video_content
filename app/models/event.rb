@@ -3,6 +3,7 @@ require "hydra"
 class Event < ActiveFedora::Base
   
   include Hydra::ModelMethods
+  include Hydra::DefaultAccess
   
   has_bidirectional_relationship "members", :has_member, :is_member_of
 

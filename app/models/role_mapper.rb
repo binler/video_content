@@ -4,15 +4,19 @@ class RoleMapper
     EventWorkflow.hydra_role_names
   end
 
+  def self.permission_types
+    @@permission_types ||= ['discover','read','edit']
+  end
+
   def self.roles(target)
     ability = target
     begin
-      unless target.respond_to?(:cannot?)
+      unless target.respond_to?(:can?)
         user = User.find_by_login(username)
         raise "No user found with username: #{username}" if user.nil?
         ability = Ability.new(user)
       end
-      role_names.reject{ |role| ability.cannot? role.to_sym, EventWorkflow }
+      role_names.select{ |role| ability.can? role.to_sym, EventWorkflow }
     rescue
       []
     end

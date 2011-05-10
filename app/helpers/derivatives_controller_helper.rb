@@ -6,7 +6,7 @@ module DerivativesControllerHelper
     @asset.datastreams["descMetadata"].ng_xml = PbcoreXml.derivative_template
     apply_depositor_metadata(@asset)
     set_collection_type(@asset, content_type)
-    @asset.datastreams["rightsMetadata"].update_permissions({"group"=>{"public"=>"read"}})
+    @asset.datastreams["rightsMetadata"].update_permissions(Derivative.default_permissions_hash)
     @asset.save
     @asset.update_indexed_attributes({:level=>{0=>level}})
     if level.eql?"1"
