@@ -1,18 +1,18 @@
   <fieldset id="work_fields">
     <legend>Description</legend>
-    <dl>	
+    <dl>
+      <dt>
+        Parent:
+      </dt>
+      <dd class="parent">
+	  <%= link_to !(@document_fedora.member_of.first.master_id.empty?) ? @document_fedora.member_of.first.master_id : @document_fedora.member_of.first.pid, catalog_path(@document_fedora.member_of.first.pid, :content_type => "event") %>
+      </dd>	
     <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier]).first.empty? %>
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier], "ID:") %>
       </dt>
-      <dd class="title">
-        <% composite_id = "" %>
-	<% cur_obj = @document_fedora %>
-        <%- while(cur_obj.respond_to?(:member_of)) -%>
-	  <% cur_obj = cur_obj.member_of.first %>
-	  <% composite_id = "#{cur_obj.composite_id}#{composite_id}" %>
-	<%- end -%>
-        <%= composite_id %><%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier]) %>
+      <dd class="id">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier]) %>
       </dd>
     <% end %>
 
@@ -20,7 +20,7 @@
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationTracks], "Track:") %>
       </dt>
-      <dd class="event_id">
+      <dd class="track">
         <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationTracks]) %>
       </dd>
     <% end %>
@@ -29,7 +29,7 @@
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackDuration], "Track Duration:") %>
       </dt>
-      <dd class="date">
+      <dd class="duration">
         <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackDuration]) %>
       </dd>
     <% end %>
@@ -38,7 +38,7 @@
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackDataRate], "Track Data Rate:") %>
       </dt>
-      <dd class="description">
+      <dd class="data_rate">
         <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackDataRate]) %>
       </dd>
     <% end %>
@@ -47,7 +47,7 @@
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackAspectRatio], "Aspect Ratio:") %>
       </dt>
-      <dd class="keyword">
+      <dd class="aspect_ratio">
         <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackAspectRatio]) %>
       </dd>
     <% end %>
@@ -56,7 +56,7 @@
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :fileSize], "File Size:") %>
       </dt>
-      <dd class="keyword">
+      <dd class="file_size">
         <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :fileSize]) %>
       </dd>
     <% end %>
@@ -65,7 +65,7 @@
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :digital], "File Format:") %>
       </dt>
-      <dd class="keyword">
+      <dd class="file_format">
         <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :digital]) %>
       </dd>
     <% end %>

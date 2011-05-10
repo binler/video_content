@@ -16,6 +16,16 @@
   <form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"derivatives", :content_type=>"derivative")%>" method="post" data-resourceType="<%= content_type %>" accept-charset="utf-8">
     <dl>
       <dt>
+        Parent:
+      </dt>
+      <dd class="parent">
+	<%- if(@document_fedora.member_of.first.class == Master) -%>
+	  <%= link_to !(@document_fedora.member_of.first.master_id.empty?) ? @document_fedora.member_of.first.master_id : @document_fedora.member_of.first.pid, catalog_path(@document_fedora.member_of.first.pid, :event_id => params[:event_id], :master_id=> params[:master_id], :content_type => "derivative") %>
+	<%- else -%>
+	  <%= link_to !(@document_fedora.member_of.first.derivative_id.empty?) ? @document_fedora.member_of.first.derivative_id : @document_fedora.member_of.first.pid, catalog_path(@document_fedora.member_of.first.pid, :event_id => params[:event_id], :master_id=> params[:master_id], :content_type => "derivative") %>
+	<%- end -%>
+      </dd>
+      <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator], "Owner:") %>
       </dt>
       <dd class="owner ldap-lookup">
@@ -29,26 +39,16 @@
       </dd>
       <input class="update_description_display" type="hidden" name="description display" action="<%= derivatives_path(params[:id],:content_type=>content_type)%>"/>
       <dt>
-	<%= fedora_field_label("properties", [:derivative_type], "Type of Derivative:") %>
+	<%= fedora_field_label("properties", [:pbcorePart, :pbcoreDescription], "Type of Derivative:") %>
       </dt>
       <dd class="derivative_type">
-        <%- if(@document_fedora.level.eql?"2") -%>
-	  <%= fedora_select(@document_fedora,"properties", [:derivative_type], :choices=>{"DVD (Mpeg2)" => "DVD (Mpeg2)","Youtube (H.264)" => "Youtube (H.264)", "iTunesU (MP4)" => "iTunesU (MP4)", "ND Website (Flash)" => "ND Website (Flash)"})%>
-        <%- else -%>
-	  <%= get_values_from_datastream(@document_fedora,"properties", [:derivative_type]) %>
-        <%- end -%>
+	  <%= fedora_select(@document_fedora,"properties", [:pbcorePart, :pbcoreDescription], :choices=>{"DVD (Mpeg2)" => "DVD (Mpeg2)","Youtube (H.264)" => "Youtube (H.264)", "iTunesU (MP4)" => "iTunesU (MP4)", "ND Website (Flash)" => "ND Website (Flash)"})%>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier], "ID:") %>
       </dt>
       <dd class="derivative_id">
-	<% composite_id = "" %>
-	<% cur_obj = @document_fedora %>
-        <%- while(cur_obj.respond_to?(:member_of)) -%>
-	  <% cur_obj = cur_obj.member_of.first %>
-	  <% composite_id = "#{cur_obj.composite_id}#{composite_id}" %>
-	<%- end -%>
-        <%= composite_id %><%= fedora_text_field(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier])%>
+	<%= fedora_text_field(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier])%>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate], "Creation Date:") %>
