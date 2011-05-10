@@ -145,7 +145,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	# Production Company
 	xml.pbcorePart{
 	  xml.pbcoreIdentifier(:source=>"")
-	  xml.pbcoreTitle
+	  xml.pbcoreTitle("PRODUCTION COMPANY DETAILS")
 	  xml.pbcoreDescription
 	  xml.pbcoreCreator{
 	    xml.creator
@@ -170,7 +170,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	xml.pbcorePart{
 
 	  xml.pbcoreIdentifier(:source=>"")
-	  xml.pbcoreTitle
+	  xml.pbcoreTitle("SPEAKER DETAILS")
 	  xml.pbcoreDescription
 
 	  xml.pbcoreContributor{
@@ -197,7 +197,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       xml.pbcorePart("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
         "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
 	xml.pbcoreIdentifier(:source=>"")
-	xml.pbcoreTitle
+	xml.pbcoreTitle("SPEAKER DETAILS")
 	xml.pbcoreDescription
 	xml.pbcoreContributor{
 	  xml.contributor
@@ -217,7 +217,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       xml.pbcorePart("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
         "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
 	xml.pbcoreIdentifier(:source=>"")
-	xml.pbcoreTitle
+	xml.pbcoreTitle("MASTER DETAILS")
 	xml.pbcoreDescription
 	xml.pbcoreRelation{
           xml.pbcoreRelationType
@@ -234,6 +234,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	xml.pbcoreInstantiation{
 	  # ID
 	  xml.instantiationIdentifier(:source=>"")
+	  xml.instantiationDate
 	  # Duration, Data rate & Aspect ratio of the video
 	  xml.instantiationEssenceTrack{
 	    xml.essenceTrackDuration
@@ -263,7 +264,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       xml.pbcorePart("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
         "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
 	xml.pbcoreIdentifier(:source=>"")
-	xml.pbcoreTitle
+	xml.pbcoreTitle("DERIVATIVE DETAILS")
 	xml.pbcoreDescription
 	
 	xml.pbcoreCreator{

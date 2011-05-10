@@ -13,9 +13,9 @@
 	      <td> Track: </td><td><%= get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationTracks]) %></td>
 	    </tr>
 	    <% end %>
-            <% unless get_values_from_datastream(item,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackDuration]).first.empty? %>
+            <% unless get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate]).first.empty? %>
 	    <tr>
-	      <td> Duration: </td><td><%= get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackDuration]) %></td>
+	      <td> Creation Date: </td><td><%= get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate]) %></td>
 	    </tr>
 	    <% end %>
           </table>

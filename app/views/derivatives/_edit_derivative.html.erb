@@ -39,10 +39,10 @@
       </dd>
       <input class="update_description_display" type="hidden" name="description display" action="<%= derivatives_path(params[:id],:content_type=>content_type)%>"/>
       <dt>
-	<%= fedora_field_label("properties", [:pbcorePart, :pbcoreDescription], "Type of Derivative:") %>
+	<%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreDescription], "Type of Derivative:") %>
       </dt>
       <dd class="derivative_type">
-	  <%= fedora_select(@document_fedora,"properties", [:pbcorePart, :pbcoreDescription], :choices=>{"DVD (Mpeg2)" => "DVD (Mpeg2)","Youtube (H.264)" => "Youtube (H.264)", "iTunesU (MP4)" => "iTunesU (MP4)", "ND Website (Flash)" => "ND Website (Flash)"})%>
+	  <%= fedora_select(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreDescription], :choices=>{"DVD (Mpeg2)" => "DVD (Mpeg2)","Youtube (H.264)" => "Youtube (H.264)", "iTunesU (MP4)" => "iTunesU (MP4)", "ND Website (Flash)" => "ND Website (Flash)"})%>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier], "ID:") %>

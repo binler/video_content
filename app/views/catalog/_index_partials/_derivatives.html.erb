@@ -8,9 +8,9 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= counter+1 %>. <%= link_to (item.derivative_id.empty? ? item.pid : item.derivative_id), catalog_path(item.pid, :event_id => params[:event_id], :master_id => params[:master_id].nil? ? params[:id] : params[:master_id], :content_type => "derivative") %>
         <dl style="position:relative;left:100px;">
 	  <table>
-            <% unless get_values_from_datastream(item, "properties", [:derivative_type]).first.empty? %>
+            <% unless get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreDescription]).first.empty? %>
 	    <tr>
-	      <td> Derivative Type: </td><td><%= get_values_from_datastream(item, "properties", [:derivative_type]) %></td>
+	      <td> Derivative Type: </td><td><%= get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreDescription]) %></td>
 	    </tr>
 	    <% end %>
             <% unless get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate]).first.empty? %>
