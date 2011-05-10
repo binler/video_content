@@ -12,7 +12,20 @@ class EventWorkflow < ActiveRecord::Base
   end
 
   def self.permissible_actions
-    self.workflow_actions + self.state_event_names
+    @@permissible_actions ||= self.workflow_actions + self.state_event_names
+  end
+
+  def self.permissible_action_names
+    permissible_actions.map {|a| a.to_s }
+  end
+
+  # Types taken from Hydra::AccessControlsEnforcement
+  def self.hydra_roles
+    @@hydra_roles ||= self.show_actions + self.edit_actions
+  end
+
+  def self.hydra_role_names
+    hydra_roles.map {|a| a.to_s }
   end
 
   def self.state_event_names
@@ -32,6 +45,18 @@ class EventWorkflow < ActiveRecord::Base
       :create_event, :edit_event, :destroy_event,
       :create_master, :edit_master, :destroy_master,
       :create_derivative, :edit_derivative, :destroy_derivative
+    ]
+  end
+
+  def self.edit_actions
+    [ :edit_event, :edit_master, :edit_derivative, ]
+  end
+
+  def self.show_actions
+    [
+      :discover_event, :read_event,
+      :discover_master, :read_master,
+      :discover_derivative, :read_derivative
     ]
   end
 

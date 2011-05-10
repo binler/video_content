@@ -7,6 +7,10 @@ module ApplicationHelper
     'Hydrangea'
   end
 
+  def format_date date
+   date.strftime("%b. %e, %Y")
+  end
+
   def submit_button_message
     if params[:action].blank? || params[:controller].blank?
       "Save"

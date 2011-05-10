@@ -14,7 +14,7 @@ class ApplicationController
   helper :hydra_access_controls, :hydra_djatoka, :downloads, :metadata, :hydra, :custom_metadata, :hydra_fedora_metadata, :hydra_assets
   helper :generic_content_objects, :personalization, :hydrangea_datasets
   
-  helper_method :is_masquerading?
+  helper_method :is_masquerading?, :current_ability
 
   # helper_method [:request_is_for_user_resource?]#, :user_logged_in?]
   before_filter [:store_bounce]

@@ -320,3 +320,47 @@ ul.ui-autocomplete li {
 ul.ui-autocomplete li a {
   text-align:left;
 }
+
+/**** Masquerade ****/
+#masquerade-controls {
+  left:50%;
+  position:absolute;
+  top:0;
+  width:16em;
+}
+#stop-masquerade {
+  background-color:#EEE;
+  border-color:#416488;
+  border-style:solid;
+  border-width:0 0 1px 1px;
+  display:inline-block;
+  font-size:.9em;
+  font-weight:bold;
+  left:-8em;
+  padding:.5em;
+  position:absolute;
+  text-align:center;
+  width:16em;
+
+  -webkit-border-bottom-right-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+#stop-masquerade a {
+  border-bottom:none;
+  font-family:'Palatino Linotype','Book Antiqua',Palatino,serif;
+  font-size:1.1em;
+  letter-spacing:.1em;
+  padding:.2em 1em;
+  text-decoration:none;
+  text-transform:uppercase;
+}
+th.admin-links, th.masquerade-link {
+  width:60px;
+}
+td.masquerade-link {
+  text-align:center;
+}

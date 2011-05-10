@@ -4,13 +4,12 @@ class Ability
   def initialize(user)
     user ||= User.new # guest user (not logged in) 
     # Load all Permissions for workflow actions
-    user.groups.each do |group|
-      group.actions.each do |action|
-        if action.permissible_id.nil?
-          can action.name.to_sym, action.permissible_type.constantize
-        else
-          can action.name.to_sym, action.permissible_type.constantize, :id => permissible_id.to_i
-        end
+    if user.login?
+      Action.permissible_class_actions_for_login(user.login).each do |action|
+        can action.name.to_sym, action.permissible_type.constantize
+      end
+      Action.permissible_instance_actions_for_login(user.login).each do |action|
+        can action.name.to_sym, action.permissible_type.constantize, :id => permissible_id.to_i
       end
     end
 

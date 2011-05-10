@@ -3,6 +3,7 @@ require "hydra"
 class Master < ActiveFedora::Base
   
   include Hydra::ModelMethods
+  include Hydra::DefaultAccess
   
   has_bidirectional_relationship "member_of", :is_member_of, :has_member
   has_bidirectional_relationship "members", :has_member, :is_member_of
