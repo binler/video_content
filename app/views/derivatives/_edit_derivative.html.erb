@@ -1,18 +1,6 @@
 <fieldset id="work_fields">
   <legend> Description </legend>
   <% event_obj = @document_fedora.parent_event %>
-  <% num_of_creators = @document_fedora.datastreams["descMetadata"].get_values([:pbcorePart, :pbcoreCreator]).size %>
-  <% i = 0 %>
-  <% owner_index = 0 %>
-  <% creator_index = 0 %>
-  <% while i < num_of_creators do %>
-      <%- if((get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"creator") -%>
-        <% creator_index = i %>
-      <%- elsif((get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"owner") -%>
-	<% owner_index = i %>
-      <%- end -%>
-    <% i = i+1 %>
-  <%- end -%>
   <form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"derivatives", :content_type=>"derivative")%>" method="post" data-resourceType="<%= content_type %>" accept-charset="utf-8">
     <dl>
       <dt>
@@ -25,18 +13,31 @@
 	  <%= link_to !(@document_fedora.member_of.first.derivative_id.empty?) ? @document_fedora.member_of.first.derivative_id : @document_fedora.member_of.first.pid, catalog_path(@document_fedora.member_of.first.pid, :event_id => params[:event_id], :master_id=> params[:master_id], :content_type => "derivative") %>
 	<%- end -%>
       </dd>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator], "Owner:") %>
-      </dt>
-      <dd class="owner ldap-lookup">
-        <%= fedora_text_field(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator]) %>
-      </dd>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => creator_index}, :creator], "Creator:") %>
-      </dt>
-      <dd class="creator">
-        <%= get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => creator_index}, :creator]) %>
-      </dd>
+            <% num_of_creators = @document_fedora.datastreams["descMetadata"].get_values([:pbcorePart, :pbcoreCreator]).size %>
+      <% i = 0 %>
+      <% while i < num_of_creators do %>
+        <%- if((get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"owner") -%>
+	  <dt>
+            <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator], "Owner:") %>
+          </dt>
+          <dd class="owner ldap-lookup">
+            <%= fedora_text_field(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator]) %>
+          </dd>
+        <%- end -%>
+        <% i = i+1 %>
+      <%- end -%>
+      <% i = 0 %>
+      <% while i < num_of_creators do %>
+        <%- if((get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"creator") -%>
+          <dt>
+            <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator], "Creator:") %>
+          </dt>
+          <dd class="creator">
+            <%= get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator]) %>
+          </dd>
+        <%- end -%>
+        <% i = i+1 %>
+      <%- end -%>
       <input class="update_description_display" type="hidden" name="description display" action="<%= derivatives_path(params[:id],:content_type=>content_type)%>"/>
       <dt>
 	<%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreDescription], "Type of Derivative:") %>
