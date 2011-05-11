@@ -24,6 +24,12 @@
         <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAssetDate]) %>
       </dd>
       <dt>
+        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreCoverage, :coverage], "Location:") %>
+      </dt>
+      <dd class="location">
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreCoverage, :coverage]) %>
+      </dd>
+      <dt>
         <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreDescription], "Description:") %>
       </dt>
       <dd class="description">

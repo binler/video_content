@@ -18,6 +18,13 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
     t.pbcoreAssetDate{
       t.pbcoreAssetDate_type(:path=>{:attribute=>"dateType"})
     }
+    t.pbcoreCoverage{
+      t.coverage{
+	t.coverage_source(:path=>{:attribute=>"source"})
+	t.coverage_reference(:path=>{:attribute=>"ref"})
+      }
+      t.coverageType
+    }
     t.pbcoreDescription(:path=>"pbcoreDescription", :attributes=>{:descriptionType=>"Event", :descriptionTypeSource=>"pbcoreDescription/descriptionType", :ref=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#summary"})
     t.pbcoreSubject{
       t.pbcoreSubject_type(:path=>{:attribute=>"subjectType"})
@@ -129,6 +136,11 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 
 	# Asset Creation Date
         xml.pbcoreAssetDate(:dateType=>"")
+
+	xml.pbcoreCoverage{
+	  xml.coverage(:source=>"", :ref=>"")
+	  xml.coverageType("spatial")
+	}
 
 	# Description
         xml.pbcoreDescription(:descriptionType=>"Event", :descriptionTypeSource=>"pbcoreDescription/descriptionType", :ref=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#summary")
