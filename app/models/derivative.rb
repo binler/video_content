@@ -62,7 +62,7 @@ class Derivative < ActiveFedora::Base
   end
 
   def apply_ldap_values(computing_id, person_number)
-    return if computing_id.blank? || person_number.blank?
+    return if computing_id.blank? #|| person_number.blank?
     person = Ldap::Person.new(computing_id)
     desc_ds = self.datastreams_in_memory["descMetadata"]
     return if desc_ds.nil?
@@ -79,16 +79,16 @@ class Derivative < ActiveFedora::Base
       return
     else
       if((!(creators[creator_index].empty?)))
-        self.insert_new_node('creator_event', opts={})
+        self.insert_new_node('creator_master', opts={})
 	desc_ds = self.datastreams_in_memory["descMetadata"]
 	creators = self.datastreams_in_memory["descMetadata"].get_values([:pbcorePart, :pbcoreCreator, :creator])
 	creator_index = creators.size - 1
 	desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{(creators.size) -1}"}, :creator, :creator_annotation)[person_number].content = "creator"
       end
-      desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{creator_index}"}, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
-      desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{creator_index}"}, :creatorRole)[person_number].content = "#{person.title}"
-      # Create owner when the object is created.
-      desc_ds = self.datastreams_in_memory["descMetadata"]
+      if(desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{creator_index}"}, :creator)[person_number].content.to_s.empty?)
+        desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{creator_index}"}, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
+        desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{creator_index}"}, :creatorRole)[person_number].content = "#{person.title}"
+      end
       i = 0
       owner_index = 0
       while(i < creators.size)
@@ -98,7 +98,9 @@ class Derivative < ActiveFedora::Base
 	i = i + 1
       end
       if(desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{owner_index}"}, :creator, :creator_annotation)[person_number].content.to_s.eql?"owner")
-        desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{owner_index}"}, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
+        if(desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{owner_index}"}, :creator)[person_number].content.to_s.empty?)
+          desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{owner_index}"}, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
+        end
       end
     end
   end

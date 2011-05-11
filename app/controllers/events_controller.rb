@@ -29,20 +29,16 @@ class EventsController < CatalogController
     @document = af_model.find(params[:id])
     updater_method_args = prep_updater_method_args(params)
     result = @document.update_indexed_attributes(updater_method_args[:params], updater_method_args[:opts])
-    @document.save
-    logger.debug("OPTS: #{updater_method_args[:opts].inspect}")
-    logger.debug("Result: #{result.inspect}")
     apply_depositor_metadata(@document)
+    @document.save
     response = Hash["updated"=>[]]
     last_result_value = ""
     result.each_pair do |field_name,changed_values|
       changed_values.each_pair do |index,value|
-	logger.debug("field_name = #{field_name}, index = #{index}, value = #{value}")
         response["updated"] << {"field_name"=>field_name,"index"=>index,"value"=>value} 
         last_result_value = value
       end
     end
-    logger.debug("returning #{response.inspect}")
 
   # If handling submission from jeditable (which will only submit one value at a time), return the value it submitted
     if params.has_key?(:field_id)

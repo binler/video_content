@@ -29,6 +29,7 @@ class MastersController < CatalogController
     @document = af_model.find(params[:id])
     updater_method_args = prep_updater_method_args(params)
     result = @document.update_indexed_attributes(updater_method_args[:params], updater_method_args[:opts])
+    apply_depositor_metadata(@document)
     @document.save
     response = Hash["updated"=>[]]
     last_result_value = ""
