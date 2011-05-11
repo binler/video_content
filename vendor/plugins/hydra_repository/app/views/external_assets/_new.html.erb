@@ -1,0 +1,16 @@
+<form id="new_external_link" action="<%= url_for(:action=>"create", :controller=>"external_assets")%>" method="post" data-resourceType="external_asset" accept-charset="utf8">
+  <table cellspacing="0" cellpadding="0">
+    <tr>
+      <input type="hidden" name="container_id" value="<%=params[:container_id]%>">
+      <td><%= fedora_field_label("properties", [:uri], "URL:") %></td>
+      <td><input name="dsLocation" value=""></td>
+    </tr>
+    <tr>
+      <td><%= fedora_field_label("properties", [:label], "Filename:") %></td>
+      <td><input name="label" value=""></td>
+    </tr>
+    <tr>
+      <td><input type="submit" value="Add New Link"></td>
+    </tr>
+  </table>
+</form>
