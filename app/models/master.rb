@@ -96,5 +96,11 @@ class Master < ActiveFedora::Base
       end
     end
   end
+
+  def to_solr(solr_doc = Solr::Document.new, opts={})
+    doc = super(solr_doc, opts)
+    doc << { :object_type_facet => 'Master' }
+    return doc
+  end
   
 end
