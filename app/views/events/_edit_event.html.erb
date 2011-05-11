@@ -104,7 +104,7 @@
 	  Usage Rights:
 	</dt>
 	<dd>
-	  <%= fedora_select(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, {:pbcoreRightsSummary => "1"}, :rightsSummary], :choices=>{"No Restrictions" => "No Restrictions","For Educational use Only" => "For Educational use Only", "No Access" => "No Access"})%>
+	 <%= fedora_select(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, {:pbcoreRightsSummary => "1"}, :rightsSummary], :choices=>["No Restrictions","For Educational use Only", "No Access"])%>
 	</dd>
       </dl>
   </fieldset>

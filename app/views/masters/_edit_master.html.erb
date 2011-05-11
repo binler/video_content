@@ -75,7 +75,7 @@
       <dd class="filesize">
         <input class="update_description_display" type="hidden" name="description display" action="<%= derivatives_path(params[:id],:content_type=>content_type)%>"/>
         <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :fileSize]) %>
-        <%= fedora_select(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :fileSize, :fileSize_unit], :choices=>{"KB" => "KB","MB" => "MB","GB" => "GB"})%>
+        <%= fedora_select(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :fileSize, :fileSize_unit], :choices=>["KB", "MB", "GB"])%>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :digital], "File Format:") %>
