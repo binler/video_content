@@ -1,11 +1,11 @@
-<%- unless @redirected_objects.nil? || @redirected_objects.hits.empty? -%>
+<%- unless @external_file_objects.nil? || @external_file_objects.hits.empty? -%>
   <%# if params[:deletable] == "true" -%>
     <%#<ul>%>
-      <%#render :partial=>'deletable_result', :collection=>@redirected_objects.hits %>
+      <%#render :partial=>'deletable_result', :collection=>@external_file_objects.hits %>
     <%#</ul>%>
   <%# else -%>
     <table id="external_assets" class="multipleEdit">
-      <%=render :partial=>'external_assets/result', :collection=>@redirected_objects.hits %>
+      <%=render :partial=>'external_assets/result', :collection=>@external_file_objects.hits %>
     </table>
   <%# end -%>
 <%- else -%>

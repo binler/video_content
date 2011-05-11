@@ -1,0 +1,63 @@
+<%- unless params[:deletable] == "true" -%>
+  <%- if params[:layout] == "false" -%>
+    <script type="text/javascript">
+        $(document).ready(function() {
+          $("#file_assets  .editable-container").hydraTextField();
+        });
+    </script>
+  <%- else -%>
+    <%- # javascript_includes << infusion_javascripts(:inline_edit, :extras=>[:inline_editor_integrations], :debug=>true, :render_html=>false) -%>
+    <%- # javascript_includes << ['../infusion/framework/core/js/ProgressiveEnhancement.js', '../infusion/InfusionAll.js', {:cache=>true, :plugin=>"fluid-infusion"}] -%>
+    
+    <%- javascript_includes << "jquery.jeditable.mini" -%>
+    <%- javascript_includes << 'custom' -%>
+    <%- javascript_includes << "catalog/edit" -%>
+    <%- javascript_includes << "jquery.hydraMetadata.js" -%>  
+    <%- javascript_includes << "/plugin_assets/fluid-infusion/infusion/components/undo/js/Undo.js"-%> 
+    <%- javascript_includes << "jquery.form.js" -%>
+
+    <%- extra_head_content << capture do -%>
+      <script type="text/javascript">
+        $(document).ready(function() {
+          $("#file_assets  .editable-container").hydraTextField();
+        });
+      </script>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>
+<%- if params[:deletable] == "true" -%>
+    <ul>
+      <%- unless @file_asset_results.empty? -%>
+        <%=render :partial=>'deletable_result', :collection=>@file_asset_results %>
+      <%- end -%>
+      <%- unless @external_asset_results.empty? -%>
+        <%=render :partial=>'external_assets/result', :collection=>@external_asset_results%>
+      <%- end -%>
+    </ul>
+<%- else -%>
+  <table id="file_assets" class="multipleEdit">  
+    <%- unless @file_asset_results.empty? -%>
+      <tr>
+	<th>File Name</th>
+	<th>Size</th>
+	<th>Uploaded</th>  
+	<th></th>
+      </tr>
+      <%=render :partial=>'result', :collection=>@file_asset_results%>
+    <%- end -%>
+    <%- unless @external_asset_results.empty? -%>
+      <tr>
+	<th>Linked File Name</th>
+	<th>Size</th>
+	<th>Uploaded</th>  
+	<th></th>
+      </tr>
+      <%=render :partial=>'external_assets/result', :collection=>@external_asset_results%>
+    <%- end -%>
+  </table>
+<%- end -%>
+
+<%- if !@document.nil? && editor? -%>
+  <h2 class="section-title"><a href="#">Add Files</a></h2>
+  <div id="uploader"><%= render :partial=>"new", :layout=>false%></div>
+<%- end -%>

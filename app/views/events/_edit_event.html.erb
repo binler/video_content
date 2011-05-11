@@ -122,11 +122,8 @@
   </fieldset>
 
   <fieldset id="files">
-    <legend>Uploads (Transcripts, Press Releases, Program, etc.)</legend>
+    <legend>Files (Transcripts, Press Releases, Program, etc.)</legend>
     <dl>
-      <dt>Uploaded Files:</dt>
-      <dd>        
-      </dd>
       <dd>
         <div id="uploads" data-pid=<%= params[:id] %>></div>
         <%= async_load_tag(asset_file_assets_path(params[:id], :layout=>"false"), 'uploads') %>
@@ -134,4 +131,6 @@
     </dl>
   </fieldset>
 </form>
+<h2 class="section-title"><a href="#">Links</a></h2>
+<%= render :partial => "redirected_assets/edit", :locals => { :content_type => "event"} %>
 

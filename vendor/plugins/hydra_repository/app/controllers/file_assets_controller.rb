@@ -27,9 +27,24 @@ class FileAssetsController < ApplicationController
       # Including these lines for backwards compatibility (until we can use Rails3 callbacks)
       @container =  ActiveFedora::Base.load_instance(params[:container_id])
       @solr_result = @container.file_objects(:response_format=>:solr)
+      @external_asset_results = []
+      @redirected_asset_results = []
+      @file_asset_results = []
+      @solr_result.hits.each do |result|
+        if !result["active_fedora_model_s"].nil? && result["active_fedora_model_s"].is_a?(Array)
+          if result["active_fedora_model_s"].include?("ExternalAsset")
+            @external_asset_results << result
+          elsif result["active_fedora_model_s"].include?("RedirectedAsset")
+            @redirected_asset_results << result
+          else
+            @file_asset_results << result
+          end
+        end
+      end
     else
       # @solr_result = ActiveFedora::SolrService.instance.conn.query('has_model_field:info\:fedora/afmodel\:FileAsset', @search_params)
       @solr_result = FileAsset.find_by_solr(:all)
+      @file_asset_results = @solr_result.hits
     end
     render :action=>params[:action], :layout=>layout
   end
@@ -105,5 +120,4 @@ class FileAssetsController < ApplicationController
       end
     end
   end
-  
 end

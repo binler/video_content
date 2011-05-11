@@ -55,7 +55,7 @@ class ExternalAssetsController < ApplicationController
       flash[:notice] = "Failed to create link: invalid url"
       logger.error("Failed to create link: #{e.message}")
     end
-    redirect_to catalog_path(params[:container_id])
+    redirect_to catalog_path(params[:container_id],:anchor=>'files')
   end
 
    def show
@@ -80,7 +80,7 @@ class ExternalAssetsController < ApplicationController
       if @downloadable
         #logger.debug("External asset: #{@external_asset.inspect}")
         unless @external_asset.link.empty?
-          redirect_to "#{@external_asset.link.first.url}/content"
+          redirect_to "#{@external_asset.uri}"
         else
           logger.warn("Link undefined for external asset: " + params[:id])
           flash[:notice]= "Link undefined for external asset."

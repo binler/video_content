@@ -121,11 +121,15 @@ class CatalogController
   end
 
   def setup_external_objects
-    query = ActiveFedora::SolrService.construct_query_for_pids(@document_fedora.parts_ids)
-    redirected_query = "#{ActiveFedora::SolrService.solr_name(:active_fedora_model, :symbol)}:RedirectedAsset and #{query}"
-    external_query = "#{ActiveFedora::SolrService.solr_name(:active_fedora_model, :symbol)}:ExternalAsset and #{query}"
-    @redirected_objects = ActiveFedora::Base.solr_search(redirected_query,{:rows=>9999})
-    @external_file_objects = ActiveFedora::Base.solr_search(redirected_query,{:rows=>9999})
+    @redirected_objects = []
+    @solr_result = @document_fedora.file_objects(:response_format=>:solr)
+    @solr_result.hits.each do |result|
+      if !result["active_fedora_model_s"].nil? && result["active_fedora_model_s"].is_a?(Array)
+        if result["active_fedora_model_s"].include?("RedirectedAsset")
+          @redirected_objects << result
+        end
+      end
+    end
   end
 
 end
