@@ -103,17 +103,14 @@ ul#actions-menu li, ul#session-management li {
 }
 
 #search {
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  border-color:#DEDEDE;
-  height:52px;
-  margin-top:1.2em;
+  border:none;
+  height:3.5em;
+  margin-top:0;
 }
 
 #search form {
   float:left;
-  padding:10px;
+  padding:.6em .6em .3em;
   width:700px;
 }
 
@@ -135,7 +132,7 @@ ul#actions-menu li, ul#session-management li {
 }
 
 .prev_next_links {
-  margin:10px 15px 0;
+  margin:.5em 15px 0;
   text-align:left;
 }
 
@@ -143,6 +140,10 @@ ul#actions-menu li, ul#session-management li {
   border-width:1px;
   border-style:solid;
   border-color:#FFF #666 #FFF #FFF;
+}
+
+.pagination {
+  padding:.1em 0;
 }
 
 .pagination .current {
@@ -202,6 +203,17 @@ ul#actions-menu li, ul#session-management li {
 
 #compound-form .filesize select {
   width:4em;
+}
+
+#submitForRelease,
+.document_show fieldset legend,
+li fieldset legend {
+	border-color: #183451;
+}
+
+#submitForRelease,
+.document_show fieldset legend{
+	background-color: #E6F3FF;
 }
 
 #speaker-listing {

@@ -22,9 +22,12 @@
 </div>
 <% end %>
 <% if editor? %>
+<div id="showUtils">
+  <span class="back_to_cat"><%= link_back_to_catalog :label=>'&larr; Return to search results' %></span>
 	<span class="edit-browse">
 		<%= edit_and_browse_links %>
 	</span>
+</div>
 <% end -%>
 <div id="document" class="<%= controller.action_name == "edit" ? "document_edit" : "document_show" %>">
   <div id="doc_<%= @document[:id] %>">

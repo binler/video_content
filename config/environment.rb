@@ -88,6 +88,11 @@ ActionMailer::Base.smtp_settings = {
   :enable_starttls_auto => SMTP_ENABLE_STARTTLS_AUTO
 }
 
+ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.merge!(
+  :iso_date_time => '%Y-%m-%d %H:%M',
+  :iso_time      => '%H:%M'
+)
+
 require 'casclient'
 require 'casclient/frameworks/rails/filter'
 
