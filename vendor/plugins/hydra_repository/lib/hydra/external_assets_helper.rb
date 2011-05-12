@@ -18,7 +18,8 @@ module Hydra::ExternalAssetsHelper
   # @return [] the Link Asset
   def create_external_asset_from_params
     attrs={}
-    attrs.merge!({:redirected=>true}) if params[:redirected]    
+    attrs.merge!({:namespace=>params[:namespace]}) if params[:namespace]
+    attrs.merge!(:dsLabel=>params[:label]) if params[:label]   
     link = ExternalAsset.new(attrs)
     link.uri = params[:dsLocation]
     link.uri = "http://#{link.uri}" unless link.uri.include?("://")

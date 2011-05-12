@@ -14,6 +14,7 @@
     <form method="post" enctype="multipart/form-data" class="fl-uploader fl-progEnhance-basic">
         <p>Browse to upload a file.</p>
         <input name="fileData" type="file" />
+        <input type="hidden" name="namespace" value="VIDEO-CONTENT">
         <div><input type="submit" value="Save"/></div>
     </form>
     
@@ -91,6 +92,7 @@
     <div class="flc-uploader-queue-footer fl-uploader-queue-footer">
       <table cellspacing="0" cellpadding="0">
 	<tr>
+          <input type="hidden" name="namespace" value="VIDEO-CONTENT">
 	  <input type="hidden" name="container_id" value="<%=params[:container_id]%>">
 	  <td><%= fedora_field_label("properties", [:uri], "URL:") %></td>
 	  <td><input name="dsLocation" value=""></td>
