@@ -100,6 +100,8 @@ class Event < ActiveFedora::Base
   def to_solr(solr_doc = Solr::Document.new, opts={})
     doc = super(solr_doc, opts)
     doc << { :object_type_facet => 'Event' }
+    doc << { :object_state_t => state }
+    doc << { :object_state_facet => state.titleize }
     return doc
   end
 

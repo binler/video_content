@@ -273,7 +273,6 @@
  <uniqueKey>id</uniqueKey>
  <defaultSearchField>text</defaultSearchField>
  <solrQueryParser defaultOperator="AND" />
- <copyField source="*_t" dest="*_facet"/>
  <copyField source="*_facet" dest="text" />
 
 </schema>

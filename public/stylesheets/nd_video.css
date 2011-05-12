@@ -91,12 +91,24 @@ ul#actions-menu li, ul#session-management li {
   text-decoration:none;
 }
 
+#facets div {
+  background-color:#FFF;
+}
+
+#facets div h3 {
+  border-bottom:1px solid #DEDEDE;
+  padding: 1.2em 0 .2em;
+  margin-left:10px;
+  margin-right:20px;
+}
+
 #search {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
   border-color:#DEDEDE;
   height:52px;
+  margin-top:1.2em;
 }
 
 #search form {
@@ -112,6 +124,10 @@ ul#actions-menu li, ul#session-management li {
 
 #search form input[type="image"]{
   padding-right:1px;
+}
+
+.appliedFilter {
+  height:auto;
 }
 
 #results {
