@@ -1,16 +1,24 @@
-<form id="new_external_link" action="<%= url_for(:action=>"create", :controller=>"external_assets")%>" method="post" data-resourceType="external_asset" accept-charset="utf8">
-  <table cellspacing="0" cellpadding="0">
-    <tr>
-      <input type="hidden" name="container_id" value="<%=params[:container_id]%>">
-      <td><%= fedora_field_label("properties", [:uri], "URL:") %></td>
-      <td><input name="dsLocation" value=""></td>
-    </tr>
-    <tr>
-      <td><%= fedora_field_label("properties", [:label], "Filename:") %></td>
-      <td><input name="label" value=""></td>
-    </tr>
-    <tr>
-      <td><input type="submit" value="Add New Link"></td>
-    </tr>
-  </table>
+<%- namespace = params[:namespace] if namespace.nil? -%>
+<form id="new_external_link" class="fl-uploader" action="<%= url_for(:action=>"create", :controller=>"external_assets")%>" method="post" data-resourceType="external_asset" accept-charset="utf8">
+  <div><br/><p>Link to a file</p></div>
+  <div class="fl-uploader-queue-wrapper">
+    <div class="flc-uploader-queue-footer fl-uploader-queue-footer">
+      <table cellspacing="0" cellpadding="0">
+	<tr>
+          <input type="hidden" name="namespace" value="<%=namespace%>">
+	  <input type="hidden" name="container_id" value="<%=params[:container_id]%>">
+	  <td><%= fedora_field_label("properties", [:uri], "URL:") %></td>
+	  <td><input name="dsLocation" value=""></td>
+	</tr>
+	<tr>
+	  <td><%= fedora_field_label("properties", [:Filename], "Filename:") %></td>
+	  <td><input name="Filename" value=""></td>
+	</tr>
+      </table>
+    </div>  
+  </div>
+  <div class="fl-uploader-btns">
+    <button type="submit" class="flc-uploader-button-upload fl-uploader-upload fl-uploader-button-default fl-uploader-dim ui-button ui-widget ui-state-default">Add File Link</button>
+  </div>
+
 </form>
