@@ -1,5 +1,5 @@
 require "hydra"
-
+require 'tzinfo'
 class Event < ActiveFedora::Base
   
   include Hydra::ModelMethods
@@ -16,6 +16,10 @@ class Event < ActiveFedora::Base
   # A place to put extra metadata values
   has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|    
     m.field 'depositor', :string
+    m.field 'venue', :string
+    m.field 'city', :string
+    m.field 'state', :string
+    m.field 'country', :string
   end
 
   alias_method :id, :pid
@@ -29,9 +33,9 @@ class Event < ActiveFedora::Base
     external_file.blank? ? "" : external_file.first.content
   end
 
-  def datastream_url ds_name="content"
-    "http://fedoraAdmin:fedoraAdmin@localhost:8983/fedora/get/#{pid}/#{ds_name}"
-  end
+#  def datastream_url ds_name="content"
+#    "http://fedoraAdmin:fedoraAdmin@localhost:8983/fedora/get/#{pid}/#{ds_name}"
+#  end
 
   def load_datastream(id)
     resource = self.load_instance(id)
@@ -95,6 +99,11 @@ class Event < ActiveFedora::Base
   # Delegate group and permission information to workflow
   [:groups].each do |method|
     delegate method, :to => :workflow
+  end
+
+  def countries
+    arr = TZInfo::Country.all_codes.map { |code| "#{TZInfo::Country.get(code).name}" }
+    return arr.sort
   end
 
 end

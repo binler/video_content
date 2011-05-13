@@ -1,0 +1,27 @@
+<%- assetlink = edit_assetlink -%>
+<%- assetlink_counter = edit_assetlink_counter -%>
+<%- base_id = "assetlink_#{assetlink_counter}" -%>
+<%- if get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => assetlink_counter}, :pbcoreTitle]).inspect.include?("ASSET LINK") -%>
+  <li>
+    <dl class="container" id="<%= base_id %>">
+        <dt>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => assetlink_counter}, :pbcoreAssetType, :text], "Label:") %>
+        </dt>
+        <dd class="contributor">
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => assetlink_counter}, :pbcoreAssetType, :text]) %>
+        </dd>
+	<dt>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => assetlink_counter}, :pbcoreAssetType, :pbcoreAssetType_reference], "Link:") %>
+        </dt>
+        <dd class="comments">
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => assetlink_counter}, :pbcoreAssetType, :pbcoreAssetType_reference]) %>
+        </dd>
+	<%- if ( (params[:action] == "edit" || params[:action] == "create")) -%>
+	  <dt> 
+            To remove this link, please <%= link_to "click here", url_for(:action => "removenode", :controller => "events", :node_counter=>assetlink_counter, :nodetype=>"assetlink") %>
+	  </dt>
+        <%- end -%>
+    </dl>	
+  </li>
+<%- end -%>
+

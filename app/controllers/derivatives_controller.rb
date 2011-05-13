@@ -16,7 +16,7 @@ class DerivativesController < CatalogController
   helper :hydra, :metadata, :infusion_view
 
   #before_filter :initialize_collection, :except=>[:index, :new]
-  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update]
+  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :add, :removenode]
   def index
     @events = Derivative.find_by_solr(:all).hits.map{|result| Derivative.load_instance_from_solr(result["id"])}
   end
@@ -81,7 +81,30 @@ class DerivativesController < CatalogController
     redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :content_type => params[:content_type], :master_id => params[:master_id], :event_id => params[:event_id])
   end
 
-  def show  
+  def add
+    @asset = Derivative.load_instance(params[:id])
+    @asset.insert_new_node(params[:field_type], {"descMetadata"=>params[:text_field]})
+    @asset.save
+
+    url_params = {
+      :action       => 'edit',
+      :controller   => 'catalog',
+      :id           => @asset.pid,
+      :content_type => params[:content_type]
+    }
+    # NOTE anchor tag is defined in edit event view code
+    url_params[:anchor] = 'assetlinks' if params[:content_type] == 'derivative'
+    redirect_to url_for(url_params)
+  end
+
+  def removenode
+    @asset = Derivative.load_instance(params[:id])
+    @asset.remove_child(params[:nodetype], params[:node_counter])
+    @asset.save
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
+  end
+
+  def show
     show_without_customizations
   end
 

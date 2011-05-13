@@ -16,7 +16,7 @@ class EventsController < CatalogController
   helper :hydra, :metadata, :infusion_view
 
   #before_filter :initialize_collection, :except=>[:index, :new]
-  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :create, :add, :download]
+  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :create, :add, :download, :removespeaker]
   def index
     @events = Event.find_by_solr(:all).hits.map{|result| Event.load_instance_from_solr(result["id"])}
   end
@@ -97,12 +97,12 @@ class EventsController < CatalogController
     redirect_to url_for(url_params)
   end
 
-#  def removecreator
-#    @asset = Event.load_instance(params[:id])
-#    @asset.remove_child('creator', params[:creator_counter])
-#    @asset.save
-#    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
-#  end
+  def removenode
+    @asset = Event.load_instance(params[:id])
+    @asset.remove_child(params[:nodetype], params[:node_counter])
+    @asset.save
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
+  end
 
   def show  
     show_without_customizations

@@ -21,10 +21,11 @@
         <dd class="copyrights">
           <%= fedora_checkbox(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "#{release_counter}"}, :pbcoreRightsSummary, :rightsSummary])%> Contract/Release on file
         </dd>
-    </dl>
-    <%- if ( (params[:action] == "edit" || params[:action] == "create")) -%>
-      <%= field_selectors_for("descMetadata", [{:creator=>release_counter}]) %>  
-      <%= link_to("", url_for(:action => "removecreator", :controller => "events", :creator_counter=>release_counter), :class => "destructive destroy_image") %>
-    <%- end -%>
+	<%- if ( (params[:action] == "edit" || params[:action] == "create")) -%>
+	  <dt> 
+            To remove this speaker, please <%= link_to "click here", url_for(:action => "removenode", :controller => "events", :node_counter=>release_counter, :nodetype=>"speaker") %>
+	  </dt>
+        <%- end -%>
+    </dl>	
   </li>
 <%- end -%>

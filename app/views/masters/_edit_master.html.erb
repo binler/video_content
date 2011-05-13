@@ -3,7 +3,7 @@
     <legend> Description </legend>
     <dl>
       <dt>
-        Parent:
+        Parent Event:
       </dt>
       <dd class="parent">
 	  <%= link_to !(@document_fedora.member_of.first.event_id.empty?) ? @document_fedora.member_of.first.event_id : @document_fedora.member_of.first.pid, catalog_path(@document_fedora.member_of.first.pid, :content_type => "event") %>
@@ -102,18 +102,30 @@
         <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier]) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreIdentifier], "Archive Collection Code:") %>
+        <%= fedora_field_label("descMetadata", [{:pbcorePart => "0"}, :pbcoreIdentifier], "Archive Collection Code:") %>
       </dt>
       <dd class="archive_collection_code">
-        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreIdentifier]) %>
+        <%= fedora_text_field(@document_fedora,"descMetadata", [{:pbcorePart => "0"}, :pbcoreIdentifier]) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreDescription], "Archive Description:") %>
+        <%= fedora_field_label("descMetadata", [{:pbcorePart => "0"}, :pbcoreDescription], "Archive Description:") %>
       </dt>
       <dd class="archive_description">
-        <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreDescription]) %>
+        <%= fedora_text_area(@document_fedora,"descMetadata", [{:pbcorePart => "0"}, :pbcoreDescription]) %>
       </dd>
     </dl>
+  </fieldset>
+  <fieldset id="assetlinks">
+    <legend>Links</legend>
+      <ul id="speaker-listing">
+        <%= render :partial=>"masters/edit_assetlink", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:pbcorePart, :pbcorePart) %>
+      </ul>
+      <% if params[:action] == "edit" %>
+        <% format = document_partial_name(@document) %>
+      <% end %>
+      <div id="add-speaker">
+        <input id="re-run-action" class="nobutton button" type="button" value="Add A Link" onclick=" location.href='<%=url_for(:action => "add", :controller => "masters", :content_type => "master", :text_field => "pbcorePart_pbcorePart", :field_type => "assetlink_master") %>'"/> 
+      </div>
   </fieldset>
   <fieldset id="files">
     <legend>Files</legend>

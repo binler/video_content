@@ -23,12 +23,42 @@
         </noscript>
         <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAssetDate]) %>
       </dd>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreCoverage, :coverage], "Location:") %>
-      </dt>
-      <dd class="location">
-        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreCoverage, :coverage]) %>
-      </dd>
+      <fieldset>
+        <legend>Location</legend>
+        <dt>
+	  <%= fedora_field_label("properties", [:country], "Country:") %>
+        </dt>
+        <dd>
+	  <%= fedora_select(@document_fedora,"properties", [:country], :choices=>@document_fedora.countries) %>
+        </dd>
+	<%- if((get_values_from_datastream(@document_fedora,"properties", [:country])).to_s.eql?"United States") -%>
+	  <dt>
+	    <%= fedora_field_label("properties", [:state], "State:") %>
+          </dt>
+          <dd>
+	    <%= fedora_select(@document_fedora,"properties", [:state], :choices=>StateList.states("US")) %>
+          </dd>
+	<%- else -%>
+	  <dt>
+	    <%= fedora_field_label("properties", [:state], "State/Province:") %>
+          </dt>
+          <dd>
+	    <%= fedora_select(@document_fedora,"properties", [:state]) %>
+          </dd>
+	<%- end -%>
+	<dt>
+	  <%= fedora_field_label("properties", [:city], "City:") %>
+        </dt>
+        <dd>
+	  <%= fedora_select(@document_fedora,"properties", [:city]) %>
+        </dd>
+	<dt>
+	  <%= fedora_field_label("properties", [:venue], "Venue:") %>
+        </dt>
+        <dd>
+	  <%= fedora_select(@document_fedora,"properties", [:venue]) %>
+        </dd>
+      </fieldset>
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreDescription], "Description:") %>
       </dt>
@@ -117,7 +147,19 @@
         <% format = document_partial_name(@document) %>
       <% end %>
       <div id="add-speaker">
-        <input id="re-run-action" class="nobutton button" type="button" value="Add A Speaker" onclick=" location.href='<%=url_for(:action => "add", :controller => "events", :content_type => "event", :text_field => "pbcoreDescription_pbcorePart", :field_type => "contributor") %>'"/> 
+        <input id="re-run-action" class="nobutton button" type="button" value="Add A Speaker" onclick=" location.href='<%=url_for(:action => "add", :controller => "events", :content_type => "event", :text_field => "pbcoreDescriptionDocument_pbcorePart", :field_type => "contributor") %>'"/> 
+      </div>
+  </fieldset>
+  <fieldset id="links">
+    <legend>Links</legend>
+      <ul id="speaker-listing">
+        <%= render :partial=>"events/edit_assetlink", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:pbcoreDescriptionDocument, :pbcorePart) %>
+      </ul>
+      <% if params[:action] == "edit" %>
+        <% format = document_partial_name(@document) %>
+      <% end %>
+      <div id="add-speaker">
+        <input id="re-run-action" class="nobutton button" type="button" value="Add A Link" onclick=" location.href='<%=url_for(:action => "add", :controller => "events", :content_type => "event", :text_field => "pbcoreDescriptionDocument_pbcorePart", :field_type => "assetlink") %>'"/> 
       </div>
   </fieldset>
 
@@ -131,6 +173,5 @@
     </dl>
   </fieldset>
 </form>
-<h2 class="section-title"><a href="#">Links</a></h2>
-<%= render :partial => "redirected_assets/edit", :locals => { :content_type => "event"} %>
+
 

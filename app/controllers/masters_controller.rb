@@ -16,7 +16,7 @@ class MastersController < CatalogController
   helper :hydra, :metadata, :infusion_view
 
   #before_filter :initialize_collection, :except=>[:index, :new]
-  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update]
+  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :add, :removenode]
   def index
     @events = Master.find_by_solr(:all).hits.map{|result| Master.load_instance_from_solr(result["id"])}
   end
@@ -66,6 +66,29 @@ class MastersController < CatalogController
       @asset = create_and_save_master(af_model, params[:event_id])
     end
     redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :content_type => params[:content_type], :event_id => params[:event_id])
+  end
+
+  def add
+    @asset = Master.load_instance(params[:id])
+    @asset.insert_new_node(params[:field_type], {"descMetadata"=>params[:text_field]})
+    @asset.save
+
+    url_params = {
+      :action       => 'edit',
+      :controller   => 'catalog',
+      :id           => @asset.pid,
+      :content_type => params[:content_type]
+    }
+    # NOTE anchor tag is defined in edit event view code
+    url_params[:anchor] = 'assetlinks' if params[:content_type] == 'master'
+    redirect_to url_for(url_params)
+  end
+
+  def removenode
+    @asset = Master.load_instance(params[:id])
+    @asset.remove_child(params[:nodetype], params[:node_counter])
+    @asset.save
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
   end
 
   def show  

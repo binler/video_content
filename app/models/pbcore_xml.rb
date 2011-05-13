@@ -74,6 +74,11 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
         t.annotation_reference(:path=>{:attribute=>"ref"})
       }
       t.pbcoreInstantiation(:ref=>[:pbcoreInstantiation_ref])
+      t.pbcoreAssetType{
+	t.text(:path=>'text()')
+        t.pbcoreAssetType_annotation(:path=>{:attribute=>"annotation"})
+        t.pbcoreAssetType_reference(:path=>{:attribute=>"ref"})
+      }
     }
 
     t.pbcorePart(:ref=>[:pbcorePart_ref]){
@@ -119,6 +124,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       t.annotation_type(:path=>{:attribute=>"annotationType"})
       t.annotation_reference(:path=>{:attribute=>"ref"})
     }
+#    t.pbcoreAssetType(:ref=>[:pbcoreAssetType_ref])
   end
 
   def self.event_template
@@ -196,7 +202,14 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	  
 	  xml.pbcoreAnnotation
 	}
-
+	
+	# Link Section
+	xml.pbcorePart{
+	  xml.pbcoreIdentifier(:source=>"")
+	  xml.pbcoreTitle("ASSET LINK")
+	  xml.pbcoreDescription
+	  xml.pbcoreAssetType(:ref=>"", :annotation=>"")
+	}
 	# Child Elements
 #	xml.pbcoreInstantiation
       }
@@ -219,6 +232,19 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	  xml.rightsSummary
 	}
         xml.pbcoreAnnotation
+      }
+    end
+    return builder.doc.root
+  end
+
+  def self.assetlink_template
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.pbcorePart("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
+        "xmlns"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html"){
+	xml.pbcoreIdentifier(:source=>"")
+	xml.pbcoreTitle("ASSET LINK")
+	xml.pbcoreDescription
+	xml.pbcoreAssetType(:ref=>"", :annotation=>"")
       }
     end
     return builder.doc.root
@@ -263,6 +289,13 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	  xml.instantiationAnnotation(:annotationType=>"", :ref=>"")
 	  # Retention Schedule
 	  xml.instantiationAnnotation(:annotationType=>"", :ref=>"")
+	}
+	# Link Section
+	xml.pbcorePart{
+	  xml.pbcoreIdentifier(:source=>"")
+	  xml.pbcoreTitle("ASSET LINK")
+	  xml.pbcoreDescription
+	  xml.pbcoreAssetType(:ref=>"", :annotation=>"")
 	}
 	# Derivatives (child element)
 	xml.pbcorePart
@@ -310,6 +343,13 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	  xml.instantiationAnnotation(:annotationType=>"", :ref=>"")
 	  # Retention Schedule
 	  xml.instantiationAnnotation(:annotationType=>"", :ref=>"")
+	}
+	# Link Section
+	xml.pbcorePart{
+	  xml.pbcoreIdentifier(:source=>"")
+	  xml.pbcoreTitle("ASSET LINK")
+	  xml.pbcoreDescription
+	  xml.pbcoreAssetType(:ref=>"", :annotation=>"")
 	}
 	# Derivatives (child element)
 	xml.pbcorePart
@@ -367,6 +407,12 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
       when :contributor
         node = PbcoreXml.part_template
         nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart)
+      when :assetlink
+        node = PbcoreXml.assetlink_template
+        nodeset = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart)
+      when :assetlink_master
+        node = PbcoreXml.assetlink_template
+        nodeset = self.find_by_terms(:pbcorePart, :pbcorePart)
       else
         ActiveFedora.logger.warn("#{type} is not a valid argument for PbcoreXml.insert_node")
         node = nil
@@ -392,8 +438,12 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
         remove_node = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart, :pbcoreInstantiation)[index.to_i]
       when :derivative
         remove_node = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart, :pbcoreDescriptionDocument, :pbcorePart)[index.to_i]
-      when :creator
-        remove_node = self.find_by_terms(:pbcoreInstantiation, :pbcoreCreator)[index.to_i]
+      when :speaker
+        remove_node = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart)[index.to_i]
+      when :assetlink
+        remove_node = self.find_by_terms(:pbcoreDescriptionDocument, :pbcorePart)[index.to_i]
+      when :assetlink_master
+        remove_node = self.find_by_terms(:pbcorePart, :pbcorePart)[index.to_i]
       when :part
         remove_node = self.find_by_terms(:pbcoreInstantiation, :pbcorePart)[index.to_i]
     end
