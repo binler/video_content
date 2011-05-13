@@ -106,4 +106,17 @@ class Event < ActiveFedora::Base
     return arr.sort
   end
 
+  def class_name
+    self.class.name
+  end
+
+  def to_solr(solr_doc = Solr::Document.new, opts={})
+    doc = super(solr_doc, opts)
+    doc << { :object_type_t => class_name.downcase }
+    doc << { :object_type_facet => class_name }
+    doc << { :object_state_t => state }
+    doc << { :object_state_facet => state.titleize }
+    return doc
+  end
+
 end

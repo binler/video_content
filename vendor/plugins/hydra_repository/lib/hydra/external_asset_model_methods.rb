@@ -5,30 +5,20 @@ module Hydra::ExternalAssetModelMethods
     "#{Fedora::Repository.instance.base_url}/get/#{pid}/#{link.first.dsid}" if link.first
   end
 
-  def label_values=(value)
-    self.label = value
+  def filename
+    datastreams_in_memory["descMetadata"].title_values.first unless datastreams_in_memory["descMetadata"].title_values.empty? 
+  end
+     
+  def filename=(filename)
+    datastreams_in_memory["descMetadata"].title_values = filename
   end
 
-  def uri_values=(value)
-    self.uri = value
+  def identifier=(identifier)
+    datastreams_in_memory["descMetadata"].identifier_values = identifier
   end
-      
-  def label=(label)
-    super
-    datastreams_in_memory["descMetadata"].title_values = label
-  end    
-
-  def uri=(uri)
-    datastreams_in_memory["descMetadata"].identifier_values = uri
-    if link.first
-      update_named_datastream("link",{:dsid=>link.first.dsid,:dsLocation=>uri})
-    else
-      link_append({:dsLocation=>uri})
-    end
-  end
-
-  def content_url
-    datastreams_in_memory["descMetadata"].identifier_values.first
+ 
+  def identifier
+    datastreams_in_memory["descMetadata"].identifier_values.first unless datastreams_in_memory["descMetadata"].identifier_values.empty? 
   end
 
   # Mimic the relationship accessor that would be created if a containers relationship existed

@@ -26,7 +26,7 @@ class FileAssetsController < ApplicationController
       
       # Including these lines for backwards compatibility (until we can use Rails3 callbacks)
       @container =  ActiveFedora::Base.load_instance(params[:container_id])
-      @solr_result = @container.file_objects(:response_format=>:solr)
+      @solr_result = @container.file_objects(:response_format=>:solr,:rows=>9999)
       @external_asset_results = []
       @redirected_asset_results = []
       @file_asset_results = []

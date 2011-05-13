@@ -1,0 +1,17 @@
+<table>
+	<% unless params[:display_type] == 'list' %>
+  <thead>
+    <tr>
+      <th class="title">Title</th>
+      <th class="type">Type</th>
+      <th class="created_on">Created On</th>
+      <th class="state">Workflow State</th>
+    </tr>
+  </thead>
+  <% end %>
+  <tbody>
+    <% docs.each_with_index do |document,counter| %>
+     <%= render_document_partial document, 'index', :counter => counter %>
+    <% end %>
+  </tbody>
+</table>

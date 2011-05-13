@@ -76,16 +76,12 @@ Blacklight.configure(:shared) do |config|
   # config[:facet] << {:field_name => "format", :label => "Format", :limit => 10}
   config[:facet] = {
     :field_names => (facet_fields = [
-      "person_full_name_cid_facet",
       "object_type_facet",
-      "department_facet",
-      "peer_reviewed_facet"
+      "object_state_facet",
       ]),
     :labels => {
-      "person_full_name_cid_facet"=>"Author",
-      "object_type_facet"=>"Type of Work",
-      "department_facet"=>"Department",
-      "peer_reviewed_facet"=>"Peer Reviewed"
+      "object_type_facet"=>"Type of Record",
+      "object_state_facet"=>"Workflow State",
     },
     
     # Setting a limit will trigger Blacklight's 'more' facet values link.

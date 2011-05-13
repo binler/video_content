@@ -78,9 +78,9 @@ class ExternalAssetsController < ApplicationController
       end
 
       if @downloadable
-        #logger.debug("External asset: #{@external_asset.inspect}")
         unless @external_asset.link.empty?
-          redirect_to "#{@external_asset.uri}"
+          #redirect_to fedora_file_path(@external_asset.pid, @external_asset.filename, :download_id=>@external_asset.link.first.dsid)
+          redirect_to asset_downloads_path(@external_asset.pid,:download_id=>@external_asset.link.first.dsid, :filename=>@external_asset.filename)
         else
           logger.warn("Link undefined for external asset: " + params[:id])
           flash[:notice]= "Link undefined for external asset."

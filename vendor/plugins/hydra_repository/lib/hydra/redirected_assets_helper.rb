@@ -17,7 +17,9 @@ module Hydra::RedirectedAssetsHelper
   #
   # @return [] the Link Asset
   def create_redirected_asset_from_params
-    link = RedirectedAsset.new
+    attrs={}
+    attrs.merge!({:namespace=>params[:namespace]}) if params[:namespace]
+    link = RedirectedAsset.new(attrs)
     link.uri = params[:dsLocation]
     link.uri = "http://#{link.uri}" unless link.uri.include?("://")
     link.label = params[:label] if params[:label]

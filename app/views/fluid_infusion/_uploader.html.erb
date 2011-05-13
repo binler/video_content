@@ -14,6 +14,7 @@
     <form method="post" enctype="multipart/form-data" class="fl-uploader fl-progEnhance-basic">
         <p>Browse to upload a file.</p>
         <input name="fileData" type="file" />
+        <input type="hidden" name="namespace" value="VIDEO-CONTENT">
         <div><input type="submit" value="Save"/></div>
     </form>
     
@@ -85,26 +86,5 @@
     </form>
 </div>
 
-<form id="new_external_link" class="fl-uploader" action="<%= url_for(:action=>"create", :controller=>"external_assets")%>" method="post" data-resourceType="external_asset" accept-charset="utf8">
-  <div><br/><p>Link to a file</p></div>
-  <div class="fl-uploader-queue-wrapper">
-    <div class="flc-uploader-queue-footer fl-uploader-queue-footer">
-      <table cellspacing="0" cellpadding="0">
-	<tr>
-	  <input type="hidden" name="container_id" value="<%=params[:container_id]%>">
-	  <td><%= fedora_field_label("properties", [:uri], "URL:") %></td>
-	  <td><input name="dsLocation" value=""></td>
-	</tr>
-	<tr>
-	  <td><%= fedora_field_label("properties", [:label], "Filename:") %></td>
-	  <td><input name="label" value=""></td>
-	</tr>
-      </table>
-    </div>  
-  </div>
-  <div class="fl-uploader-btns">
-    <button type="submit" class="flc-uploader-button-upload fl-uploader-upload fl-uploader-button-default fl-uploader-dim ui-button ui-widget ui-state-default">Add File Link</button>
-  </div>
-
-</form>
+<%= render :partial=>'external_assets/new', :locals=>{:namespace=>"VIDEO-CONTENT"} %>
 <div style="clear:both;"></div>

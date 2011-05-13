@@ -26,7 +26,11 @@ module Hydra::FileAssetsHelper
   #
   # @return [FileAsset] the File Asset
   def create_asset_from_params    
-    file_asset = FileAsset.new
+    if params[:namespace]
+     file_asset = FileAsset.new(:namespace=>params[:namespace])
+    else 
+      file_asset = FileAsset.new
+    end
     file_asset.label = params[:Filename]
     
     return file_asset
