@@ -33,6 +33,18 @@ class Master < ActiveFedora::Base
     @master_id = values.any? ? values.first : ""
   end
 
+  def composite_id
+    unless parent.nil? || !parent.respond_to?(:composite_id)
+      "#{member_of.first.composite_id} #{master_id}"
+    else
+      master_id
+    end
+  end
+
+  def parent
+    member_of.first if member_of.any?
+  end
+
   def load_datastream(id)
     resource = self.load_instance(id)
     content = resource.content
@@ -50,8 +62,6 @@ class Master < ActiveFedora::Base
     result = ds.remove_node(type,index)
     return result
   end
-
-  alias_method :composite_id, :master_id
 
   def apply_ldap_values(computing_id, person_number)
     return if computing_id.blank? #|| person_number.blank?
