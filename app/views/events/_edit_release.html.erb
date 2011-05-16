@@ -1,6 +1,6 @@
 <%- release = edit_release -%>
 <%- release_counter = edit_release_counter -%>
-<%- base_id = "release_#{release_counter}" -%>
+<%- base_id = "speaker_#{release_counter}" -%>
 <%- if get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => release_counter}, :pbcoreContributor, :contributorRole]).inspect.include?("speaker") -%>
   <li>
     <dl class="container" id="<%= base_id %>">
