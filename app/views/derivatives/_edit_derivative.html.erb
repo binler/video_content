@@ -42,7 +42,7 @@
 	<%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreDescription], "Type of Derivative:") %>
       </dt>
       <dd class="derivative_type">
-	  <%= fedora_select(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreDescription], :choices=>["DVD (Mpeg2)", "iTunesU (MP4)", "ND Website (Flash)", "Youtube (H.264)"])%>
+	  <%= fedora_select(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreDescription], :choices=>["DVD (Mpeg2)", "iTunesU (MP4)", "ND Website (Flash)", "Youtube (H.264)", "Digital File"])%>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier], "ID:") %>
