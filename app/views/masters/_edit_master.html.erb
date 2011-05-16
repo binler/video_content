@@ -3,7 +3,7 @@
     <legend> Description </legend>
     <dl>
       <dt>
-        Parent Event:
+        Parent:
       </dt>
       <dd class="parent">
 	  <%= link_to !(@document_fedora.member_of.first.event_id.empty?) ? @document_fedora.member_of.first.event_id : @document_fedora.member_of.first.pid, catalog_path(@document_fedora.member_of.first.pid, :content_type => "event") %>
@@ -96,19 +96,19 @@
         <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier], "Accession Number:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier], "Archives Accession Number:") %>
       </dt>
       <dd class="accession_number">
         <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcorePart, :pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier]) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreIdentifier], "Archive Collection Code:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreIdentifier], "Archives Collection Code:") %>
       </dt>
       <dd class="archive_collection_code">
         <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreIdentifier]) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreDescription], "Archive Description:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreDescription], "Archives Description:") %>
       </dt>
       <dd class="archive_description">
         <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreDescription]) %>

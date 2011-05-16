@@ -6,10 +6,25 @@
         Parent <%= @document_fedora.member_of.first.class %>:
       </dt>
       <dd class="parent">
-	<%- if(@document_fedora.member_of.first.class == Master) -%>
-	  <%= link_to !(@document_fedora.member_of.first.master_id.empty?) ? @document_fedora.member_of.first.master_id : @document_fedora.member_of.first.pid, catalog_path(@document_fedora.member_of.first.pid, :event_id => params[:event_id], :master_id=> params[:master_id], :content_type => "derivative") %>
-	<%- else -%>
-	  <%= link_to !(@document_fedora.member_of.first.derivative_id.empty?) ? @document_fedora.member_of.first.derivative_id : @document_fedora.member_of.first.pid, catalog_path(@document_fedora.member_of.first.pid, :event_id => params[:event_id], :master_id=> params[:master_id], :content_type => "derivative") %>
+	<% obj = @document_fedora %>
+	<% arr = Array.new %>
+	<%- while(obj.respond_to?(:member_of)) -%>
+	  <%- if(obj.member_of.first.class == Master) -%>
+	    <% arr << (link_to !(obj.member_of.first.master_id.empty?) ? obj.member_of.first.master_id : obj.member_of.first.pid, catalog_path(obj.member_of.first.pid, :event_id => params[:event_id], :master_id=> params[:master_id], :content_type => "derivative")) %>
+	  <%- elsif(obj.member_of.first.class == Derivative) -%>
+	    <% arr << (link_to !(obj.member_of.first.derivative_id.empty?) ? obj.member_of.first.derivative_id : obj.member_of.first.pid, catalog_path(obj.member_of.first.pid, :event_id => params[:event_id], :master_id=> params[:master_id], :content_type => "derivative")) %>
+	  <%- else -%>
+	    <% arr << (link_to !(obj.member_of.first.event_id.empty?) ? obj.member_of.first.event_id : obj.member_of.first.pid, catalog_path(obj.member_of.first.pid, :content_type => "event")) %>
+	  <%- end -%>
+	  <% obj = obj.member_of.first %>
+	<%- end -%>
+	<% acnter = 0 %>
+	<%- arr.reverse.each do |a| -%>
+	  <%= a %> 
+	  <%- if(acnter < (arr.size - 1)) -%>
+	    >
+	  <%- end -%>
+	  <% acnter = acnter + 1 %>
 	<%- end -%>
      </dd>
       <% num_of_creators = @document_fedora.datastreams["descMetadata"].get_values([:pbcorePart, :pbcoreCreator]).size %>
