@@ -257,10 +257,17 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	xml.pbcoreIdentifier(:source=>"")
 	xml.pbcoreTitle("MASTER DETAILS")
 	xml.pbcoreDescription
-	xml.pbcoreRelation{
-          xml.pbcoreRelationType
-          xml.pbcoreRelationIdentifier
-        }
+	
+	#Archival Section
+	xml.pbcorePart{
+	  xml.pbcoreIdentifier(:source=>"", :annotation=>"archival_code")
+	  xml.pbcoreTitle
+	  xml.pbcoreDescription(:annotation=>"archival_description")
+	  xml.pbcoreRelation{
+            xml.pbcoreRelationType
+            xml.pbcoreRelationIdentifier(:annotation=>"accession_number")
+          }
+	}
 	xml.pbcoreCreator{
 	  xml.creator(:affiliation=>"", :ref=>"", :annotation=>"creator")
 	  xml.creatorRole

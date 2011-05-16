@@ -95,23 +95,23 @@
       <dd class="retention_schedule">
         <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]) %>
       </dd>
-            <dt>
-        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier], "Accession Number:") %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier], "Accession Number:") %>
       </dt>
       <dd class="accession_number">
-        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier]) %>
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcorePart, :pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier]) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [{:pbcorePart => "0"}, :pbcoreIdentifier], "Archive Collection Code:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreIdentifier], "Archive Collection Code:") %>
       </dt>
       <dd class="archive_collection_code">
-        <%= fedora_text_field(@document_fedora,"descMetadata", [{:pbcorePart => "0"}, :pbcoreIdentifier]) %>
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreIdentifier]) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [{:pbcorePart => "0"}, :pbcoreDescription], "Archive Description:") %>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreDescription], "Archive Description:") %>
       </dt>
       <dd class="archive_description">
-        <%= fedora_text_area(@document_fedora,"descMetadata", [{:pbcorePart => "0"}, :pbcoreDescription]) %>
+        <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreDescription]) %>
       </dd>
     </dl>
   </fieldset>
