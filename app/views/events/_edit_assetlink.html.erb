@@ -5,7 +5,7 @@
   <li>
     <dl class="container" id="<%= base_id %>">
         <dt>
-          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => assetlink_counter}, :pbcoreAssetType, :text], "Label:") %>
+          <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => assetlink_counter}, :pbcoreAssetType, :text], "Name:") %>
         </dt>
         <dd class="contributor">
           <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => assetlink_counter}, :pbcoreAssetType, :text]) %>

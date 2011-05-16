@@ -42,7 +42,7 @@
 	<%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreDescription], "Type of Derivative:") %>
       </dt>
       <dd class="derivative_type">
-	  <%= fedora_select(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreDescription], :choices=>["DVD (Mpeg2)", "iTunesU (MP4)", "ND Website (Flash)", "Youtube (H.264)"])%>
+	  <%= fedora_select(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreDescription], :choices=>["DVD (Mpeg2)", "iTunesU (MP4)", "ND Website (Flash)", "Youtube (H.264)", "Digital File"])%>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier], "ID:") %>
@@ -110,7 +110,7 @@
       <%- end -%>
     </dl>
   </fieldset>
-  <fieldset id="assetlinks">
+  <fieldset id="links">
     <legend>Links</legend>
       <ul id="speaker-listing">
         <%= render :partial=>"derivatives/edit_assetlink", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:pbcorePart, :pbcorePart) %>

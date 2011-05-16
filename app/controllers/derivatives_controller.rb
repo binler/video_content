@@ -93,7 +93,7 @@ class DerivativesController < CatalogController
       :content_type => params[:content_type]
     }
     # NOTE anchor tag is defined in edit event view code
-    url_params[:anchor] = 'assetlinks' if params[:content_type] == 'derivative'
+    url_params[:anchor] = "assetlink_#{get_last_assetlink_count(@asset)}" if params[:content_type] == 'derivative'
     redirect_to url_for(url_params)
   end
 
@@ -101,11 +101,36 @@ class DerivativesController < CatalogController
     @asset = Derivative.load_instance(params[:id])
     @asset.remove_child(params[:nodetype], params[:node_counter])
     @asset.save
-    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
+    index = get_prev_assetlink_count(@asset,params[:node_counter].to_i)
+    index == -1 ? anchor = "links" : anchor = "assetlink_#{index}" 
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :anchor=>anchor)
   end
 
   def show
     show_without_customizations
   end
 
+  private 
+
+  def get_last_assetlink_count(asset)
+    pbparts = asset.datastreams_in_memory["descMetadata"].find_by_terms(:pbcorePart, :pbcorePart)
+    count = 0
+    last_link_index = -1
+    pbparts.each do|pbpart|
+      last_link_index = count if pbpart.inspect.include?("ASSET LINK")
+      count = count + 1
+    end
+    last_link_index
+  end
+
+  def get_prev_assetlink_count(asset, count)
+    pbparts = asset.datastreams_in_memory["descMetadata"].find_by_terms(:pbcorePart, :pbcorePart)
+    index = 0
+    prev_link_index = -1
+    pbparts.each do|pbpart|
+      prev_link_index = index if pbpart.inspect.include?("ASSET LINK") && index < count
+      index = index + 1
+    end
+    prev_link_index
+  end
 end

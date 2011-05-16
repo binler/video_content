@@ -115,7 +115,7 @@
       </dd>
     </dl>
   </fieldset>
-  <fieldset id="assetlinks">
+  <fieldset id="links">
     <legend>Links</legend>
       <ul id="speaker-listing">
         <%= render :partial=>"masters/edit_assetlink", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:pbcorePart, :pbcorePart) %>
