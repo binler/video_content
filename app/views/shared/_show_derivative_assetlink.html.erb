@@ -1,0 +1,15 @@
+<%- assetlink = show_derivative_assetlink -%>
+<%- assetlink_counter = show_derivative_assetlink_counter -%>
+<%- base_id = "assetlink_#{assetlink_counter}" -%>
+<%- if get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => assetlink_counter}, :pbcoreTitle]).inspect.include?("ASSET LINK") -%>
+    <tr>
+      <td>
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => assetlink_counter}, :pbcoreAssetType, :text])%>
+      </td>
+      <td>
+        <% link_value = get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => assetlink_counter}, :pbcoreAssetType, :pbcoreAssetType_reference]) %>
+        <a href="<%=link_value%>"><%=link_value%></a>
+      </td>
+    </tr>	
+<%- end -%>
+

@@ -1,0 +1,12 @@
+<%- if get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, :pbcoreTitle]).inspect.include?("ASSET LINK") -%>
+  <table id="links_list" class="multipleEdit">
+    <tr>
+      <th>Name</th>
+      <th>Link</th>
+    </tr>
+    <%= render :partial=>"events/show_assetlink", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:pbcoreDescriptionDocument, :pbcorePart) %>
+  </table>
+<%- else -%>
+No Current Links
+<%- end -%>
+

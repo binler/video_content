@@ -392,3 +392,41 @@ th.admin-links, th.masquerade-link {
 td.masquerade-link {
   text-align:center;
 }
+
+/***
+  links list table styles
+***/
+table#links_list {
+    margin-bottom: 0;
+    width: 735px;
+}
+
+#documents table th, table#links_list tr th {
+    border: none;
+	font-size: 13px;
+    font-weight: bold;
+}
+
+table#links_list tr td {
+        border-color: #CCCCCC;
+	border-style: none none dotted;
+	border-width: medium medium 1px;
+}
+
+table#links_list {
+	width: 100%;
+	background-color: #ffffff;
+	}
+
+table#links_list  th {
+	text-align: left;
+	font-size: .9em;
+	border: 1px solid #eeeeee;
+	background-color: #f6f6f6;
+}
+
+table#links_list  td {
+	text-align: left;
+}
+
+table#links_list > col {width: auto;}

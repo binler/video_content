@@ -16,7 +16,7 @@ class EventsController < CatalogController
   helper :hydra, :metadata, :infusion_view
 
   #before_filter :initialize_collection, :except=>[:index, :new]
-  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :create, :add, :download, :removespeaker]
+  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :create, :add, :download, :removespeaker, :removenode]
   def index
     @events = Event.find_by_solr(:all).hits.map{|result| Event.load_instance_from_solr(result["id"])}
   end
