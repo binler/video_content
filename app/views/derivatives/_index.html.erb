@@ -1,0 +1,20 @@
+<tr class="<%= document.get(:object_type_t) %> document" class="<%= cycle("even","odd") %>">
+  <td>
+    <%- document_fedora = Derivative.load_instance_from_solr(document[:id]) -%>
+    <%- unless document_fedora.composite_id.empty? -%>
+      <%- label = document_fedora.composite_id -%>
+    <%- else -%>
+      <%- label = Blacklight.config[:show][:heading].to_sym -%>
+    <%- end -%>
+    <%= link_to_document(document, :label => label, :counter => (counter + 1 + @response.params[:start].to_i)) %>
+  </td>
+  <td>
+    <%= (document.get(:medium_t) || document_type(document)).gsub("Hydrangea","") %>
+  </td>
+  <td>
+    <%= DateTime.parse(document.get(:system_create_dt)).to_s(:iso_date_time) %>
+  </td>
+  <td>
+    <%= document.get(:object_state_facet) %>
+  </td>
+</tr>
