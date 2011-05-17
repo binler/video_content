@@ -3,23 +3,34 @@
   <% num_of_creators = @document_fedora.datastreams["descMetadata"].get_values([:pbcorePart, :pbcoreCreator]).size %>
   <% i = 0 %>
   <% owner_index = 0 %>
-  <% creator_index = 0 %>
+  <% video_index = 0 %>
+  <% creator_index = Array.new %>
   <% while i < num_of_creators do %>
     <%- if((get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"creator") -%>
-      <% creator_index = i %>
+      <% creator_index << i %>
     <%- elsif((get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"owner") -%>
       <% owner_index = i %>
+    <%- elsif((get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"video_creator") -%>
+      <% video_index = i %>
     <%- end -%>
     <% i = i+1 %>
   <%- end -%>
-    <dl>
+  <dl>
+    <dt>
+      Parent:
+    </dt>
+    <dd class="parent">
+	<%= link_to !(@document_fedora.member_of.first.event_id.empty?) ? @document_fedora.member_of.first.event_id : @document_fedora.member_of.first.pid, catalog_path(@document_fedora.member_of.first.pid, :content_type => "event") %>
+    </dd>
+    <% unless get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => video_index}, :creator]).first.empty? %>
       <dt>
-        Parent:
+        <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => video_index}, :creator], "Video Creator:") %>
       </dt>
-      <dd class="parent">
-	  <%= link_to !(@document_fedora.member_of.first.event_id.empty?) ? @document_fedora.member_of.first.event_id : @document_fedora.member_of.first.pid, catalog_path(@document_fedora.member_of.first.pid, :content_type => "event") %>
+      <dd class="video_creator">
+	<%= get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => video_index}, :creator]) %>
       </dd>
-     <% unless get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator]).first.empty? %>
+    <% end %>
+    <% unless get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator]).first.empty? %>
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator], "Owner:") %>
       </dt>
@@ -27,13 +38,15 @@
 	<%= get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator]) %>
       </dd>
     <% end %>
-    <% unless get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator]).first.empty? %>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => creator_index}, :creator], "Creator:") %>
-      </dt>
-      <dd class="creator">
-        <%= get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => creator_index}, :creator]) %>
-      </dd>
+    <% creator_index.each do |ci| %>
+      <% unless get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => ci}, :creator]).first.empty? %>
+        <dt>
+          <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => ci}, :creator], "Creator:") %>
+        </dt>
+        <dd class="creator">
+          <%= get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => ci}, :creator]) %>
+        </dd>
+      <% end %>
     <% end %>	
     <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier]).first.empty? %>
       <dt>

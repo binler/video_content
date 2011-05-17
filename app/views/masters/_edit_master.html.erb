@@ -17,6 +17,18 @@
       <% num_of_creators = @document_fedora.datastreams["descMetadata"].get_values([:pbcorePart, :pbcoreCreator]).size %>
       <% i = 0 %>
       <% while i < num_of_creators do %>
+        <%- if((get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"video_creator") -%>
+          <dt>
+            <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator], "Video Creator:") %>
+          </dt>
+          <dd class="creator">
+            <%= fedora_text_field(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator]) %>
+          </dd>
+        <%- end -%>
+        <% i = i+1 %>
+      <%- end -%>
+      <% i = 0 %>
+      <% while i < num_of_creators do %>
         <%- if((get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"owner") -%>
 	  <dt>
             <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator], "Owner:") %>

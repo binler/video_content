@@ -269,6 +269,10 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
           }
 	}
 	xml.pbcoreCreator{
+	  xml.creator(:affiliation=>"", :ref=>"", :annotation=>"video_creator")
+	  xml.creatorRole
+	}
+	xml.pbcoreCreator{
 	  xml.creator(:affiliation=>"", :ref=>"", :annotation=>"creator")
 	  xml.creatorRole
 	}
