@@ -205,6 +205,15 @@ ul#actions-menu li, ul#session-management li {
   width:4em;
 }
 
+#compound-form .date-select input[type="text"] {
+  display:inline;
+  margin-right:.3em;
+}
+
+#compound-form .hint {
+  color: #555;
+}
+
 #submitForRelease,
 .document_show fieldset legend,
 li fieldset legend {

@@ -200,7 +200,7 @@
      saveDateWidgetEdit: function(callback) {
          name = $("#"+callback["id"]).parent().attr("name");
          value = callback["yyyy"]+"-"+callback["mm"]+"-"+callback["dd"];
-         saveEdit(name , value);
+         $.fn.hydraMetadata.saveEdit(name , value);
      },
      
      /*
@@ -238,9 +238,11 @@
      *
      */
     saveEdit: function(editNode) {
+       console.log('hydraMetadata: saveEdit');
        $editNode = $(editNode);
        var $closestForm = $editNode.closest("form");
        var url = $closestForm.attr("action");
+       console.log(url);
        var field_param = $editNode.fieldSerialize();
        var content_type_param = $("input#content_type", $closestForm).fieldSerialize();
        var field_selectors = $("input.fieldselector[rel="+$editNode.attr("rel")+"]").fieldSerialize();

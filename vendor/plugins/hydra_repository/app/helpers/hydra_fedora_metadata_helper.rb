@@ -140,6 +140,7 @@ module HydraFedoraMetadataHelper
         body << options_for_select([["Day","-1"],"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"], day)
       body << "</select>"
     body << "</div>"
+    body << "<p class=\"hint\">Please enter the full year in YYYY form. Years entered in YY form will <em>not</em> be treated as abbreviations e.g. 12 is the year 12.</p>"
     body << <<-EOF
     <script type="text/javascript">
     // <![CDATA[  

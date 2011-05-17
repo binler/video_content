@@ -439,7 +439,7 @@
     function saveDateWidgetEdit(callback) {
         name = $("#"+callback["id"]).parent().attr("name");
         value = callback["yyyy"]+"-"+callback["mm"]+"-"+callback["dd"];
-        saveEdit(name , value);
+        hydraSaveEdit(name , value);
     };
 
     // Remove the given value from its corresponding metadata field.
@@ -454,9 +454,21 @@
     
     function hydraSaveEdit(editNode, newValue) {
       $editNode = $(editNode)
+      // Quick hack to accomidate passing the name attribute of an element instead of the element itself. Allows saveDateWidgetEdit to work.
+      var compositeElement = false;
+      if ($editNode.length == 0) {
+        compositeElement = true;
+        $editNode = $($('[name="' + editNode + '"]')[0]);
+      }
       var $closestForm = $editNode.closest("form");
       var url = $closestForm.attr("action");
-      var field_param = $editNode.fieldSerialize();
+      var field_param = ""
+      if (compositeElement) {
+        field_param = $.param([{name: editNode, value: newValue}]);
+      } else {
+        field_param = $editNode.fieldSerialize();
+      }
+      console.log(field_param);
       var content_type_param = $("input#content_type", $closestForm).fieldSerialize();
       var field_selectors = $("input.fieldselector[rel="+$editNode.attr("rel")+"]").fieldSerialize()
       
