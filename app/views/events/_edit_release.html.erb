@@ -17,9 +17,10 @@
           <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "#{release_counter}"}, :pbcoreAnnotation]) %>
         </dd>
         <dt>
+	  Contract/Release:
         </dt>
         <dd class="copyrights">
-          <%= fedora_checkbox(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "#{release_counter}"}, :pbcoreRightsSummary, :rightsSummary])%> Contract/Release on file
+          <%= fedora_select(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, {:pbcorePart => "#{release_counter}"}, :pbcoreRightsSummary, :rightsSummary], :choices=>["Not on file", "On file", "Not applicable"])%>
         </dd>
 	<%- if ( (params[:action] == "edit" || params[:action] == "create")) -%>
 	  <dt> 
