@@ -17,11 +17,8 @@
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreAssetDate], "Date:") %>
       </dt>
-      <dd class="date iso-datepicker">
-        <noscript>
-          <p class="hint">Use the format: YYYY-MM-DD</p>
-        </noscript>
-        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAssetDate]) %>
+      <dd >
+        <%= fedora_date_select(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAssetDate]) %>
       </dd>
       <fieldset>
         <legend>Location</legend>

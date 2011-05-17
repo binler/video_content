@@ -200,7 +200,7 @@
      saveDateWidgetEdit: function(callback) {
          name = $("#"+callback["id"]).parent().attr("name");
          value = callback["yyyy"]+"-"+callback["mm"]+"-"+callback["dd"];
-         saveEdit(name , value);
+         $.fn.hydraMetadata.saveEdit(name , value);
      },
      
      /*
