@@ -69,7 +69,7 @@
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate], "Creation Date:") %>
       </dt>
       <dd class="date">
-        <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate]) %>
+        <%= fedora_date_select(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate]) %>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :essenceTrack, :essenceTrackDuration], "Track Duration:") %>
