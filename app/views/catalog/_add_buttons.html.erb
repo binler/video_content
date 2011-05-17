@@ -1,0 +1,23 @@
+<%- if current_user -%>
+
+    <%- if defined?(@document_fedora) -%>
+      <%- content_type = @document_fedora.class.to_s.downcase -%>
+
+      <%- if ( content_type == 'event' ) && (can? :create_master, EventWorkflow) -%>
+
+        <input id="re-run-action" class="nobutton button" type="button" value="Add a Master" onclick=" location.href='<%=url_for(:action => "new", :controller => "masters", :content_type => 'master', :event_id => ( params[:event_id] ? params[:event_id] : params[:id])) %>'"/>
+
+      <%- elsif (content_type == 'master') && (can? :create_derivative, EventWorkflow) -%>
+
+        <input id="re-run-action" class="nobutton button" type="button" value="Add a Derivative" onclick=" location.href='<%=url_for(:action => "new", :controller => "derivatives", :content_type => 'derivative', :event_id => params[:event_id], :master_id => ( params[:master_id] ? params[:master_id] : params[:id] )) %>'"/>
+
+      <%- elsif (content_type == 'derivative') && (@document_fedora.member_of.first.class == Master) && (can? :create_derivative, EventWorkflow) -%>
+
+        <input id="re-run-action" class="nobutton button" type="button" value="Add a Derivative" onclick=" location.href='<%=url_for(:action => "new", :controller => "derivatives", :content_type => 'derivative', :event_id => params[:event_id], :master_id => params[:master_id], :id => params[:id], :level => 2) %>'"/>
+
+      <%- end -%>
+
+    <%- end -%>
+
+<%- end -%>
+

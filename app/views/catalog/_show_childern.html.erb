@@ -1,7 +1,9 @@
   <%- if @document_fedora.class == Event -%>
     <%= render :partial => "catalog/_index_partials/masters" %>
-  <%- else -%>
-    <%= render :partial => "catalog/_index_partials/derivatives" %>
+  <%- elsif @document_fedora.class == Master -%>
+      <%= render :partial => "catalog/_index_partials/derivatives" %>
+  <%- elsif (@document_fedora.class == Derivative) && (@document_fedora.member_of.first.class == Master) -%>
+      <%= render :partial => "catalog/_index_partials/derivatives" %>
   <%- end -%>
 
 
