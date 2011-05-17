@@ -238,11 +238,9 @@
      *
      */
     saveEdit: function(editNode) {
-       console.log('hydraMetadata: saveEdit');
        $editNode = $(editNode);
        var $closestForm = $editNode.closest("form");
        var url = $closestForm.attr("action");
-       console.log(url);
        var field_param = $editNode.fieldSerialize();
        var content_type_param = $("input#content_type", $closestForm).fieldSerialize();
        var field_selectors = $("input.fieldselector[rel="+$editNode.attr("rel")+"]").fieldSerialize();
