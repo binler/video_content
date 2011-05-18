@@ -35,9 +35,7 @@
     <div class="document">
       <%= render_document_partial @document, params["action"] %>
       <%- if params[:id] -%>
-	<%- if !(@document_fedora.nil?) -%>
-	  <%= render :partial => "catalog/show_childern" %>
-	<%- end -%>
+        <%= render :partial => "catalog/show_children" unless @document_fedora.nil? %>
       <%- end -%>
     </div>
   </div>

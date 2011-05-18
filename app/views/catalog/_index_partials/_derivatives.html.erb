@@ -1,27 +1,37 @@
-    <h2 class="section-title">List of Derivatives</h2>
-    <%- response = @response if response.nil? -%>
-    <%- collection_obj = @document_fedora -%>
-    <%- arr = Array.new -%>
-    <%- if(collection_obj.members.size > 0 ) -%>
-      <%- collection_obj.members(:rows=> "1024").each_with_index do |doc, counter| -%>
+<h2 class="section-title">List of Derivatives</h2>
+<%- response = @response if response.nil? -%>
+<%- collection_obj = @document_fedora -%>
+<%- collection_class_name = @document_fedora.class.name -%>
+<%- arr = Array.new -%>
+<ul class="children">
+  <%- if collection_obj.members.any? -%>
+    <%- collection_obj.members(:rows=> "1024").each_with_index do |doc, counter| -%>
+      <li>
         <%- item = Derivative.load_instance(doc.pid) -%>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= counter+1 %>. <%= link_to (item.derivative_id.empty? ? item.pid : item.derivative_id), catalog_path(item.pid, :event_id => params[:event_id], :master_id => params[:master_id].nil? ? params[:id] : params[:master_id], :content_type => "derivative") %>
-        <dl style="position:relative;left:100px;">
-	  <table>
-            <% unless get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreDescription]).first.empty? %>
-	    <tr>
-	      <td> Derivative Type: </td><td><%= get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreDescription]) %></td>
-	    </tr>
-	    <% end %>
-            <% unless get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate]).first.empty? %>
-	    <tr>
-	      <td> Creation Date: </td><td><%= get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate]) %></td>
-	    </tr>
-	    <% end %>
-          </table>
+        <%= counter+1 %>. <%= link_to (item.derivative_id.empty? ? item.pid : item.derivative_id), catalog_path(item.pid, :event_id => params[:event_id], :master_id => params[:master_id].nil? ? params[:id] : params[:master_id], :content_type => "derivative") %>
+        <dl>
+          <%- unless get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreDescription]).first.empty? -%>
+            <dt> Derivative Type: </dt>
+            <dd><%= get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreDescription]) %></dd>
+          <%- end -%>
+          <%- unless get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate]).first.empty? -%>
+            <dt> Creation Date: </dt>
+            <dd><%= get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate]) %></dd>
+          <%- end -%>
         </dl>
-	<hr/>
-      <%- end -%>
-    <%- else -%>
-      <p> No Derivatives available </p>
+      </li>
     <%- end -%>
+  <%- else -%>
+    <li>No Derivatives have been created of this <%= collection_class_name %>.</li>
+  <%- end -%>
+</ul>
+
+<%- if (can? :create_derivative, EventWorkflow) -%>
+  <%- new_derivative_params = {
+                    :content_type => 'derivative',
+                    :event_id     => params[:event_id],
+                    :master_id    => ( params[:master_id] ? params[:master_id] : params[:id] )
+  } -%>
+  <%- new_derivative_params.merge!({ :id => params[:id], :level => 2 }) if collection_obj.is_a? Derivative -%>
+  <%= link_to "Create a Derivative of this #{collection_class_name}", new_derivative_path( new_derivative_params ), :class => 'button' %>
+<%- end -%>

@@ -1,27 +1,33 @@
-    <h2 class="section-title">Master Files</h2>
-    <%- response = @response if response.nil? -%>
-    <%- collection_obj = @document_fedora -%>
-    <%- arr = Array.new -%>
-    <%- if(collection_obj.members.size > 0 ) -%>
-      <%- collection_obj.members(:rows=> "1024").each_with_index do |doc, counter| -%>
+<h2 class="section-title">Master Files</h2>
+<%- response = @response if response.nil? -%>
+<%- collection_obj = @document_fedora -%>
+<%- arr = Array.new -%>
+<ul class="children">
+  <%- if collection_obj.members.any? -%>
+    <%- collection_obj.members(:rows=> "1024").each_with_index do |doc, counter| -%>
+      <li>
         <%- item = Master.load_instance(doc.pid) -%>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= counter+1 %>. <%= link_to (item.master_id.empty? ? item.pid : item.master_id), catalog_path(item.pid, :event_id => params[:id], :content_type => "master") %>
-        <dl style="position:relative;left:100px;">
-	  <table>
-            <% unless get_values_from_datastream(item,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationTracks]).first.empty? %>
-	    <tr>
-	      <td> Track: </td><td><%= get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationTracks]) %></td>
-	    </tr>
-	    <% end %>
-            <% unless get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate]).first.empty? %>
-	    <tr>
-	      <td> Creation Date: </td><td><%= get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate]) %></td>
-	    </tr>
-	    <% end %>
-          </table>
+        <%= counter+1 %>. <%= link_to (item.master_id.empty? ? item.pid : item.master_id), catalog_path(item.pid, :event_id => params[:id], :content_type => "master") %>
+        <dl>
+          <%- unless get_values_from_datastream(item,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationTracks]).first.empty? -%>
+            <dt>Track:</dt>
+            <dd><%= get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationTracks]) %></dd>
+          <%- end -%>
+          <%- unless get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate]).first.empty? -%>
+            <dt>Creation Date:</dt>
+            <dd><%= get_values_from_datastream(item, "descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationDate]) %></dd>
+          <%- end -%>
         </dl>
-	<hr/>
-      <%- end -%>
-    <%- else -%>
-      <p> No Master Files available for this event </p>
+      </li>
     <%- end -%>
+  <%- else -%>
+    <li>No Master Files have been created for this Event.</li>
+  <%- end -%>
+</ul>
+
+<%- if (can? :create_master, EventWorkflow) -%>
+  <li><%= link_to 'Create a Master for this Event', new_master_path(
+                                                  :content_type => 'master',
+                                                  :event_id     => ( params[:event_id] ? params[:event_id] : params[:id] )
+  ), :class => 'button' %></li>
+<%- end -%>

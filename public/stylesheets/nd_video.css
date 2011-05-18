@@ -215,6 +215,23 @@ ul#actions-menu li, ul#session-management li {
   color: #555;
 }
 
+ul.children {
+  margin-bottom:2em;
+}
+
+.children li {
+  list-style-type:none;
+}
+
+.children dl dt {
+  margin-left:1.2em;
+}
+
+.children dl dt,
+.children dl dd {
+  margin-top:.6em;
+}
+
 #submitForRelease,
 .document_show fieldset legend,
 li fieldset legend {
