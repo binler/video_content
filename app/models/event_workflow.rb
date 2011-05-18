@@ -49,7 +49,7 @@ class EventWorkflow < ActiveRecord::Base
   end
 
   def self.edit_actions
-    [ :edit_event, :edit_master, :edit_derivative, ]
+    [ :edit_event, :edit_master, :edit_derivative ]
   end
 
   def self.show_actions
