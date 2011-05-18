@@ -44,6 +44,7 @@ gem 'webrat'
 gem 'will_paginate'
 gem 'xml-simple'
 gem 'yard'
+gem 'blacklight-sitemap'
 
 group :development, :test do
   gem 'ruby-debug'
