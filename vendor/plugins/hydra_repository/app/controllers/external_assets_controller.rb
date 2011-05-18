@@ -51,11 +51,13 @@ class ExternalAssetsController < ApplicationController
       @container.file_objects_append(@new_link)
       @container.save
     end
+    anchor = 'files'
     rescue Exception => e
       flash[:notice] = "Failed to create link: invalid url"
       logger.error("Failed to create link: #{e.message}")
+      anchor=''
     end
-    redirect_to catalog_path(params[:container_id],:anchor=>'files')
+    redirect_to catalog_path(params[:container_id],:anchor=>anchor)
   end
 
    def show

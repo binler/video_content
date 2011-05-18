@@ -22,7 +22,7 @@
     <form class="flc-uploader fl-uploader fl-progEnhance-enhanced" 
           method="get" 
           enctype="multipart/form-data">
-        <p>Upload a file</p>      
+        <!--<p>Upload a file</p>-->      
         <!-- The file queue -->
         <div class="fl-uploader-queue-wrapper">
             
@@ -85,6 +85,7 @@
         </div>
     </form>
 </div>
-
-<%= render :partial=>'external_assets/new', :locals=>{:namespace=>"VIDEO-CONTENT"} %>
+<div id="link_to_file">
+  <%= render :partial=>'external_assets/new', :locals=>{:namespace=>"VIDEO-CONTENT"} %>
+</div>
 <div style="clear:both;"></div>
