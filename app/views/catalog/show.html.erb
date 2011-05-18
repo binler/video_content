@@ -41,8 +41,6 @@
   </div>
 </div>
 
-<%= render :partial=>'add_buttons' %>
-
 <%= render :partial=>'solr_request' %>
 <% if @document.marc %>
   <%= @document.marc.to_zotero(document_partial_name(@document)) %>
