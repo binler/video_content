@@ -168,6 +168,10 @@ ul#actions-menu li, ul#session-management li {
   border-bottom:none;
 }
 
+.document {
+  padding-bottom:.5em;
+}
+
 #compound-form dl {
   padding:.3em 1.7em 1.7em;
 }
