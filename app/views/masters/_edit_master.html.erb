@@ -101,9 +101,6 @@
       <dd class="annotation">
         <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "0"}, :text]) %>
       </dd>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text], "Retention Schedule:") %>
-      </dt>
       <%- if can? :edit_archive, Master -%>
         <%=render :partial=>'masters/edit_archive_fields'%>
       <%- else -%>
