@@ -30,7 +30,7 @@
         <%= flash[:notice] %>
       </div>
     <% end %>
-
+    <p>There is no submit button for this form. Please click <em>outside the textbox</em> to save the changes.</p>
     <div id="compound-form">
       <h2 class="section-title"><a href="#">Event</a></h2>
       <%= render :partial => "events/edit_event", :locals => { :content_type => "event"} %>
