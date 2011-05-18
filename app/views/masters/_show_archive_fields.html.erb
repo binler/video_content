@@ -1,3 +1,11 @@
+<% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]).first.empty? %>
+  <dt>
+    <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text], "Retention Schedule:") %>
+  </dt>
+  <dd class="retention_schedule">
+    <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]) %>
+  </dd>
+<% end %>
 <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier]).first.empty? %>
 <dt>
   <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier], "Archives Accession Number:") %>
