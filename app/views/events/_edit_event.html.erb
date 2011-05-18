@@ -173,5 +173,14 @@
       </dd>
     </dl>
   </fieldset>
+  <fieldset>
+    <legend>Archive Notes </legend>
+    <dt>
+      <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation], "Notes:") %>
+    </dt>
+    <dd class="notes">
+      <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation]) %>
+    </dd>
+  </fieldset>
 </form>
 

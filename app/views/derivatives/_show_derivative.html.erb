@@ -193,3 +193,13 @@
       </dd>
     </dl>
   </fieldset>
+  <fieldset>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreAnnotation]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreAnnotation], "Notes:") %>
+      </dt>
+      <dd class="notes">
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreAnnotation]) %>
+      </dd>
+    <% end %>
+  </fieldset>

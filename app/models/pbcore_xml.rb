@@ -210,6 +210,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	  xml.pbcoreDescription
 	  xml.pbcoreAssetType(:ref=>"", :annotation=>"")
 	}
+	xml.pbcoreAnnotation(:annotationType=>"archive notes")
 	# Child Elements
 #	xml.pbcoreInstantiation
       }
@@ -308,6 +309,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	  xml.pbcoreDescription
 	  xml.pbcoreAssetType(:ref=>"", :annotation=>"")
 	}
+	xml.pbcoreAnnotation(:annotationType=>"archive notes")
 	# Derivatives (child element)
 	xml.pbcorePart
       }
@@ -362,6 +364,7 @@ class PbcoreXml < ActiveFedora::NokogiriDatastream
 	  xml.pbcoreDescription
 	  xml.pbcoreAssetType(:ref=>"", :annotation=>"")
 	}
+	xml.pbcoreAnnotation(:annotationType=>"archive notes")
 	# Derivatives (child element)
 	xml.pbcorePart
       }
