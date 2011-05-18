@@ -11,7 +11,7 @@
                                                          :event_id     => ( params[:event_id] ? params[:event_id] : params[:id] )
                                                        ) %></li>
       <%- end -%>
-      <%- if ( content_type =~ /Master|Derivative/ ) && (can? :create_derivative, EventWorkflow) -%>
+      <%- if ( content_type =~ /Master|Derivative/ ) && (can? :create_derivative, EventWorkflow) && !(@document_fedora.respond_to?(:level) && (@document_fedora.level.to_i > 1)) -%>
         <%- new_derivative_params = {
                           :content_type => 'derivative',
                           :event_id     => params[:event_id],
