@@ -156,7 +156,7 @@
         <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreDescription]) %>
       </dd>
     <% end %>
-
+    <%=render :partial=>'masters/show_archive_fields'%>
     </dl>
   </fieldset>
   <fieldset id="assetlinks">
@@ -196,13 +196,4 @@
       </dd>
     </dl>
 </fieldset>
-<fieldset>
-  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreAnnotation]).first.empty? %>
-    <dt>
-      <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreAnnotation], "Notes:") %>
-    </dt>
-    <dd class="notes">
-      <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreAnnotation]) %>
-    </dd>
-  <% end %>
-</fieldset>
+

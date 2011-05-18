@@ -1,0 +1,8 @@
+<% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation]).first.empty? %>
+  <dt>
+    <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation], "Archive Notes:") %>
+  </dt>
+  <dd class="notes">
+    <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation]) %>
+  </dd>
+<% end %>

@@ -19,3 +19,9 @@
 <dd class="archive_description">
   <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreDescription]) %>
 </dd>
+<dt>
+  <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreAnnotation], "Archive Notes:") %>
+</dt>
+<dd class="notes">
+  <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreAnnotation]) %>
+</dd>

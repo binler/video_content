@@ -68,6 +68,11 @@
       <dd class="subject">
         <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreSubject]) %>
       </dd>
+      <%- if can? :edit_archive, Master -%>
+        <%=render :partial=>'events/edit_archive_fields'%>
+      <%- else -%>
+        <%=render :partial=>'events/show_archive_fields'%>
+      <%-end -%>
     </dl>
   </fieldset>
   <fieldset id="creator_fields">
@@ -172,15 +177,6 @@
         <input type="radio" name="file_radio" id="link_file_radio" VALUE="link_to_file">&nbsp;&nbsp;Link to File
       </dd>
     </dl>
-  </fieldset>
-  <fieldset>
-    <legend>Archive Notes </legend>
-    <dt>
-      <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation], "Notes:") %>
-    </dt>
-    <dd class="notes">
-      <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation]) %>
-    </dd>
   </fieldset>
 </form>
 
