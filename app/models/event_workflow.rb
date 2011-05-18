@@ -42,9 +42,9 @@ class EventWorkflow < ActiveRecord::Base
 
   def self.workflow_actions
     [
-      :create_event, :edit_event, :destroy_event,
-      :create_master, :edit_master, :destroy_master,
-      :create_derivative, :edit_derivative, :destroy_derivative
+      :create_event, :edit_event, :edit_archive_event, :destroy_event,
+      :create_master, :edit_master, :edit_archive_master, :destroy_master,
+      :create_derivative, :edit_derivative, :edit_archive_derivative, :destroy_derivative
     ]
   end
 
