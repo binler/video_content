@@ -74,20 +74,26 @@
 }
 
 #actions-menu, #session-management {
+  background-color:#E6E8F5;
   float:right;
-  font-family:'Palatino Linotype','Book Antiqua',Palatino,serif;
   margin:.7em 1em;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
 }
 
 ul#actions-menu li, ul#session-management li {
+  color:#183451;
   list-style-type:none;
-  color:#E6E8F5;
+  margin-left:0;
 }
 
 #actions-menu a:link, #session-management a:link, #actions-menu a:visited, #session-management a:visited {
   border-bottom:1px solid #839DBF;
-  color:#E6E8F5;
+  color:#183451;
   font-weight:bold;
+  margin:0 .2em;
+  padding:.1em .2em;
   text-decoration:none;
 }
 
@@ -374,6 +380,10 @@ ul.ui-autocomplete li {
 
 ul.ui-autocomplete li a {
   text-align:left;
+}
+
+.logout-message {
+  height:600px;
 }
 
 /**** Masquerade ****/
