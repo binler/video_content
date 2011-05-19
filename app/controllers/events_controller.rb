@@ -135,6 +135,7 @@ class EventsController < CatalogController
     events_to_fire.each do |state_event|
       if can? state_event, EventWorkflow
         event_workflow.state_transition_comments = comments
+        event_workflow.from_address = current_user.email
         event_workflow.fire_events(state_event)
       end
     end

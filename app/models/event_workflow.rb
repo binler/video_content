@@ -11,7 +11,7 @@ class EventWorkflow < ActiveRecord::Base
   validates_presence_of :pid
   after_create :publish_permissible_actions
 
-  attr_accessor :state_transition_comments
+  attr_accessor :state_transition_comments, :from_address
 
   def self.find_or_create_by_pid(pid)
     existing_workflow = EventWorkflow.find_by_pid(pid)
@@ -100,19 +100,36 @@ class EventWorkflow < ActiveRecord::Base
     opts = {}
     opts.merge!(:event_id=>event.composite_id) unless event.nil? || event.composite_id.nil?
     opts.merge!(:event_pid=>event.pid) unless event.nil? || event.pid.nil?
-    opts.merge!(:comments=>@state_transition_comments) unless @state_transition_comments.nil?
+    opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
+    opts.merge!(:from_address=>from_address) unless from_address.nil?
     ApplicationMailer.deliver_event_planned_notice(SMTP_DEBUG_EMAIL_ADDRESS,opts)
-    # TODO: send to users associated with: abilities_affected_by_state_change 
+    to_users = get_to_users
+    to_users << from_address unless from_address.nil?
+    ApplicationMailer.deliver_event_updated_notice(to_users.uniq.join(","),opts)
     true
+  end
+
+  def get_to_users
+    to_users = []
+
+    abilities_affected_by_state_change.each do |ability|
+      current_users = User.logins_permitted_to_perform_action(ability.to_s)
+      current_users.each do |current_user|
+        to_users << current_user
+      end
+    end
+    to_users.flatten.map! {|user| "#{user}@nd.edu"}
   end
 
   def event_notify_video_editors_of_updates_callback
     opts = {}
     opts.merge!(:event_id=>event.composite_id) unless event.nil? || event.composite_id.nil?
     opts.merge!(:event_pid=>event.pid) unless event.nil? || event.pid.nil?
-    opts.merge!(:comments=>@state_transition_comments) unless @state_transition_comments.nil?
-    ApplicationMailer.deliver_event_updated_notice(SMTP_DEBUG_EMAIL_ADDRESS,opts)
-    # TODO: send to users associated with: abilities_affected_by_state_change 
+    opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
+    opts.merge!(:from_address=>from_address) unless from_address.nil?
+    to_users = get_to_users
+    to_users << from_address unless from_address.nil?
+    ApplicationMailer.deliver_event_updated_notice(to_users.uniq.join(","),opts)
     true
   end
 
@@ -157,22 +174,22 @@ class EventWorkflow < ActiveRecord::Base
       end
     end
 
-    state :film_event do
-    end
-
     state :captured do
       def abilities_affected_by_state_change
-        [:create_derivative]
+        [:create_master,:edit_master]
       end
     end
 
     state :updated do
       def abilities_affected_by_state_change
-        []
+        [:create_master,:create_derivative,:edit_derivative,:edit_master]
       end
     end
 
     state :is_updated do
+      def abilities_affected_by_state_change
+        [:create_master,:create_derivative,:edit_derivative,:edit_master]
+      end
     end
 
     state :processed do

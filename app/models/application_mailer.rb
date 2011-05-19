@@ -11,6 +11,8 @@ class ApplicationMailer < ActionMailer::Base
   
   def notice(to_address, from_address, subject_text, body_text, template_file, opts={})
     recipients to_address
+
+    from_address = opts[:from_address] if opts[:from_address]
     from from_address
     
     #substitute in opts values
