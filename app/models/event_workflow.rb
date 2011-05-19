@@ -1,4 +1,4 @@
-# EventWorkflow is an ActiveRecord couterpart to the Event model. There is a 1:1 relationship.
+# EventWorkflow is an ActiveRecord counterpart to the Event model. There is a 1:1 relationship.
 class EventWorkflow < ActiveRecord::Base
   has_many :actions, :as => :permissible
   has_many :permissions, :through => :actions
@@ -6,11 +6,14 @@ class EventWorkflow < ActiveRecord::Base
   validates_presence_of :pid
   after_create :publish_permissible_actions
 
+  attr_accessor :state_transition_comments
+
   def self.find_or_create_by_pid(pid)
     existing_workflow = EventWorkflow.find_by_pid(pid)
     existing_workflow ? existing_workflow : EventWorkflow.create(:pid => pid)
   end
 
+  # All programmatically significant actions; actions that should be registered with CanCan.
   def self.permissible_actions
     @@permissible_actions ||= self.workflow_actions + self.state_event_names
   end
@@ -19,7 +22,8 @@ class EventWorkflow < ActiveRecord::Base
     permissible_actions.map {|a| a.to_s }
   end
 
-  # Types taken from Hydra::AccessControlsEnforcement
+  # All actions enforced by Hydra::RightsMetadata via Rolemapper
+  # Types derived from Hydra::AccessControlsEnforcement
   def self.hydra_roles
     @@hydra_roles ||= self.show_actions + self.edit_actions
   end
@@ -40,6 +44,7 @@ class EventWorkflow < ActiveRecord::Base
     state_machine.states.map {|s| "#{s.name.to_s}?".to_sym }
   end
 
+  # CRUD actions that can be performed on an Event and its related Classes -- used with CanCan.
   def self.workflow_actions
     [
       :create_event, :edit_event, :edit_archive_event, :destroy_event,
@@ -48,10 +53,12 @@ class EventWorkflow < ActiveRecord::Base
     ]
   end
 
+  # Edit actions enforced by Hydra::RightsMetadata via RoleMapper.
   def self.edit_actions
     [ :edit_event, :edit_master, :edit_derivative ]
   end
 
+  # Read actions enforced by Hydra::RightsMetadata via RoleMapper.
   def self.show_actions
     [
       :discover_event, :read_event,
@@ -82,9 +89,16 @@ class EventWorkflow < ActiveRecord::Base
     ApplicationMailer.deliver_event_created_notice(SMTP_DEBUG_EMAIL_ADDRESS) if Rails.env =~ /^dev/
   end
 
+  def event_filmed_callback
+    # TODO send email including: state_transition_comments
+    # to users associated with: abilities_affected_by_state_change 
+    true
+  end
+
   # Having a state machine manage the workflow allows the object to report on its progress
   state_machine :state, :initial => :planned do
-    before_transition :to => :planned, :do => :event_created_callback
+    before_transition :to => :planned,  :do => :event_created_callback
+    before_transition :to => :captured, :do => :event_filmed_callback
 
     event :film_event do
       transition :planned => :captured
@@ -103,18 +117,33 @@ class EventWorkflow < ActiveRecord::Base
     end
 
     state :planned do
+      def abilities_affected_by_state_change
+        [:create_master]
+      end
     end
 
     state :captured do
+      def abilities_affected_by_state_change
+        [:create_derivative]
+      end
     end
 
     state :edited do
+      def abilities_affected_by_state_change
+        []
+      end
     end
 
     state :processed do
+      def abilities_affected_by_state_change
+        []
+      end
     end
 
     state :archived do
+      def abilities_affected_by_state_change
+        []
+      end
     end
   end
 end
