@@ -1,1 +1,7 @@
 <p><%= @text %></p>
+<%- unless @comment.nil? -%>
+  <dl>
+    <dt>Update Notes:</dt>
+    <dd><%=@comment%></dd>
+  </dl>
+<%- end -%>
