@@ -1,5 +1,10 @@
+require 'mediashelf/active_fedora_helper'
+
 # EventWorkflow is an ActiveRecord counterpart to the Event model. There is a 1:1 relationship.
 class EventWorkflow < ActiveRecord::Base
+  
+  include MediaShelf::ActiveFedoraHelper
+
   has_many :actions, :as => :permissible
   has_many :permissions, :through => :actions
 
@@ -74,6 +79,8 @@ class EventWorkflow < ActiveRecord::Base
   end
 
   def event
+    Fedora::Repository.register(ActiveFedora.fedora_config[:url],  "")
+    require_solr
     @event ||= Event.load_instance(pid)
   end
 
@@ -89,28 +96,56 @@ class EventWorkflow < ActiveRecord::Base
     ApplicationMailer.deliver_event_created_notice(SMTP_DEBUG_EMAIL_ADDRESS) if Rails.env =~ /^dev/
   end
 
-  def event_filmed_callback
-    # TODO send email including: state_transition_comments
-    # to users associated with: abilities_affected_by_state_change 
+  def event_ready_for_video_editors_callback
+    opts = {}
+    opts.merge!(:event_id=>event.composite_id) unless event.nil? || event.composite_id.nil?
+    opts.merge!(:event_pid=>event.pid) unless event.nil? || event.pid.nil?
+    opts.merge!(:comments=>@state_transition_comments) unless @state_transition_comments.nil?
+    ApplicationMailer.deliver_event_planned_notice(SMTP_DEBUG_EMAIL_ADDRESS,opts)
+    # TODO: send to users associated with: abilities_affected_by_state_change 
+    true
+  end
+
+  def event_notify_video_editors_of_updates_callback
+    opts = {}
+    opts.merge!(:event_id=>event.composite_id) unless event.nil? || event.composite_id.nil?
+    opts.merge!(:event_pid=>event.pid) unless event.nil? || event.pid.nil?
+    opts.merge!(:comments=>@state_transition_comments) unless @state_transition_comments.nil?
+    ApplicationMailer.deliver_event_updated_notice(SMTP_DEBUG_EMAIL_ADDRESS,opts)
+    # TODO: send to users associated with: abilities_affected_by_state_change 
     true
   end
 
   # Having a state machine manage the workflow allows the object to report on its progress
   state_machine :state, :initial => :planned do
     before_transition :to => :planned,  :do => :event_created_callback
-    before_transition :to => :captured, :do => :event_filmed_callback
+    before_transition :to => :captured, :do => :event_ready_for_video_editors_callback
+    before_transition :to => :updated, :do => :event_notify_video_editors_of_updates_callback
+    before_transition :to => :is_updated, :do => :event_notify_video_editors_of_updates_callback
 
-    event :film_event do
+    event :ready_for_video_editors do
       transition :planned => :captured
     end
 
-    event :edit_master_video do
-      transition :captured => :edited
+    event :event_updated do
+      transition :captured => :updated
     end
 
-    event :publish_derivatives do
-      transition :edited => :processed
+    event :event_changed do
+      transition :updated => :is_updated
     end
+
+    event :event_is_updated do
+      transition :is_updated => :updated
+    end
+
+    #event :edit_master_video do
+    #  transition :captured => :edited
+    #end
+
+    #event :publish_derivatives do
+    #  transition :edited => :processed
+    #end
 
     event :approve_for_archival do
       transition :processed => :archived
@@ -122,16 +157,22 @@ class EventWorkflow < ActiveRecord::Base
       end
     end
 
+    state :film_event do
+    end
+
     state :captured do
       def abilities_affected_by_state_change
         [:create_derivative]
       end
     end
 
-    state :edited do
+    state :updated do
       def abilities_affected_by_state_change
         []
       end
+    end
+
+    state :is_updated do
     end
 
     state :processed do
