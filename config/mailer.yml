@@ -5,21 +5,21 @@ review:
   template_file: notice.text.html.erb
 event_planned:
   from_address: ndliblis@nd.edu
-  subject_text: "Event #{opts[:event_id]} Planned"
-  body_text: "An event #{opts[:event_id]} is planned, and ready for Master video records."
+  subject_text: "Event #{event_id} Planned"
+  body_text: "An event #{event_link} is planned, and ready for Master video records.\r\n#{comment}"
   template_file: notice.text.html.erb
 event_video_captured:
   from_address: ndliblis@nd.edu
-  subject_text: Event #{link} Master Video #{link} Available
-  body_text: An event #{link} has been captured and the Master Video #{link} is available for derivatives.
+  subject_text: "Event #{event_id} Master Video #{master_id} Available"
+  body_text: "An event #{event_link} has been captured and the Master Video #{master_link} is available for derivatives.\r\n#{comment}"
   template_file: notice.text.html.erb
 event_updated:
   from_address: ndliblis@nd.edu
-  subject_text: Event Updated #{link}
-  body_text: An existing event has been updated.  Please follow this #{link} to review any changes that may be related to Master and/or Derivative Videos.
+  subject_text: "Event Updated #{event_id]}"
+  body_text: "An existing event has been updated.  Please follow this #{event_link} to review any changes that may be related to Master and/or Derivative Videos.\r\n#{comment}"
   template_file: notice.text.html.erb
 master_video_updated:
   from_address: ndliblis@nd.edu
-  subject_text: Master Video #{link} for Event #{link} has been Updated #{link}
-  body_text: An existing master video record has been updated.  Please follow this #{link} to review any changes that may be related to Derivative Videos.
+  subject_text: "Master Video #{master_link} for Event #{event_link} has been Updated"
+  body_text: "An existing master video record has been updated.  Please follow this #{master_link} to review any changes that may be related to Derivative Videos.\r\n#{comment}"
   template_file: notice.text.html.erb

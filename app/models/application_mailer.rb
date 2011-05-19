@@ -12,6 +12,25 @@ class ApplicationMailer < ActionMailer::Base
   def notice(to_address, from_address, subject_text, body_text, template_file, opts={})
     recipients to_address
     from from_address
+    
+    #substitute in opts values
+    opts.each_pair do |key,value|
+      subject_text.sub!("\#\{:#{key}\}",value)
+      subject_text.sub!("\#\{#{key}\}",value)
+    end
+
+    #replace opts references that may have been missed 
+    subject_text.sub!(/#\{.*\}/,'')   
+
+    #now do same substitutions for body text
+    opts.each_pair do |key,value|
+      body_text.sub!("\#\{:#{key}\}",value)
+      body_text.sub!("\#\{#{key}\}",value)
+    end
+
+    #replace opts references that may have been missed 
+    body_text.sub!(/#\{.*\}/,'')
+   
     subject subject_text
     sent_on Time.now
     body({:text=> body_text, :host => "#{APPLICATION_HOST}#{BASE_URI}"}.merge(opts))
