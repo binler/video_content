@@ -17,3 +17,9 @@ namespace :groups do
     end
   end
 end
+
+namespace :actions do
+  task :refresh_class_actions => :environment do
+    EventWorkflow.create_class_level_actions
+  end
+end
