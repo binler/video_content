@@ -16,6 +16,8 @@ class Group < ActiveRecord::Base
   named_scope :not_for_cancan, :conditions => ["for_cancan = ?", false]
 
   named_scope :hydra_groups, :select => 'name', :conditions => ["is_hydra_role = ?", true]
+  named_scope :owner_groups, :select => 'name', :conditions => ["name != 'root'"]
+
   named_scope :hydra_groups_for_user, lambda {|*user|
     {
       :select     => 'name',
@@ -42,6 +44,10 @@ class Group < ActiveRecord::Base
 
   def self.hydra_group_names
     hydra_groups.map {|group| group.name}
+  end
+
+  def self.owner_group_names
+    owner_groups.map {|group| group.name.to_str}
   end
 
   def pretty_name

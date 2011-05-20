@@ -69,6 +69,17 @@
   <fieldset id="creator_fields">
     <legend>People Responsible for event</legend>
     <dl>
+      <dt>
+	<%= fedora_field_label("properties", [:owner], "Owner:") %>
+      </dt>
+      <dd>
+        <%- owner_group_names = [""] | Group.owner_group_names -%>
+        <%- cur_val = get_values_from_datastream(@document_fedora,"properties", [:owner]) -%>
+        <%- unless cur_val.empty? || owner_group_names.include?(cur_val.first) -%> 
+          <% owner_group_names << cur_val %>
+        <%- end -%>
+        <%= fedora_select(@document_fedora,"properties", [:owner], :choices=>owner_group_names) %>
+      </dd>
     <% num_of_creator = get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreCreator]).size %>
       <% curr_creator = 0 %>
       <% previous_creator = "" %>

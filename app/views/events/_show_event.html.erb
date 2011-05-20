@@ -61,6 +61,14 @@
   <fieldset>
     <legend>People Responsible for Event</legend>
     <dl>
+    <% unless get_values_from_datastream(@document_fedora,"properties", [:owner]).first.empty? %>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:owner], "Owner:") %>
+      </dt>
+      <dd class="keyword">
+        <%= get_values_from_datastream(@document_fedora,"properties", [:owner]) %>
+      </dd>
+    <% end %>
     <% num_of_creator = get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreCreator]).size %>
       <% curr_creator = 0 %>
       <% previous_creator = "" %>

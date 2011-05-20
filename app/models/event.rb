@@ -20,6 +20,7 @@ class Event < ActiveFedora::Base
     m.field 'city', :string
     m.field 'state', :string
     m.field 'country', :string
+    m.field 'owner', :string
   end
 
   alias_method :id, :pid
