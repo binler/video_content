@@ -28,32 +28,23 @@
         <dd>
 	  <%= fedora_select(@document_fedora,"properties", [:country], :choices=>@document_fedora.countries) %>
         </dd>
-	<%- if((get_values_from_datastream(@document_fedora,"properties", [:country])).to_s.eql?"United States") -%>
-	  <dt>
-	    <%= fedora_field_label("properties", [:state], "State:") %>
-          </dt>
-          <dd>
-	    <%= fedora_select(@document_fedora,"properties", [:state], :choices=>StateList.states("US")) %>
-          </dd>
-	<%- else -%>
-	  <dt>
-	    <%= fedora_field_label("properties", [:state], "State/Province:") %>
-          </dt>
-          <dd>
-	    <%= fedora_select(@document_fedora,"properties", [:state]) %>
-          </dd>
-	<%- end -%>
+	<dt>
+	  <%= fedora_field_label("properties", [:state], "State:") %>
+        </dt>
+        <dd>
+	  <%= fedora_text_field(@document_fedora,"properties", [:state]) %>
+        </dd>
 	<dt>
 	  <%= fedora_field_label("properties", [:city], "City:") %>
         </dt>
         <dd>
-	  <%= fedora_select(@document_fedora,"properties", [:city]) %>
+	  <%= fedora_text_field(@document_fedora,"properties", [:city]) %>
         </dd>
 	<dt>
 	  <%= fedora_field_label("properties", [:venue], "Venue:") %>
         </dt>
         <dd>
-	  <%= fedora_select(@document_fedora,"properties", [:venue]) %>
+	  <%= fedora_text_field(@document_fedora,"properties", [:venue]) %>
         </dd>
       </fieldset>
       <dt>
@@ -136,7 +127,7 @@
 	  Usage Rights:
 	</dt>
 	<dd>
-	 <%= fedora_select(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, {:pbcoreRightsSummary => "1"}, :rightsSummary], :choices=>["No Restrictions","For Educational use Only", "No Access"])%>
+	 <%= fedora_select(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcorePart, {:pbcoreRightsSummary => "1"}, :rightsSummary], :choices=>["","No Restrictions","For Educational use Only", "No Access"])%>
 	</dd>
       </dl>
   </fieldset>

@@ -103,7 +103,8 @@ class Event < ActiveFedora::Base
 
   def countries
     arr = TZInfo::Country.all_codes.map { |code| "#{TZInfo::Country.get(code).name}" }
-    return arr.sort
+    arr.delete("United States")
+    return ["", "United States"]|arr.sort
   end
 
   def class_name

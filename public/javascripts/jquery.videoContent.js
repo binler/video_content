@@ -8,9 +8,6 @@
         $('#link_to_file').show();
         $('#uploader-contents').hide();
       }
-    }),
-    $('select[rel*="country"]').change(function(){
-      window.location.reload();
     });
   });
 })(jQuery)
