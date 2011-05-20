@@ -107,8 +107,23 @@ class Master < ActiveFedora::Base
     end
   end
 
-  def state
-    'created'
+  def workflow
+    @workflow ||= MasterWorkflow.find_or_create_by_pid(pid)
+  end
+
+  # Favoring explicit delegation for now. Perhaps method_missing should be implemented later.
+  # Delegate state machine interactions to workflow
+  [:state, :state_events, :fire_events, :abilities_affected_by_state_change, :state_transition_comments].each do |method|
+    delegate method, :to => :workflow
+  end
+
+  MasterWorkflow.state_query_methods.each do |method|
+    delegate method, :to => :workflow
+  end
+
+  # Delegate group and permission information to workflow
+  [:groups].each do |method|
+    delegate method, :to => :workflow
   end
 
   def class_name

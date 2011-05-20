@@ -31,7 +31,7 @@ class Group < ActiveRecord::Base
       :select     => '`actions`.`name`',
       :joins      => 'INNER JOIN `permissions` ON `groups`.`id` = `permissions`.`group_id`
                       INNER JOIN `actions` ON `permissions`.`action_id` = `actions`.`id`',
-      :conditions =>  ["`actions`.`permissible_type` = ? AND `actions`.`permissible_id` IS NULL AND `groups`.`id` = ? ", klass.class_name, group_id ]
+      :conditions =>  ["`actions`.`permissible_type` = ? AND `actions`.`permissible_id` IS NULL AND `groups`.`id` = ? ", klass.name, group_id ]
     }
   }
 

@@ -19,7 +19,12 @@ namespace :groups do
 end
 
 namespace :actions do
+  desc "Add defined class level workflow actions that do not exist and remove stale ones."
   task :refresh_class_actions => :environment do
-    EventWorkflow.create_class_level_actions
+    actions_to_remove = Action.find(:all, :conditions => ['`actions`.`permissible_id` IS NULL'])
+    Workflow.control_classes.each do |klass|
+      actions_to_remove = actions_to_remove - klass.create_class_level_actions
+    end
+    actions_to_remove.collect{ |action| action.destroy }
   end
 end
