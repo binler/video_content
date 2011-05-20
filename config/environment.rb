@@ -78,6 +78,8 @@ else
 end
 puts "Mail will be sent using #{ActionMailer::Base.delivery_method}"
 
+require 'logger'
+ActionMailer::Base.logger = Logger.new(RAILS_ROOT+'/log/notifications.log')
 ActionMailer::Base.smtp_settings = {
   :address              => SMTP_HOST,
   :port                 => SMTP_PORT,
