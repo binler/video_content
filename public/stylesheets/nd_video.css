@@ -187,6 +187,7 @@ ul#actions-menu li, ul#session-management li {
   width:100%;
 }
 
+#compound-form textarea,
 #compound-form textarea.edit {
   margin-top:0;
   height:2em;
@@ -223,6 +224,15 @@ ul#actions-menu li, ul#session-management li {
 
 #compound-form .hint {
   color: #555;
+}
+
+.state-transition input[type="submit"] {
+  font-size:13px;
+  margin:0.3em 1.7em 1.7em;
+}
+
+#compound-form .state-transition dl {
+  padding-bottom:.3em;
 }
 
 ul.children {

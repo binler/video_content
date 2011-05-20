@@ -1,0 +1,17 @@
+<p><%= @text %></p>
+<%- unless @comments.nil? -%>
+  <table>
+    <tr>
+      <td>Update Notes:</td>
+      <td><%=@comments%></td>
+    </tr>
+  </table>
+<%- end -%>
+<%- unless @event_pid.nil? -%>
+  <%- event_link =  "http://#{@host}#{catalog_path(@event_pid, :viewing_context=>"browse", :content_type=>"event")}"-%>
+  <p>The Event can be found <a href="<%=event_link%>">here</a>.</p>
+<%- end -%>
+<%- unless @master_pid.nil? -%>
+  <%- master_link =  "http://#{@host}#{catalog_path(@master_pid, :viewing_context=>"browse", :content_type=>"master")}"-%>
+  <p>The Master Video Record can be found <a href="<%=master_link%>">here</a>.</p>
+<%- end -%>
