@@ -34,7 +34,12 @@
             <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator], "Owner:") %>
           </dt>
           <dd class="owner ldap-lookup">
-            <%= fedora_text_field(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator]) %>
+            <%- owner_group_names = [""] | Group.owner_group_names -%>
+            <%- cur_val = get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator]) -%>
+            <%- unless cur_val.empty? || owner_group_names.include?(cur_val.first) -%> 
+              <% owner_group_names << cur_val %>
+            <%- end -%>
+            <%= fedora_select(@document_fedora,"descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator], :choices=>owner_group_names) %>
           </dd>
         <%- end -%>
         <% i = i+1 %>

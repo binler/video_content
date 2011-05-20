@@ -93,17 +93,17 @@ class Master < ActiveFedora::Base
       end
       i = 0
       owner_index = 0
-      while(i < creators.size)
-	if(desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{i}"}, :creator, :creator_annotation)[person_number].content.to_s.eql?"owner")
-	  owner_index = i
-	end
-	i = i + 1
-      end
-      if(desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{owner_index}"}, :creator, :creator_annotation)[person_number].content.to_s.eql?"owner")
-        if(desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{owner_index}"}, :creator)[person_number].content.to_s.empty?)
-          desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{owner_index}"}, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
-        end
-      end
+      #while(i < creators.size)
+      #	if(desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{i}"}, :creator, :creator_annotation)[person_number].content.to_s.eql?"owner")
+      #	  owner_index = i
+      #	end
+      #	i = i + 1
+      #end
+      #if(desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{owner_index}"}, :creator, :creator_annotation)[person_number].content.to_s.eql?"owner")
+      #  if(desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{owner_index}"}, :creator)[person_number].content.to_s.empty?)
+      #    desc_ds.find_by_terms(:pbcorePart, {:pbcoreCreator => "#{owner_index}"}, :creator)[person_number].content = "#{person.first_name} #{person.last_name}"
+      #  end
+      #end
     end
   end
 
