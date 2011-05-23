@@ -1,14 +1,19 @@
-review:
+event_archive_review:
   from_address: ndliblis@nd.edu
-  subject_text: Review of Event Needed
-  body_text: This is a test email for review
-  template_file: notice.text.html.erb
+  subject_text: Event #{event_id} Ready for Archival Review
+  body_text: An Event #{event_id} is ready for archival review. It will only be editable by archives will be in Review.
+  template_file: event_notice.text.html.erb
+event_archived:
+  from_address: ndliblis@nd.edu
+  subject_text: Event #{event_id} Archived
+  body_text: An Event #{event_id} has been archived.  It will no longer be editable.
+  template_file: event_notice.text.html.erb
 event_planned:
   from_address: ndliblis@nd.edu
   subject_text: "Event #{event_id} Planned"
   body_text: "An event #{event_id} is planned, and ready for Master video records."
   template_file: event_notice.text.html.erb
-event_video_captured:
+master_video_captured:
   from_address: ndliblis@nd.edu
   subject_text: "Event #{event_id} Master Video #{master_id} Available"
   body_text: "An event #{event_id} has been captured and the Master Video #{master_id} is available for derivatives."
@@ -22,4 +27,14 @@ master_video_updated:
   from_address: ndliblis@nd.edu
   subject_text: "Master Video #{master_id} for Event #{event_id} has been Updated"
   body_text: "An existing master video record has been updated.  Please review any changes that may be related to Derivative Videos."
+  template_file: event_master_notice.text.html.erb
+master_archive_review:
+  from_address: ndliblis@nd.edu
+  subject_text: Master Video #{master_id} for Event #{event_id} Ready for Archival Review
+  body_text: An Event #{event_id} is ready for archival review. It will only be editable by archives will be in Review.
+  template_file: event_master_notice.text.html.erb
+master_archived:
+  from_address: ndliblis@nd.edu
+  subject_text: Master Video #{master_id} for Event #{event_id} Archived
+  body_text: Master Video #{master_id} for event #{event_id} has been archived.  It will no longer be editable.
   template_file: event_master_notice.text.html.erb

@@ -1,5 +1,6 @@
 require "hydra"
 require 'tzinfo'
+
 class Event < ActiveFedora::Base
   
   include Hydra::ModelMethods

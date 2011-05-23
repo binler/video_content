@@ -77,6 +77,23 @@ class Workflow < ActiveRecord::Base
     nil
   end
 
+   def get_to_users
+    to_users = []
+
+    abilities_affected_by_state_change.each do |ability|
+      current_users = User.logins_permitted_to_perform_action(ability.to_s)
+      current_users.each do |current_user|
+        to_users << current_user
+      end
+    end
+    to_users.flatten.map! {|user| "#{user}@nd.edu"}
+  end
+
+  def get_to_group_users(group_name)
+    group = Group.find_by_name(group_name)
+    group.nil? ? [] : group.users.map {|user| "#{user}@nd.edu"}
+  end
+
   state_machine :state, :initial => :created do
 
     event :approve_for_archival do

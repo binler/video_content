@@ -53,23 +53,10 @@ class EventWorkflow < Workflow
     opts.merge!(:event_pid=>event.pid) unless event.nil? || event.pid.nil?
     opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
     opts.merge!(:from_address=>from_address) unless from_address.nil?
-    ApplicationMailer.deliver_event_planned_notice(SMTP_DEBUG_EMAIL_ADDRESS,opts)
     to_users = get_to_users
     to_users << from_address unless from_address.nil?
     ApplicationMailer.deliver_event_updated_notice(to_users.uniq.join(","),opts)
     true
-  end
-
-  def get_to_users
-    to_users = []
-
-    abilities_affected_by_state_change.each do |ability|
-      current_users = User.logins_permitted_to_perform_action(ability.to_s)
-      current_users.each do |current_user|
-        to_users << current_user
-      end
-    end
-    to_users.flatten.map! {|user| "#{user}@nd.edu"}
   end
 
   def event_notify_video_editors_of_updates_callback
@@ -84,13 +71,41 @@ class EventWorkflow < Workflow
     true
   end
 
+  def event_notify_archive_review_callback
+    opts = {}
+    opts.merge!(:event_id=>event.composite_id) unless event.nil? || event.composite_id.nil?
+    opts.merge!(:event_pid=>event.pid) unless event.nil? || event.pid.nil?
+    opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
+    opts.merge!(:from_address=>from_address) unless from_address.nil?
+    to_users = get_to_users
+    to_users = to_users | get_group_users(event.owner.first) unless event.owner.empty?
+    to_users << from_address unless from_address.nil?
+    ApplicationMailer.deliver_event_archive_review_notice(to_users.uniq.join(","),opts)
+    true
+  end
+
+  def event_notify_archived_callback
+    opts = {}
+    opts.merge!(:event_id=>event.composite_id) unless event.nil? || event.composite_id.nil?
+    opts.merge!(:event_pid=>event.pid) unless event.nil? || event.pid.nil?
+    opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
+    opts.merge!(:from_address=>from_address) unless from_address.nil?
+    to_users = get_to_users
+    to_users = to_users | get_group_users(event.owner.first) unless event.owner.empty?
+    to_users << from_address unless from_address.nil?
+    ApplicationMailer.deliver_event_archived_notice(to_users.uniq.join(","),opts)
+    true
+  end
+
   state_machine :state, :initial => :planned do
     before_transition :to => :planned,  :do => :event_created_callback
     before_transition :to => :captured, :do => :event_ready_for_video_editors_callback
     before_transition :to => :updated, :do => :event_notify_video_editors_of_updates_callback
     before_transition :to => :is_updated, :do => :event_notify_video_editors_of_updates_callback
+    before_transition :to => :archive_review, :do => :event_notify_archive_review_callback
+    before_transition :to => :archived, :do => :event_notify_archived_callback
 
-    event :ready_for_video_editors do
+    event :event_ready_for_video_editors do
       transition :planned => :captured
     end
 
@@ -106,16 +121,12 @@ class EventWorkflow < Workflow
       transition :is_updated => :updated
     end
 
-    #event :edit_master_video do
-    #  transition :captured => :edited
-    #end
+    event :ready_for_archives do
+      transition any => :archive_review
+    end
 
-    #event :publish_derivatives do
-    #  transition :edited => :processed
-    #end
-
-    event :approve_for_archival do
-      transition :processed => :archived
+    event :event_archived do
+      transition :archive_review => :archived
     end
 
     state :planned do
@@ -142,15 +153,15 @@ class EventWorkflow < Workflow
       end
     end
 
-    state :processed do
+    state :archive_review do
       def abilities_affected_by_state_change
-        []
+        [:edit_archive_event,:edit_event]
       end
     end
 
     state :archived do
       def abilities_affected_by_state_change
-        []
+        [:edit_archive_event,:edit_event]
       end
     end
   end
