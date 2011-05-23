@@ -11,9 +11,9 @@ class Workflow < ActiveRecord::Base
   validates_presence_of :pid
 
   # NOTE although it is possible to grant CanCan permissions on a instance by instance basis
-  # it is not currently implmented. If it IS enabled individual permissions will need to be
+  # it is not currently implemented. If it IS enabled individual permissions will need to be
   # recored in the database.
-  #after_create :publish_permissible_actions
+  # after_create :publish_permissible_actions
 
   def self.control_classes
     [ EventWorkflow, MasterWorkflow, DerivativeWorkflow ]
@@ -48,17 +48,17 @@ class Workflow < ActiveRecord::Base
   end
 
   def self.hydra_role_names
-    hydra_roles.collect{|a| a.to_s }
+    @@hydra_role_names ||= hydra_roles.collect{|a| a.to_s }
   end
 
   # Edit actions enforced by Hydra::RightsMetadata via RoleMapper.
   def self.edit_actions
-    self.control_classes.collect{|klass| klass.edit_actions}
+    self.control_classes.collect{|klass| klass.edit_actions}.flatten
   end
 
   # Read actions enforced by Hydra::RightsMetadata via RoleMapper.
   def self.show_actions
-    self.control_classes.collect{|klass| klass.show_actions}
+    self.control_classes.collect{|klass| klass.show_actions}.flatten
   end
 
   def self.create_class_level_actions

@@ -128,15 +128,15 @@ class EventsController < CatalogController
   end
 
   def trigger
-    event_workflow = EventWorkflow.find_by_pid(params[:id])
+    workflow = EventWorkflow.find_by_pid(params[:id])
     events_to_fire = params[:event][:events_to_fire].map{ |event| event.to_sym }
     # NOTE: comment handling makes the assumption that events will be triggered one at a time.
     comments = params[:event][:state_transition_comments]
     events_to_fire.each do |state_event|
       if can? state_event, EventWorkflow
-        event_workflow.state_transition_comments = comments
-        event_workflow.from_address = current_user.email
-        event_workflow.fire_events(state_event)
+        workflow.state_transition_comments = comments
+        workflow.from_address = current_user.email
+        workflow.fire_events(state_event)
       end
     end
     redirect_to edit_catalog_path(params[:id])

@@ -25,7 +25,7 @@
   <%- end -%>
 </ul>
 
-<%- if (can? :create_master, EventWorkflow) -%>
+<%- if (can? :create_master, MasterWorkflow) -%>
   <li><%= link_to 'Create a Master for this Event', new_master_path(
                                                   :content_type => 'master',
                                                   :event_id     => ( params[:event_id] ? params[:event_id] : params[:id] )

@@ -15,8 +15,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :get, :only=>:show  
   map.resources :webauths, :protocol => ((defined?(SSL_ENABLED) and SSL_ENABLED) ? 'https' : 'http')
   map.resources :events, { :member => { :add => :get, :removenode => :get, :create => :post, :listfiles => :get, :download => :get, :trigger => :put } }
-  map.resources :masters, { :member => { :add => :get, :removenode => :get } }
-  map.resources :derivatives, { :member => { :add => :get, :removenode => :get } }
+  map.resources :masters, { :member => { :add => :get, :removenode => :get, :trigger => :put  } }
+  map.resources :derivatives, { :member => { :add => :get, :removenode => :get, :trigger => :put  } }
 
   map.ldap_query 'ldap_query', :controller => 'ldap_query',       :action => 'find'
   map.login      'login',      :controller => 'webauth_sessions', :action => 'new'
