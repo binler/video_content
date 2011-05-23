@@ -76,7 +76,7 @@
         <%- owner_group_names = [""] | Group.owner_group_names -%>
         <%- cur_val = get_values_from_datastream(@document_fedora,"properties", [:owner]) -%>
         <%- unless cur_val.empty? || owner_group_names.include?(cur_val.first) -%> 
-          <% owner_group_names << cur_val %>
+          <% owner_group_names << cur_val.first %>
         <%- end -%>
         <%= fedora_select(@document_fedora,"properties", [:owner], :choices=>owner_group_names) %>
       </dd>

@@ -45,6 +45,19 @@ class Master < ActiveFedora::Base
     member_of.first if member_of.any?
   end
 
+  def owner
+    num_creators = self.datastreams["descMetadata"].get_values([:pbcorePart, :pbcoreCreator]).size
+    i = 0
+    while i < num_creators do
+      if self.datastreams["descMetadata"].get_values([:pbcorePart, {:pbcoreCreator => i}, :creator, :creator_annotation]).to_s.eql?"owner"
+        values = self.datastreams["descMetadata"].get_values([:pbcorePart, {:pbcoreCreator => i}, :creator])
+        return values.first unless values.empty?
+      end
+      i = i+1
+    end
+    nil
+  end
+
   def load_datastream(id)
     resource = self.load_instance(id)
     content = resource.content

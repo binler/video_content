@@ -49,12 +49,15 @@ class MasterWorkflow < Workflow
 
   def master_ready_for_derivative_video_editors_callback
     opts = {}
-    opts.merge!(:master_id=>master.master_id) unless master.nil? || master.master_id.nil?
+    opts.merge!(:master_id=>master.master_id) unless master.nil? || master.master_id.nil? || master.master_id.empty?
     opts.merge!(:event_id=>master.parent.composite_id) unless master.nil? || master.parent.nil? || master.parent.composite_id.nil?
     opts.merge!(:master_pid=>master.pid) unless master.nil? || master.pid.nil?
     opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
     opts.merge!(:from_address=>from_address) unless from_address.nil?
-    to_users = get_to_users
+    to_opts = {}
+    to_opts.merge!({:group=>master.owner}) unless master.owner.nil?
+    #add creator to email
+    to_users = get_to_users(to_opts)
     to_users << from_address unless from_address.nil?
     ApplicationMailer.deliver_master_video_captured_notice(to_users.uniq.join(","),opts)
     true
@@ -62,12 +65,15 @@ class MasterWorkflow < Workflow
 
   def master_notify_video_editors_of_updates_callback
     opts = {}
-    opts.merge!(:master_id=>master.master_id) unless master.nil? || master.master_id.nil?
+    opts.merge!(:master_id=>master.master_id) unless master.nil? || master.master_id.nil? || master.master_id.empty?
     opts.merge!(:event_id=>master.parent.composite_id) unless master.nil? || master.parent.nil? || master.parent.composite_id.nil?
     opts.merge!(:master_pid=>master.pid) unless master.nil? || master.pid.nil?
     opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
     opts.merge!(:from_address=>from_address) unless from_address.nil?
-    to_users = get_to_users
+    to_opts = {}
+    to_opts.merge!({:group=>master.owner}) unless master.owner.nil?
+    #add creator to email
+    to_users = get_to_users(to_opts)
     to_users << from_address unless from_address.nil?
     ApplicationMailer.deliver_master_video_updated_notice(to_users.uniq.join(","),opts)
     true
@@ -75,13 +81,15 @@ class MasterWorkflow < Workflow
 
   def master_notify_archive_review_callback
     opts = {}
-    opts.merge!(:master_id=>master.master_id) unless master.nil? || master.master_id.nil?
+    opts.merge!(:master_id=>master.master_id) unless master.nil? || master.master_id.nil? || master.master_id.empty?
     opts.merge!(:event_id=>master.parent.composite_id) unless master.nil? || master.parent.nil? || master.parent.composite_id.nil?
     opts.merge!(:master_pid=>master.pid) unless master.nil? || master.pid.nil?
     opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
     opts.merge!(:from_address=>from_address) unless from_address.nil?
-    to_users = get_to_users
-    to_users = to_users | get_group_users(event.owner.first) unless event.owner.empty?
+    to_opts = {}
+    to_opts.merge!({:group=>master.owner}) unless master.owner.nil?
+    #add creator to email
+    to_users = get_to_users(to_opts)
     to_users << from_address unless from_address.nil?
     ApplicationMailer.deliver_master_archive_review_notice(to_users.uniq.join(","),opts)
     true
@@ -89,13 +97,15 @@ class MasterWorkflow < Workflow
 
   def master_notify_archived_callback
     opts = {}
-    opts.merge!(:master_id=>master.master_id) unless master.nil? || master.master_id.nil?
+    opts.merge!(:master_id=>master.master_id) unless master.nil? || master.master_id.nil? || master.master_id.empty?
     opts.merge!(:event_id=>master.parent.composite_id) unless master.nil? || master.parent.nil? || master.parent.composite_id.nil?
     opts.merge!(:master_pid=>master.pid) unless master.nil? || master.pid.nil?
     opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
     opts.merge!(:from_address=>from_address) unless from_address.nil?
-    to_users = get_to_users
-    to_users = to_users | get_group_users(event.owner.first) unless event.owner.empty?
+    to_opts = {}
+    to_opts.merge!({:group=>master.owner}) unless master.owner.nil?
+    #add creator to email
+    to_users = get_to_users(to_opts)
     to_users << from_address unless from_address.nil?
     ApplicationMailer.deliver_master_archived_notice(to_users.uniq.join(","),opts)
     true
@@ -126,7 +136,10 @@ class MasterWorkflow < Workflow
     end
     
     event :ready_for_archives do
-      transition any => :archive_review
+      transition :created => :archive_review
+      transition :edited => :archive_review
+      transition :updated => :archive_review
+      transition :is_updated => :archive_review
     end
 
     event :master_archived do

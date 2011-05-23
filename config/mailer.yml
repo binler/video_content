@@ -1,12 +1,12 @@
 event_archive_review:
   from_address: ndliblis@nd.edu
-  subject_text: Event #{event_id} Ready for Archival Review
-  body_text: An Event #{event_id} is ready for archival review. It will only be editable by archives will be in Review.
+  subject_text: "Event #{event_id} Ready for Archival Review"
+  body_text: "An Event #{event_id} is ready for archival review. It will only be editable by archives will be in Review."
   template_file: event_notice.text.html.erb
 event_archived:
   from_address: ndliblis@nd.edu
-  subject_text: Event #{event_id} Archived
-  body_text: An Event #{event_id} has been archived.  It will no longer be editable.
+  subject_text: "Event #{event_id} Archived"
+  body_text: "An Event #{event_id} has been archived.  It will no longer be editable."
   template_file: event_notice.text.html.erb
 event_planned:
   from_address: ndliblis@nd.edu
@@ -30,11 +30,11 @@ master_video_updated:
   template_file: event_master_notice.text.html.erb
 master_archive_review:
   from_address: ndliblis@nd.edu
-  subject_text: Master Video #{master_id} for Event #{event_id} Ready for Archival Review
-  body_text: An Event #{event_id} is ready for archival review. It will only be editable by archives will be in Review.
+  subject_text: "Master Video #{master_id} for Event #{event_id} Ready for Archival Review"
+  body_text: "A Master Video #{master_id} for #{event_id} is ready for archival review. It will only be editable by archives will be in Review."
   template_file: event_master_notice.text.html.erb
 master_archived:
   from_address: ndliblis@nd.edu
-  subject_text: Master Video #{master_id} for Event #{event_id} Archived
-  body_text: Master Video #{master_id} for event #{event_id} has been archived.  It will no longer be editable.
+  subject_text: "Master Video #{master_id} for Event #{event_id} Archived"
+  body_text: "Master Video #{master_id} for event #{event_id} has been archived.  It will no longer be editable."
   template_file: event_master_notice.text.html.erb

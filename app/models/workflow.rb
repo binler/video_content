@@ -77,7 +77,7 @@ class Workflow < ActiveRecord::Base
     nil
   end
 
-   def get_to_users
+  def get_to_users(to_opts={})
     to_users = []
 
     abilities_affected_by_state_change.each do |ability|
@@ -86,7 +86,9 @@ class Workflow < ActiveRecord::Base
         to_users << current_user
       end
     end
+    
     to_users.flatten.map! {|user| "#{user}@nd.edu"}
+    to_users = to_users | get_to_group_users(to_opts[:group]) if to_opts[:group]
   end
 
   def get_to_group_users(group_name)

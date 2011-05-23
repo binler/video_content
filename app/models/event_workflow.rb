@@ -53,7 +53,10 @@ class EventWorkflow < Workflow
     opts.merge!(:event_pid=>event.pid) unless event.nil? || event.pid.nil?
     opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
     opts.merge!(:from_address=>from_address) unless from_address.nil?
-    to_users = get_to_users
+    to_opts = {}
+    to_opts.merge!({:group=>event.owner}) unless event.owner.nil?
+    #add creator to email
+    to_users = get_to_users(to_opts)
     to_users << from_address unless from_address.nil?
     ApplicationMailer.deliver_event_updated_notice(to_users.uniq.join(","),opts)
     true
@@ -65,7 +68,10 @@ class EventWorkflow < Workflow
     opts.merge!(:event_pid=>event.pid) unless event.nil? || event.pid.nil?
     opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
     opts.merge!(:from_address=>from_address) unless from_address.nil?
-    to_users = get_to_users
+    to_opts = {}
+    to_opts.merge!({:group=>event.owner}) unless event.owner.nil?
+    #add creator to email
+    to_users = get_to_users(to_opts)
     to_users << from_address unless from_address.nil?
     ApplicationMailer.deliver_event_updated_notice(to_users.uniq.join(","),opts)
     true
@@ -77,8 +83,10 @@ class EventWorkflow < Workflow
     opts.merge!(:event_pid=>event.pid) unless event.nil? || event.pid.nil?
     opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
     opts.merge!(:from_address=>from_address) unless from_address.nil?
-    to_users = get_to_users
-    to_users = to_users | get_group_users(event.owner.first) unless event.owner.empty?
+    to_opts = {}
+    to_opts.merge!({:group=>event.owner}) unless event.owner.nil?
+    #add creator to email
+    to_users = get_to_users(to_opts)
     to_users << from_address unless from_address.nil?
     ApplicationMailer.deliver_event_archive_review_notice(to_users.uniq.join(","),opts)
     true
@@ -90,8 +98,10 @@ class EventWorkflow < Workflow
     opts.merge!(:event_pid=>event.pid) unless event.nil? || event.pid.nil?
     opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
     opts.merge!(:from_address=>from_address) unless from_address.nil?
-    to_users = get_to_users
-    to_users = to_users | get_group_users(event.owner.first) unless event.owner.empty?
+    to_opts = {}
+    to_opts.merge!({:group=>event.owner}) unless event.owner.nil?
+    #add creator to email
+    to_users = get_to_users(to_opts)
     to_users << from_address unless from_address.nil?
     ApplicationMailer.deliver_event_archived_notice(to_users.uniq.join(","),opts)
     true
@@ -122,7 +132,10 @@ class EventWorkflow < Workflow
     end
 
     event :ready_for_archives do
-      transition any => :archive_review
+      transition :planned => :archive_review
+      transition :captured => :archive_review
+      transition :updated => :archive_review
+      transition :is_updated => :archive_review
     end
 
     event :event_archived do

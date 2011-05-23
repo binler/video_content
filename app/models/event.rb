@@ -64,6 +64,11 @@ class Event < ActiveFedora::Base
     @event_id = values.any? ? values.first : ""
   end
 
+  def owner
+    values = self.datastreams["properties"].get_values([:owner])
+    values.empty? ? nil :  values.first
+  end
+
   alias_method :composite_id, :event_id
 
   def apply_ldap_values(computing_id, person_number)
