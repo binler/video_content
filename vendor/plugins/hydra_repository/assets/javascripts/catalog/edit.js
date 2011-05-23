@@ -468,7 +468,10 @@
       } else {
         field_param = $editNode.fieldSerialize();
       }
-      console.log(field_param);
+
+      var hasConsole = (typeof console != 'undefined' && typeof console.log != 'undefined');
+
+      if (hasConsole) { console.log(field_param); }
       var content_type_param = $("input#content_type", $closestForm).fieldSerialize();
       var field_selectors = $("input.fieldselector[rel="+$editNode.attr("rel")+"]").fieldSerialize()
       
