@@ -128,7 +128,7 @@
           <%= fedora_text_area(@document_fedora,"properties", [:chapter]) %>
         </dd>
       <%- end -%>
-      <%- if can? :edit_archive_derivative, EventWorkflow -%>
+      <%- if can? :edit_archive_derivative, DerivativeWorkflow -%>
         <%=render :partial=>'derivatives/edit_archive_fields'%>
       <%- else -%>
         <%=render :partial=>'derivatives/show_archive_fields'%>

@@ -110,6 +110,21 @@ class DerivativesController < CatalogController
     show_without_customizations
   end
 
+  def trigger
+    workflow = DerivativeWorkflow.find_by_pid(params[:id])
+    events_to_fire = params[:derivative][:events_to_fire].map{ |event| event.to_sym }
+    # NOTE: comment handling makes the assumption that events will be triggered one at a time.
+    comments = params[:derivative][:state_transition_comments]
+    events_to_fire.each do |state_event|
+      if can? state_event, DerivativeWorkflow
+        workflow.state_transition_comments = comments
+        workflow.from_address = current_user.email
+        workflow.fire_events(state_event)
+      end
+    end
+    redirect_to edit_catalog_path(params[:id])
+  end
+
   private 
 
   def get_last_assetlink_count(asset)

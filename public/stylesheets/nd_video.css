@@ -69,8 +69,13 @@
   clear:both;
 }
 
+#hd ul {
+  padding:0;
+}
+
 #hd ul li {
   cursor:auto;
+  display:inline-block;
 }
 
 #actions-menu, #session-management {
@@ -88,13 +93,23 @@ ul#actions-menu li, ul#session-management li {
   margin-left:0;
 }
 
+ul#session-management {
+  padding:0 5px;
+}
+
 #actions-menu a:link, #session-management a:link, #actions-menu a:visited, #session-management a:visited {
-  border-bottom:1px solid #839DBF;
+  border-bottom:none;
   color:#183451;
+  display:inline-block;
   font-weight:bold;
   margin:0 .2em;
-  padding:.1em .2em;
-  text-decoration:none;
+  padding:5px;
+  text-decoration:underline;
+}
+
+ul#session-management a:link, ul#session-management a:visited {
+  padding:5px .2em;
+  margin:0;
 }
 
 #facets div {
@@ -342,6 +357,10 @@ li fieldset legend {
 
 .ar-form input[type="text"]{
   width:20em;
+}
+
+.ar-form input[type="text"].multiple-ldap-autocomplete {
+  width:72%;
 }
 
 .ar-form fieldset {

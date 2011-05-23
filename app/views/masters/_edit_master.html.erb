@@ -106,7 +106,7 @@
       <dd class="annotation">
         <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "0"}, :text]) %>
       </dd>
-      <%- if can? :edit_archive_master, EventWorkflow -%>
+      <%- if can? :edit_archive_master, MasterWorkflow -%>
         <%=render :partial=>'masters/edit_archive_fields'%>
       <%- else -%>
         <%=render :partial=>'masters/show_archive_fields'%>

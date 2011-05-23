@@ -62,6 +62,11 @@ class Action < ActiveRecord::Base
     :conditions => ['`actions`.`permissible_id` IS NULL']
   }
 
+  def self.find_or_create_by_name_and_type(name, type)
+    existing_action = Action.find(:first, :conditions => ['`name` = ? AND `permissible_type` = ? AND `permissible_id` IS NULL', name, type])
+    existing_action ? existing_action : Action.create(:name => name, :permissible_type => type)
+  end
+
   def self.available_action_names
     available_actions.map{|action| action.name}
   end

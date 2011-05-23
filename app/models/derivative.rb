@@ -133,8 +133,23 @@ class Derivative < ActiveFedora::Base
     return result
   end
 
-  def state
-    'created'
+  def workflow
+    @workflow ||= DerivativeWorkflow.find_or_create_by_pid(pid)
+  end
+
+  # Favoring explicit delegation for now. Perhaps method_missing should be implemented later.
+  # Delegate state machine interactions to workflow
+  [:state, :state_events, :fire_events, :abilities_affected_by_state_change, :state_transition_comments].each do |method|
+    delegate method, :to => :workflow
+  end
+
+  DerivativeWorkflow.state_query_methods.each do |method|
+    delegate method, :to => :workflow
+  end
+
+  # Delegate group and permission information to workflow
+  [:groups].each do |method|
+    delegate method, :to => :workflow
   end
 
   def class_name

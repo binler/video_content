@@ -1,7 +1,7 @@
 class RoleMapper
 
   def self.role_names
-    EventWorkflow.hydra_role_names
+    Workflow.hydra_role_names
   end
 
   def self.permission_types
@@ -16,7 +16,8 @@ class RoleMapper
         raise "No user found with username: #{username}" if user.nil?
         ability = Ability.new(user)
       end
-      role_names.select{ |role| ability.can? role.to_sym, EventWorkflow }
+      # NOTE: the construction of role names is tightly coupled with the applicable class name
+      role_names.select{ |role| ability.can? role.to_sym, "#{role.split('_').last.titleize}Workflow".constantize }
     rescue
       []
     end
