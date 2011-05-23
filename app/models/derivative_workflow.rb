@@ -43,21 +43,137 @@ class DerivativeWorkflow < Workflow
   end
   alias_method :parent, :derivative
 
-  state_machine :state, :initial => :created do
+  def derivative_ready_for_derivative_video_editors_callback
+    opts = {}
+    opts.merge!(:derivative_id=>derivative.derivative_id) unless derivative.nil? || derivative.derivative_id.nil? || derivative.derivative_id.empty?
+    opts.merge!(:parent_id=>derivative.parent.composite_id) unless derivative.nil? || derivative.parent.nil? || derivative.parent.composite_id.nil?
+    opts.merge!(:derivative_pid=>derivative.pid) unless derivative.nil? || derivative.pid.nil?
+    opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
+    opts.merge!(:from_address=>from_address) unless from_address.nil?
+    to_opts = {}
+    to_opts.merge!({:group=>derivative.owner}) unless derivative.owner.nil?
+    #add creator to email
+    to_users = get_to_users(to_opts)
+    to_users << from_address unless from_address.nil?
+    ApplicationMailer.deliver_derivative_video_captured_notice(to_users.uniq.join(","),opts)
+    true
+  end
 
-    event :approve_for_archival do
-      transition :created => :archived
+  def derivative_notify_video_editors_of_updates_callback
+    opts = {}
+    opts.merge!(:derivative_id=>derivative.derivative_id) unless derivative.nil? || derivative.derivative_id.nil? || derivative.derivative_id.empty?
+    opts.merge!(:parent_id=>derivative.parent.composite_id) unless derivative.nil? || derivative.parent.nil? || derivative.parent.composite_id.nil?
+    opts.merge!(:derivative_pid=>derivative.pid) unless derivative.nil? || derivative.pid.nil?
+    opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
+    opts.merge!(:from_address=>from_address) unless from_address.nil?
+    to_opts = {}
+    to_opts.merge!({:group=>derivative.owner}) unless derivative.owner.nil?
+    #add creator to email
+    to_users = get_to_users(to_opts)
+    to_users << from_address unless from_address.nil?
+    ApplicationMailer.deliver_derivative_video_updated_notice(to_users.uniq.join(","),opts)
+    true
+  end
+
+  def derivative_notify_archive_review_callback
+    opts = {}
+    opts.merge!(:derivative_id=>derivative.derivative_id) unless derivative.nil? || derivative.derivative_id.nil? || derivative.derivative_id.empty?
+    opts.merge!(:parent_id=>derivative.parent.composite_id) unless derivative.nil? || derivative.parent.nil? || derivative.parent.composite_id.nil?
+    opts.merge!(:derivative_pid=>derivative.pid) unless derivative.nil? || derivative.pid.nil?
+    opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
+    opts.merge!(:from_address=>from_address) unless from_address.nil?
+    to_opts = {}
+    to_opts.merge!({:group=>derivative.owner}) unless derivative.owner.nil?
+    #add creator to email
+    to_users = get_to_users(to_opts)
+    to_users << from_address unless from_address.nil?
+    ApplicationMailer.deliver_derivative_archive_review_notice(to_users.uniq.join(","),opts)
+    true
+  end
+
+  def derivative_notify_archived_callback
+    opts = {}
+    opts.merge!(:derivative_id=>derivative.derivative_id) unless derivative.nil? || derivative.derivative_id.nil? || derivative.derivative_id.empty?
+    opts.merge!(:parent_id=>derivative.parent.composite_id) unless derivative.nil? || derivative.parent.nil? || derivative.parent.composite_id.nil?
+    opts.merge!(:derivative_pid=>derivative.pid) unless derivative.nil? || derivative.pid.nil?
+    opts.merge!(:comments=>state_transition_comments) unless state_transition_comments.nil?
+    opts.merge!(:from_address=>from_address) unless from_address.nil?
+    to_opts = {}
+    to_opts.merge!({:group=>derivative.owner}) unless derivative.owner.nil?
+    #add creator to email
+    to_users = get_to_users(to_opts)
+    to_users << from_address unless from_address.nil?
+    ApplicationMailer.deliver_derivative_archived_notice(to_users.uniq.join(","),opts)
+    true
+  end
+
+  state_machine :state, :initial => :created do
+    before_transition :to => :edited, :do => :derivative_ready_for_derivative_video_editors_callback
+    before_transition :to => :updated, :do => :derivative_notify_video_editors_of_updates_callback
+    before_transition :to => :is_updated, :do => :derivative_notify_video_editors_of_updates_callback
+    before_transition :to => :archive_review, :do => :derivative_notify_archive_review_callback
+    before_transition :to => :archived, :do => :derivative_notify_archived_callback
+
+    event :notify_derivative_ready_for_new_derivatives do
+      transition :created => :edited
+    end
+
+    event :notify_derivative_updated do
+      transition :edited => :updated
+    end
+
+    event :notify_derivative_changed do
+      transition :updated => :is_updated
+    end
+
+    event :notify_derivative_is_updated do
+      transition :is_updated => :updated
+    end
+    
+    event :send_to_archives do
+      transition :created => :archive_review
+      transition :edited => :archive_review
+      transition :updated => :archive_review
+      transition :is_updated => :archive_review
+    end
+
+    event :archive_derivative do
+      transition :archive_review => :archived
     end
 
     state :created do
       def abilities_affected_by_state_change
-        []
+        [:create_derivative]
+      end
+    end
+
+    state :edited do
+      def abilities_affected_by_state_change
+        [:create_derivative,:edit_derivative]
+      end
+    end
+
+    state :updated do
+      def abilities_affected_by_state_change
+        [:create_derivative,:edit_derivative]
+      end
+    end
+
+    state :is_updated do
+      def abilities_affected_by_state_change
+        [:create_derivative,:edit_derivative]
+      end
+    end
+
+    state :archive_review do
+      def abilities_affected_by_state_change
+        [:edit_archive_derivative]
       end
     end
 
     state :archived do
       def abilities_affected_by_state_change
-        []
+        [:edit_archive_derivative]
       end
     end
   end

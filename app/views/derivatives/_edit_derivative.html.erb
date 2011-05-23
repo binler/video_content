@@ -161,3 +161,20 @@
     </dl>
   </fieldset>
 </form>
+
+<%- if @document_fedora.state_events.any? -%>
+  <%- @document_fedora.state_events.each do |state_event| -%>
+    <%- form_for @document_fedora, :url => trigger_derivative_path(@document_fedora), :html => { :class => 'state-transition' } do |f| -%>
+      <fieldset>
+        <legend><%=state_event.to_s.humanize.titleize%></legend>
+        <%= f.error_messages %>
+        <%= f.hidden_field :events_to_fire, :value => state_event -%>
+        <dl>
+          <dt><%= f.label :submit_notes %></dt>
+          <dd><%= f.text_area :state_transition_comments -%></dd>
+        </dl>
+        <%= f.submit state_event.to_s.humanize.titleize, :class=> 'button' %>
+      </fieldset>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>

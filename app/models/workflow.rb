@@ -89,6 +89,8 @@ class Workflow < ActiveRecord::Base
     
     to_users.flatten.map! {|user| "#{user}@nd.edu"}
     to_users = to_users | get_to_group_users(to_opts[:group]) if to_opts[:group]
+    logger.debug("to_users: #{to_users.inspect}")
+    to_users
   end
 
   def get_to_group_users(group_name)

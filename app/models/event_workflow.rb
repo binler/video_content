@@ -43,10 +43,6 @@ class EventWorkflow < Workflow
   end
   alias_method :parent, :event
 
-  def event_created_callback
-    ApplicationMailer.deliver_event_created_notice(SMTP_DEBUG_EMAIL_ADDRESS) if Rails.env =~ /^dev/
-  end
-
   def event_ready_for_video_editors_callback
     opts = {}
     opts.merge!(:event_id=>event.composite_id) unless event.nil? || event.composite_id.nil?
@@ -108,37 +104,36 @@ class EventWorkflow < Workflow
   end
 
   state_machine :state, :initial => :planned do
-    before_transition :to => :planned,  :do => :event_created_callback
     before_transition :to => :captured, :do => :event_ready_for_video_editors_callback
     before_transition :to => :updated, :do => :event_notify_video_editors_of_updates_callback
     before_transition :to => :is_updated, :do => :event_notify_video_editors_of_updates_callback
     before_transition :to => :archive_review, :do => :event_notify_archive_review_callback
     before_transition :to => :archived, :do => :event_notify_archived_callback
 
-    event :event_ready_for_video_editors do
+    event :notify_event_ready_for_video_editors do
       transition :planned => :captured
     end
 
-    event :event_updated do
+    event :notify_event_updated do
       transition :captured => :updated
     end
 
-    event :event_changed do
+    event :notify_event_changed do
       transition :updated => :is_updated
     end
 
-    event :event_is_updated do
+    event :notify_event_is_updated do
       transition :is_updated => :updated
     end
 
-    event :ready_for_archives do
+    event :send_to_archives do
       transition :planned => :archive_review
       transition :captured => :archive_review
       transition :updated => :archive_review
       transition :is_updated => :archive_review
     end
 
-    event :event_archived do
+    event :archive_event do
       transition :archive_review => :archived
     end
 

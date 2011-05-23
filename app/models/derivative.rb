@@ -60,6 +60,19 @@ class Derivative < ActiveFedora::Base
     member_of.first if member_of.any?
   end
 
+  def owner
+    num_creators = self.datastreams["descMetadata"].get_values([:pbcorePart, :pbcoreCreator]).size
+    i = 0
+    while i < num_creators do
+      if self.datastreams["descMetadata"].get_values([:pbcorePart, {:pbcoreCreator => i}, :creator, :creator_annotation]).to_s.eql?"owner"
+        values = self.datastreams["descMetadata"].get_values([:pbcorePart, {:pbcoreCreator => i}, :creator])
+        return values.first unless values.empty?
+      end
+      i = i+1
+    end
+    nil
+  end
+
   #returns the parent event for this derivative
   def parent_event
     parent = self.member_of.first

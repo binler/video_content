@@ -144,7 +144,7 @@
   <%- @document_fedora.state_events.each do |state_event| -%>
     <%- form_for @document_fedora, :url => trigger_master_path(@document_fedora), :html => { :class => 'state-transition' } do |f| -%>
       <fieldset>
-        <legend>Notify <%=state_event.to_s.humanize.titleize%></legend>
+        <legend><%=state_event.to_s.humanize.titleize%></legend>
         <%= f.error_messages %>
         <%= f.hidden_field :events_to_fire, :value => state_event -%>
         <dl>

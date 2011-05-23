@@ -1,7 +1,7 @@
 event_archive_review:
   from_address: ndliblis@nd.edu
   subject_text: "Event #{event_id} Ready for Archival Review"
-  body_text: "An Event #{event_id} is ready for archival review. It will only be editable by archives will be in Review."
+  body_text: "An Event #{event_id} is ready for archival review. It will only be editable by archives while in Review."
   template_file: event_notice.text.html.erb
 event_archived:
   from_address: ndliblis@nd.edu
@@ -26,15 +26,35 @@ event_updated:
 master_video_updated:
   from_address: ndliblis@nd.edu
   subject_text: "Master Video #{master_id} for Event #{event_id} has been Updated"
-  body_text: "An existing master video record has been updated.  Please review any changes that may be related to Derivative Videos."
+  body_text: "Master Video Record #{master_id} has been updated.  Please review any changes that may be related to Derivative Videos."
   template_file: event_master_notice.text.html.erb
 master_archive_review:
   from_address: ndliblis@nd.edu
   subject_text: "Master Video #{master_id} for Event #{event_id} Ready for Archival Review"
-  body_text: "A Master Video #{master_id} for #{event_id} is ready for archival review. It will only be editable by archives will be in Review."
+  body_text: "A Master Video #{master_id} for #{event_id} is ready for archival review. It will only be editable by archives while in Review."
   template_file: event_master_notice.text.html.erb
 master_archived:
   from_address: ndliblis@nd.edu
   subject_text: "Master Video #{master_id} for Event #{event_id} Archived"
   body_text: "Master Video #{master_id} for event #{event_id} has been archived.  It will no longer be editable."
   template_file: event_master_notice.text.html.erb
+derivative_video_captured:
+  from_address: ndliblis@nd.edu
+  subject_text: "Derivative Video #{derivative_id} for Parent #{parent_id} Available"
+  body_text: "A Derivative Video #{derivative_id} of Parent #{parent_id} is available for possible derivatives."
+  template_file: parent_derivative_notice.text.html.erb
+derivative_video_updated:
+  from_address: ndliblis@nd.edu
+  subject_text: "Derivative Video #{derivative_id} for Parent #{parent_id} has been Updated"
+  body_text: "An existing derivative video record has been updated.  Please review any changes that may be related to Derivative Videos of this derivative."
+  template_file: parent_derivative_notice.text.html.erb
+derivative_archive_review:
+  from_address: ndliblis@nd.edu
+  subject_text: "Derivative Video #{derivative_id} for Parent #{parent_id} Ready for Archival Review"
+  body_text: "A Derivative Video #{derivative_id} for Parent #{parent_id} is ready for archival review. It will only be editable by archives while in Review."
+  template_file: parent_derivative_notice.text.html.erb
+derivative_archived:
+  from_address: ndliblis@nd.edu
+  subject_text: "Derivative Video #{derivative_id} for Parent #{parent_id} Archived"
+  body_text: "Derivative Video #{derivative_id} for Parent #{parent_id} has been archived.  It will no longer be editable."
+  template_file: parent_derivative_notice.text.html.erb

@@ -43,10 +43,6 @@ class MasterWorkflow < Workflow
   end
   alias_method :parent, :master
 
-  def master_created_callback
-    ApplicationMailer.deliver_master_created_notice(SMTP_DEBUG_EMAIL_ADDRESS) if Rails.env =~ /^dev/
-  end
-
   def master_ready_for_derivative_video_editors_callback
     opts = {}
     opts.merge!(:master_id=>master.master_id) unless master.nil? || master.master_id.nil? || master.master_id.empty?
@@ -112,22 +108,21 @@ class MasterWorkflow < Workflow
   end
 
   state_machine :state, :initial => :created do
-    before_transition :to => :created,  :do => :master_created_callback
     before_transition :to => :edited, :do => :master_ready_for_derivative_video_editors_callback
     before_transition :to => :updated, :do => :master_notify_video_editors_of_updates_callback
     before_transition :to => :is_updated, :do => :master_notify_video_editors_of_updates_callback
     before_transition :to => :archive_review, :do => :master_notify_archive_review_callback
     before_transition :to => :archived, :do => :master_notify_archived_callback
 
-    event :master_ready_for_derivative_video_editors do
+    event :notify_master_ready_for_derivatives do
       transition :created => :edited
     end
 
-    event :master_updated do
+    event :notify_master_updated do
       transition :edited => :updated
     end
 
-    event :master_changed do
+    event :notify_master_changed do
       transition :updated => :is_updated
     end
 
@@ -135,14 +130,14 @@ class MasterWorkflow < Workflow
       transition :is_updated => :updated
     end
     
-    event :ready_for_archives do
+    event :send_to_archives do
       transition :created => :archive_review
       transition :edited => :archive_review
       transition :updated => :archive_review
       transition :is_updated => :archive_review
     end
 
-    event :master_archived do
+    event :archive_master do
       transition :archive_review => :archived
     end
 
