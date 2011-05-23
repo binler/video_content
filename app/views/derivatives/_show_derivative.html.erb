@@ -68,6 +68,7 @@
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier], "ID:") %>
       </dt>
+      <dd class="id">
         <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier]) %>
       </dd>
     <% end %>
