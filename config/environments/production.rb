@@ -20,5 +20,5 @@ config.action_view.cache_template_loading            = true
 
 SSL_ENABLED=true
 
-APPLICATION_HOST = 'your.production.server.com'
+APPLICATION_HOST = 'video.library.nd.edu'
 BASE_URI         = ''
