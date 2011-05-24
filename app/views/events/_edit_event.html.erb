@@ -20,6 +20,12 @@
       <dd >
         <%= fedora_date_select(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAssetDate]) %>
       </dd>
+      <dt>
+        <label>State:</label>
+      </dt>
+      <dd class="title">
+        <%= @document_fedora.state.humanize.titleize %>
+      </dd>
       <fieldset>
         <legend>Location</legend>
         <dt>

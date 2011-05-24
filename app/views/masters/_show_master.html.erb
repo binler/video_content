@@ -22,6 +22,12 @@
     <dd class="parent">
 	<%= link_to !(@document_fedora.member_of.first.event_id.empty?) ? @document_fedora.member_of.first.event_id : @document_fedora.member_of.first.pid, catalog_path(@document_fedora.member_of.first.pid, :content_type => "event") %>
     </dd>
+    <dt>
+      <label>State:</label>
+    </dt>
+    <dd class="title">
+      <%= @document_fedora.state.humanize.titleize %>
+    </dd>
     <% unless get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => video_index}, :creator]).first.empty? %>
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => video_index}, :creator], "Video Creator:") %>

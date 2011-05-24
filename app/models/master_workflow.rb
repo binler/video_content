@@ -108,11 +108,11 @@ class MasterWorkflow < Workflow
   end
 
   state_machine :state, :initial => :created do
-    before_transition :to => :edited, :do => :master_ready_for_derivative_video_editors_callback
-    before_transition :to => :updated, :do => :master_notify_video_editors_of_updates_callback
-    before_transition :to => :is_updated, :do => :master_notify_video_editors_of_updates_callback
+    before_transition :to => :edited,         :do => :master_ready_for_derivative_video_editors_callback
+    before_transition :to => :updated,        :do => :master_notify_video_editors_of_updates_callback
+    before_transition :to => :is_updated,     :do => :master_notify_video_editors_of_updates_callback
     before_transition :to => :archive_review, :do => :master_notify_archive_review_callback
-    before_transition :to => :archived, :do => :master_notify_archived_callback
+    before_transition :to => :archived,       :do => :master_notify_archived_callback
 
     event :notify_master_ready_for_derivatives do
       transition :created => :edited
@@ -131,9 +131,9 @@ class MasterWorkflow < Workflow
     end
     
     event :send_to_archives do
-      transition :created => :archive_review
-      transition :edited => :archive_review
-      transition :updated => :archive_review
+      transition :created    => :archive_review
+      transition :edited     => :archive_review
+      transition :updated    => :archive_review
       transition :is_updated => :archive_review
     end
 

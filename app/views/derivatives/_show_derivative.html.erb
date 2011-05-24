@@ -15,7 +15,7 @@
   <%- end -%>
     <dl>
       <dt>
-        Parent:
+        <label>Parent:</label>
       </dt>
       <dd class="parent">
 	<% obj = @document_fedora %>
@@ -39,6 +39,12 @@
 	  <% acnter = acnter + 1 %>
 	<%- end -%>
       </dd>
+    <dt>
+      <label>State:</label>
+    </dt>
+    <dd class="title">
+      <%= @document_fedora.state.humanize.titleize %>
+    </dd>
     <% unless get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator]).first.empty? %>
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator], "Owner:") %>

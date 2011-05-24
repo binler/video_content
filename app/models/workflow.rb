@@ -111,10 +111,6 @@ class Workflow < ActiveRecord::Base
   end
 
   state_machine :state, :initial => :created do
-    event :approve_for_archival do
-      transition :created => :archived
-    end
-
     state :created do
     end
 

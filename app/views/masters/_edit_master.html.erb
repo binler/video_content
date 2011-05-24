@@ -3,7 +3,7 @@
     <legend> Description </legend>
     <dl>
       <dt>
-        Parent:
+        <label>Parent:</label>
       </dt>
       <dd class="parent">
 	  <%= link_to !(@document_fedora.member_of.first.event_id.empty?) ? @document_fedora.member_of.first.event_id : @document_fedora.member_of.first.pid, catalog_path(@document_fedora.member_of.first.pid, :content_type => "event") %>
@@ -13,6 +13,12 @@
       </dt>
       <dd class="master_id">
         <%= fedora_text_field(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, :instantiationIdentifier])%>
+      </dd>
+      <dt>
+        <label>State:</label>
+      </dt>
+      <dd class="title">
+        <%= @document_fedora.state.humanize.titleize %>
       </dd>
       <% num_of_creators = @document_fedora.datastreams["descMetadata"].get_values([:pbcorePart, :pbcoreCreator]).size %>
       <% i = 0 %>
