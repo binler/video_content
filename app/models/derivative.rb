@@ -152,7 +152,8 @@ class Derivative < ActiveFedora::Base
 
   # Favoring explicit delegation for now. Perhaps method_missing should be implemented later.
   # Delegate state machine interactions to workflow
-  [:state, :state_events, :fire_events, :abilities_affected_by_state_change, :state_transition_comments].each do |method|
+  [:state, :state_events, :state_transitions, :fire_events, :abilities_affected_by_state_change, :state_transition_comments,
+   :restrict_editing_to_archival_groups?, :restrict_editing_to_archival_fields? ].each do |method|
     delegate method, :to => :workflow
   end
 

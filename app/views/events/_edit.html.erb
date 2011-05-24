@@ -25,15 +25,32 @@
     <div id="loading" style="display:none;">
       <img src="/plugin_assets/hydra_repository/images/ajax-loader.gif" width="32" height="32" alt="Saving..." />
     </div>
-    <% if flash[:notice] %>
+    <%- if flash[:notice] -%>
       <div class="notice">
         <%= flash[:notice] %>
       </div>
-    <% end %>
+    <%- end -%>
     <p>There is no submit button for this form. Please click <em>outside the textbox</em> to save the changes.</p>
-    <div id="compound-form">
-      <h2 class="section-title"><a href="#">Event</a></h2>
-      <%= render :partial => "events/edit_event", :locals => { :content_type => "event"} %>
-    </div>
+    <%- if @document_fedora.restrict_editing_to_archival_groups? %>
+      <div class="notice">
+        <em>This record is under the purview of the University Archives.</em>
+      </div>
+    <%- end -%>
+    <h2 class="section-title"><a href="#">Event</a></h2>
+    <%- if @document_fedora.restrict_editing_to_archival_groups? %>
+      <%- if can? :edit_archive_event, EventWorkflow -%>
+        <div id="compound-form">
+          <%= render :partial => "events/edit_event", :locals => { :content_type => "event"} %>
+        </div>
+      <%- else -%>
+        <div class="document_show">
+          <%= render :partial => "events/show_event", :locals => { :content_type => "event"} %>
+        </div>
+      <%- end -%>
+    <%- else -%>
+      <div id="compound-form">
+        <%= render :partial => "events/edit_event", :locals => { :content_type => "event"} %>
+      </div>
+    <%- end -%>
   </div>
 </div>

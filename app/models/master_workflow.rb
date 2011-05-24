@@ -149,19 +149,19 @@ class MasterWorkflow < Workflow
 
     state :edited do
       def abilities_affected_by_state_change
-        [:create_derivative,:edit_derivative]
+        [:create_derivative, :edit_derivative]
       end
     end
 
     state :updated do
       def abilities_affected_by_state_change
-        [:create_derivative,:edit_derivative]
+        [:create_derivative, :edit_derivative]
       end
     end
 
     state :is_updated do
       def abilities_affected_by_state_change
-        [:create_derivative,:edit_derivative]
+        [:create_derivative, :edit_derivative]
       end
     end
 
@@ -169,11 +169,23 @@ class MasterWorkflow < Workflow
       def abilities_affected_by_state_change
         [:edit_archive_master]
       end
+
+      def restrict_editing_to_archival_groups?
+        true
+      end
     end
 
     state :archived do
       def abilities_affected_by_state_change
         [:edit_archive_master]
+      end
+
+      def restrict_editing_to_archival_groups?
+        true
+      end
+
+      def restrict_editing_to_archival_fields?
+        true
       end
     end
   end

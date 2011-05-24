@@ -169,11 +169,23 @@ class DerivativeWorkflow < Workflow
       def abilities_affected_by_state_change
         [:edit_archive_derivative]
       end
+
+      def restrict_editing_to_archival_groups?
+        true
+      end
     end
 
     state :archived do
       def abilities_affected_by_state_change
         [:edit_archive_derivative]
+      end
+
+      def restrict_editing_to_archival_groups?
+        true
+      end
+
+      def restrict_editing_to_archival_fields?
+        true
       end
     end
   end
