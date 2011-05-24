@@ -16,7 +16,7 @@ class EventsController < CatalogController
   helper :hydra, :metadata, :infusion_view
 
   #before_filter :initialize_collection, :except=>[:index, :new]
-  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :create, :add, :download, :removespeaker, :removenode]
+  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :create, :add, :download, :removespeaker, :removenode, :trigger]
   def index
     @events = Event.find_by_solr(:all).hits.map{|result| Event.load_instance_from_solr(result["id"])}
   end
@@ -129,6 +129,7 @@ class EventsController < CatalogController
 
   def trigger
     workflow = EventWorkflow.find_by_pid(params[:id])
+    document_fedora = Event.load_instance(params[:id])
     events_to_fire = params[:event][:events_to_fire].map{ |event| event.to_sym }
     # NOTE: comment handling makes the assumption that events will be triggered one at a time.
     comments = params[:event][:state_transition_comments]
@@ -139,6 +140,8 @@ class EventsController < CatalogController
         workflow.fire_events(state_event)
       end
     end
+    document_fedora.update_indexed_attributes(:workflow_state => { 0 => workflow.state })
+    document_fedora.save
     redirect_to edit_catalog_path(params[:id])
   end
 

@@ -20,6 +20,7 @@ class Derivative < ActiveFedora::Base
     m.field 'derivative_type', :string
     m.field 'level', :string
     m.field 'chapter', :string
+    m.field 'workflow_state', :string
   end
 
   has_datastream :name=>"external_file", :type=>ActiveFedora::Datastream, :controlGroup=>'R'

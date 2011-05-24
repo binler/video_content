@@ -22,6 +22,7 @@ class Event < ActiveFedora::Base
     m.field 'state', :string
     m.field 'country', :string
     m.field 'owner', :string
+    m.field 'workflow_state', :string
   end
 
   alias_method :id, :pid
