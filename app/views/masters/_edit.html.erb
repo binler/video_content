@@ -30,9 +30,26 @@
       </div>
     <% end %>
     <p>There is no submit button for this form. Please click <em>outside the textbox</em> to save the changes.</p>
-    <div id="compound-form">
-      <h2 class="section-title"><a href="#">Master File</a></h2>
-      <%= render :partial => "masters/edit_master", :locals => { :content_type => "master"} %>
-    </div>
+    <%- if @document_fedora.restrict_editing_to_archival_groups? %>
+      <div class="notice">
+        <em>This record is under the purview of the University Archives.</em>
+      </div>
+    <%- end -%>
+    <h2 class="section-title"><a href="#">Master File</a></h2>
+    <%- if @document_fedora.restrict_editing_to_archival_groups? %>
+      <%- if can? :edit_archive_master, MasterWorkflow -%>
+        <div id="compound-form">
+          <%= render :partial => "masters/edit_master", :locals => { :content_type => "master"} %>
+        </div>
+      <%- else -%>
+        <div class="document_show">
+          <%= render :partial => "masters/show_master", :locals => { :content_type => "master"} %>
+        </div>
+      <%- end -%>
+    <%- else -%>
+      <div id="compound-form">
+        <%= render :partial => "masters/edit_master", :locals => { :content_type => "master"} %>
+      </div>
+    <%- end -%>
   </div>
 </div>

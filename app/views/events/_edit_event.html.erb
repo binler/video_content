@@ -20,6 +20,12 @@
       <dd >
         <%= fedora_date_select(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAssetDate]) %>
       </dd>
+      <dt>
+        <label>State:</label>
+      </dt>
+      <dd class="title">
+        <%= @document_fedora.state.humanize.titleize %>
+      </dd>
       <fieldset>
         <legend>Location</legend>
         <dt>
@@ -180,18 +186,18 @@
   </fieldset>
 </form>
 
-<%- if @document_fedora.state_events.any? -%>
-  <%- @document_fedora.state_events.each do |state_event| -%>
+<%- if @document_fedora.state_transitions.any? -%>
+  <%- @document_fedora.state_transitions.each do |transition| -%>
     <%- form_for @document_fedora, :url => trigger_event_path(@document_fedora), :html => { :class => 'state-transition' } do |f| -%>
       <fieldset>
-        <legend><%=state_event.to_s.humanize.titleize%></legend>
+        <legend><%= transition.event.to_s.humanize.titleize %></legend>
         <%= f.error_messages %>
-        <%= f.hidden_field :events_to_fire, :value => state_event -%>
+        <%= f.hidden_field :events_to_fire, :value => transition.event -%>
         <dl>
           <dt><%= f.label :submit_notes %></dt>
           <dd><%= f.text_area :state_transition_comments -%></dd>
         </dl>
-        <%= f.submit state_event.to_s.humanize.titleize, :class=> 'button' %>
+        <%= f.submit transition.event.to_s.humanize.titleize, :class=> 'button' %>
       </fieldset>
     <%- end -%>
   <%- end -%>

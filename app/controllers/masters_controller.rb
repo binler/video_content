@@ -16,7 +16,7 @@ class MastersController < CatalogController
   helper :hydra, :metadata, :infusion_view
 
   #before_filter :initialize_collection, :except=>[:index, :new]
-  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :add, :removenode]
+  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :add, :removenode, :trigger]
   def index
     @events = Master.find_by_solr(:all).hits.map{|result| Master.load_instance_from_solr(result["id"])}
   end
@@ -99,6 +99,7 @@ class MastersController < CatalogController
 
   def trigger
     workflow = MasterWorkflow.find_by_pid(params[:id])
+    document_fedora = Master.load_instance(params[:id])
     events_to_fire = params[:master][:events_to_fire].map{ |event| event.to_sym }
     # NOTE: comment handling makes the assumption that events will be triggered one at a time.
     comments = params[:master][:state_transition_comments]
@@ -109,6 +110,8 @@ class MastersController < CatalogController
         workflow.fire_events(state_event)
       end
     end
+    document_fedora.update_indexed_attributes(:workflow_state => { 0 => workflow.state })
+    document_fedora.save
     redirect_to edit_catalog_path(params[:id])
   end
 

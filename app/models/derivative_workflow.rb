@@ -108,11 +108,11 @@ class DerivativeWorkflow < Workflow
   end
 
   state_machine :state, :initial => :created do
-    before_transition :to => :edited, :do => :derivative_ready_for_derivative_video_editors_callback
-    before_transition :to => :updated, :do => :derivative_notify_video_editors_of_updates_callback
-    before_transition :to => :is_updated, :do => :derivative_notify_video_editors_of_updates_callback
+    before_transition :to => :edited,         :do => :derivative_ready_for_derivative_video_editors_callback
+    before_transition :to => :updated,        :do => :derivative_notify_video_editors_of_updates_callback
+    before_transition :to => :is_updated,     :do => :derivative_notify_video_editors_of_updates_callback
     before_transition :to => :archive_review, :do => :derivative_notify_archive_review_callback
-    before_transition :to => :archived, :do => :derivative_notify_archived_callback
+    before_transition :to => :archived,       :do => :derivative_notify_archived_callback
 
     event :notify_derivative_ready_for_new_derivatives do
       transition :created => :edited
@@ -131,9 +131,9 @@ class DerivativeWorkflow < Workflow
     end
     
     event :send_to_archives do
-      transition :created => :archive_review
-      transition :edited => :archive_review
-      transition :updated => :archive_review
+      transition :created    => :archive_review
+      transition :edited     => :archive_review
+      transition :updated    => :archive_review
       transition :is_updated => :archive_review
     end
 
@@ -169,11 +169,23 @@ class DerivativeWorkflow < Workflow
       def abilities_affected_by_state_change
         [:edit_archive_derivative]
       end
+
+      def restrict_editing_to_archival_groups?
+        true
+      end
     end
 
     state :archived do
       def abilities_affected_by_state_change
         [:edit_archive_derivative]
+      end
+
+      def restrict_editing_to_archival_groups?
+        true
+      end
+
+      def restrict_editing_to_archival_fields?
+        true
       end
     end
   end

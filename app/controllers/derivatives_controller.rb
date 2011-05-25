@@ -16,7 +16,7 @@ class DerivativesController < CatalogController
   helper :hydra, :metadata, :infusion_view
 
   #before_filter :initialize_collection, :except=>[:index, :new]
-  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :add, :removenode]
+  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :add, :removenode, :trigger]
   def index
     @events = Derivative.find_by_solr(:all).hits.map{|result| Derivative.load_instance_from_solr(result["id"])}
   end
@@ -112,6 +112,7 @@ class DerivativesController < CatalogController
 
   def trigger
     workflow = DerivativeWorkflow.find_by_pid(params[:id])
+    document_fedora = Derivative.load_instance(params[:id])
     events_to_fire = params[:derivative][:events_to_fire].map{ |event| event.to_sym }
     # NOTE: comment handling makes the assumption that events will be triggered one at a time.
     comments = params[:derivative][:state_transition_comments]
@@ -122,6 +123,8 @@ class DerivativesController < CatalogController
         workflow.fire_events(state_event)
       end
     end
+    document_fedora.update_indexed_attributes(:workflow_state => { 0 => workflow.state })
+    document_fedora.save
     redirect_to edit_catalog_path(params[:id])
   end
 

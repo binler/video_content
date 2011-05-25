@@ -2,7 +2,7 @@ require 'mediashelf/active_fedora_helper'
 
 # Workflow is an ActiveRecord counterpart to a ActiveFedora model. There is a 1:1 relationship.
 class Workflow < ActiveRecord::Base
-  
+
   include MediaShelf::ActiveFedoraHelper
 
   has_many :actions, :as => :permissible
@@ -77,6 +77,18 @@ class Workflow < ActiveRecord::Base
     nil
   end
 
+  def restrict_editing_to_archival_groups?
+    false
+  end
+
+  def restrict_editing_to_archival_fields?
+    false
+  end
+
+  def abilities_affected_by_state_change
+    []
+  end
+
   def get_to_users(to_opts={})
     to_users = []
 
@@ -99,21 +111,10 @@ class Workflow < ActiveRecord::Base
   end
 
   state_machine :state, :initial => :created do
-
-    event :approve_for_archival do
-      transition :created => :archived
-    end
-
     state :created do
-      def abilities_affected_by_state_change
-        []
-      end
     end
 
     state :archived do
-      def abilities_affected_by_state_change
-        []
-      end
     end
   end
 end

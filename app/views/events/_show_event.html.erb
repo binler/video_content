@@ -10,7 +10,12 @@
         <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreTitle]) %>
       </dd>
     <% end %>
-
+    <dt>
+      <label>State:</label>
+    </dt>
+    <dd class="title">
+      <%= @document_fedora.state.humanize.titleize %>
+    </dd>
     <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier]).first.empty? %>
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreIdentifier], "Event ID:") %>
