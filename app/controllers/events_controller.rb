@@ -16,7 +16,7 @@ class EventsController < CatalogController
   helper :hydra, :metadata, :infusion_view
 
   #before_filter :initialize_collection, :except=>[:index, :new]
-  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :create, :add, :download, :removespeaker, :removenode]
+  before_filter :require_solr, :require_fedora, :only=>[:show, :edit, :index, :new, :update, :create, :add, :download, :removespeaker, :removenode, :location]
   def index
     @events = Event.find_by_solr(:all).hits.map{|result| Event.load_instance_from_solr(result["id"])}
   end
@@ -65,6 +65,12 @@ class EventsController < CatalogController
       @asset = create_and_save_event(af_model)
     end
     redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :content_type => params[:content_type])
+  end
+
+  def location
+    @document_fedora = Event.find(params[:id])
+    puts "Accessing State tag...........#{params[:cntry_name]}"
+    render :partial => "events/edit_states", :locals=>{:cntry_name=>params[:cntry_name]}
   end
 
   # Creates new datastream with name COPYRIGHTS for each file upload

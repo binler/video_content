@@ -28,12 +28,10 @@
         <dd>
 	  <%= fedora_select(@document_fedora,"properties", [:country], :choices=>@document_fedora.countries) %>
         </dd>
-	<dt>
-	  <%= fedora_field_label("properties", [:state], "State:") %>
-        </dt>
-        <dd>
-	  <%= fedora_text_field(@document_fedora,"properties", [:state]) %>
-        </dd>
+	<input id="location" type="hidden" name="display_state" value="<%= url_for(:action=>"location", :controller=>"events")%>" />
+        <div class="state" data-pid=<%= params[:id] %>>
+	  <%= render :partial => "events/edit_states" %>
+	</div>
 	<dt>
 	  <%= fedora_field_label("properties", [:city], "City:") %>
         </dt>
