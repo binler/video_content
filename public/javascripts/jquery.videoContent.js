@@ -21,6 +21,7 @@
          data: params,
          success: function(data){
            $(showDiv).html(data);
+             $('div.state input.editable-edit').hydraTextField();
          },
          error: function(xhr, textStatus, errorThrown){
      		$.noticeAdd({
