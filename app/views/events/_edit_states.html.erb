@@ -1,23 +1,13 @@
 <!-- <div id="reload_states_other"> -->
-<%- if((!params.has_key?("cntry_name"))) -%>
-  <dt>
-    <%= fedora_field_label("properties", [:state], "State:") %>
-  </dt>
-  <dd>
-    <%= fedora_text_field(@document_fedora,"properties", [:state]) %>
-  </dd>
-<%- elsif(params[:cntry_name].eql?"United States") -%>
-  <dt>
-    <%= fedora_field_label("properties", [:state], "State:") %>
-  </dt>
+<dt>
+  <%= fedora_field_label("properties", [:state], "State:") %>
+</dt>
+<%- if((params.has_key?("cntry_name")) && (params[:cntry_name].eql?"United States")) -%>
   <dd>
     <%= fedora_select(@document_fedora,"properties", [:state], :choices=>StateList.states("US")) %>
   </dd>
 <%- else -%>
-  <dt>
-    <%= fedora_field_label("properties", [:state], "State:") %>
-  </dt>
-  <dd>
+  <dd class="state_text_field">
     <%= fedora_text_field(@document_fedora,"properties", [:state]) %>
   </dd>
 <%- end -%>

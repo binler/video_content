@@ -274,5 +274,5 @@
  <defaultSearchField>text</defaultSearchField>
  <solrQueryParser defaultOperator="AND" />
  <copyField source="*_facet" dest="text" />
-
+ <copyField source="*_t" dest="text" />
 </schema>
