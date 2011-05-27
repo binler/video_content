@@ -120,12 +120,6 @@
       <dd class="description">
         <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "0"}, :text]) %>
       </dd>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text], "Retention Schedule:") %>
-      </dt>
-      <dd class="retention_schedule">
-        <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]) %>
-      </dd>
       <%- if(@document_fedora.level.eql?"1") -%>
         <dt>
           <%= fedora_field_label("properties", [:chapter], "Chapter:") %>
@@ -134,13 +128,13 @@
           <%= fedora_text_area(@document_fedora,"properties", [:chapter]) %>
         </dd>
       <%- end -%>
-      <%- if can? :edit_archive_derivative, DerivativeWorkflow -%>
-        <%=render :partial=>'derivatives/edit_archive_fields'%>
-      <%- else -%>
-        <%=render :partial=>'derivatives/show_archive_fields'%>
-      <%-end -%>
     </dl>
   </fieldset>
+  <%- if can? :edit_archive_derivative, DerivativeWorkflow -%>
+    <%=render :partial=>'derivatives/edit_archive_fields'%>
+  <%- else -%>
+    <%=render :partial=>'derivatives/show_archive_fields'%>
+  <%-end -%>
   <fieldset id="links">
     <legend>Links</legend>
       <ul id="speaker-listing">

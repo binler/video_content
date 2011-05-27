@@ -1,6 +1,11 @@
-<dt>
-  <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation], "Archive Notes:") %>
-</dt>
-<dd class="notes">
-  <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation]) %>
-</dd>
+<fieldset id="archive_fields">
+<legend>Archival Fields</legend>
+  <dl>
+    <dt>
+      <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation], "Notes:") %>
+    </dt>
+    <dd class="notes">
+      <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreAnnotation]) %>
+    </dd>
+  </dl>
+</fieldset>

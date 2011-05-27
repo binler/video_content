@@ -63,13 +63,13 @@
       <dd class="subject">
         <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreSubject]) %>
       </dd>
-      <%- if can? :edit_archive_event, EventWorkflow -%>
-        <%=render :partial=>'events/edit_archive_fields'%>
-      <%- else -%>
-        <%=render :partial=>'events/show_archive_fields'%>
-      <%-end -%>
     </dl>
   </fieldset>
+  <%- if can? :edit_archive_event, EventWorkflow -%>
+    <%=render :partial=>'events/edit_archive_fields'%>
+  <%- else -%>
+    <%=render :partial=>'events/show_archive_fields'%>
+  <%-end -%>
   <fieldset id="creator_fields">
     <legend>People Responsible for event</legend>
     <dl>

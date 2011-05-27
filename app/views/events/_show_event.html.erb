@@ -60,9 +60,9 @@
         <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreSubject]) %>
       </dd>
     <% end %>
-    <%=render :partial=>'events/show_archive_fields'%>
     </dl>
   </fieldset>
+  <%=render :partial=>'events/show_archive_fields'%>
   <fieldset>
     <legend>People Responsible for Event</legend>
     <dl>
