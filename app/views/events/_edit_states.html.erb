@@ -1,8 +1,9 @@
 <!-- <div id="reload_states_other"> -->
+<% cntry = params[:cntry_name] if cntry.nil? %>
 <dt>
   <%= fedora_field_label("properties", [:state], "State:") %>
 </dt>
-<%- if((params.has_key?("cntry_name")) && (params[:cntry_name].eql?"United States")) -%>
+<%- if(!cntry.nil? && cntry.eql?("United States")) -%>
   <dd>
     <%= fedora_select(@document_fedora,"properties", [:state], :choices=>StateList.states("US")) %>
   </dd>

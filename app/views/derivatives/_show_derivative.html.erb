@@ -53,14 +53,18 @@
 	<%= get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator]) %>
       </dd>
     <% end %>
-    <% unless get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => owner_index}, :creator]).first.empty? %>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => creator_index}, :creator], "Creator:") %>
-      </dt>
-      <dd class="creator">
-        <%= get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => creator_index}, :creator]) %>
-      </dd>
-    <% end %>
+      <% i = 0 %>
+      <% while i < num_of_creators do %>
+        <%- if((get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator, :creator_annotation])).to_s.eql?"creator") -%>
+          <dt>
+            <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator], "Creator:") %>
+          </dt>
+          <dd class="creator">
+            <%= get_values_from_datastream(@document_fedora, "descMetadata", [:pbcorePart, {:pbcoreCreator => i}, :creator]) %>
+          </dd>
+        <%- end -%>
+        <% i = i+1 %>
+      <%- end -%>
     <% unless get_values_from_datastream(@document_fedora,"properties", [:pbcorePart, :pbcoreDescription]).first.empty? %>
       <dt>
         <%= fedora_field_label("properties", [:pbcorePart, :pbcoreDescription], "Derivative Type:") %>
