@@ -1,8 +1,22 @@
-<% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreAnnotation]).first.empty? %>
-  <dt>
-    <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreAnnotation], "Archive Notes:") %>
-  </dt>
-  <dd class="notes">
-    <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreAnnotation]) %>
-  </dd>
-<% end %>
+<fieldset id="archive_fields">
+<legend>Archival Fields</legend>
+  <dl>
+    <dt>
+      <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text], "Retention Schedule:") %>
+    </dt>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]).first.empty? %>
+    <dd class="retention_schedule">
+      <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]) %>
+    </dd>
+    <% end %>
+    
+    <dt>
+      <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreAnnotation], "Notes:") %>
+    </dt>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreAnnotation]).first.empty? %>
+    <dd class="notes">
+      <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreAnnotation]) %>
+    </dd>
+    <% end %>
+  </dl>
+</fieldset>

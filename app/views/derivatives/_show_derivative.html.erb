@@ -143,15 +143,6 @@
       </dd>
     <% end %>
 
-    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]).first.empty? %>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text], "Retention Schedule:") %>
-      </dt>
-      <dd class="retention_schedule">
-        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]) %>
-      </dd>
-    <% end %>
-
     <% unless get_values_from_datastream(@document_fedora,"properties", [:chapter]).first.empty? %>
       <dt>
         <%= fedora_field_label("properties", [:chapter], "Chapter:") %>
@@ -160,9 +151,9 @@
         <%= get_values_from_datastream(@document_fedora,"properties", [:chapter]) %>
       </dd>
     <% end %>
-    <%=render :partial=>'derivatives/show_archive_fields'%>
     </dl>
   </fieldset>
+  <%=render :partial=>'derivatives/show_archive_fields'%>
   <fieldset id="assetlinks">
     <legend>Links</legend>
     <%=render :partial=>'shared/show_derivative_assetlinks' %>

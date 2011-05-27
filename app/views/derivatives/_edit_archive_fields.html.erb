@@ -1,6 +1,17 @@
-<dt>
-  <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreAnnotation], "Archive Notes:") %>
-</dt>
-<dd class="notes">
-  <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreAnnotation]) %>
-</dd>
+<fieldset id="archive_fields">
+  <legend>Archival Fields</legend>
+  <dl>
+    <dt>
+      <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text], "Retention Schedule:") %>
+    </dt>
+    <dd class="retention_schedule">
+      <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]) %>
+    </dd>
+    <dt>
+      <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreAnnotation], "Notes:") %>
+    </dt>
+    <dd class="notes">
+      <%= fedora_text_area(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreAnnotation]) %>
+    </dd>
+  </dl>
+</fieldset>

@@ -1,43 +1,48 @@
-<% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]).first.empty? %>
-  <dt>
-    <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text], "Retention Schedule:") %>
-  </dt>
-  <dd class="retention_schedule">
-    <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]) %>
-  </dd>
-<% end %>
-<% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier]).first.empty? %>
-<dt>
-  <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier], "Archives Accession Number:") %>
-</dt>
-<dd class="archives_accession_number">
-  <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier]) %>
-</dd>
-<% end %>
+<fieldset id="archive_fields">
+<legend>Archival Fields</legend>
+  <dl>
+    <dt>
+      <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text], "Retention Schedule:") %>
+    </dt>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]).first.empty? %>
+    <dd class="retention_schedule">
+      <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreInstantiation, {:instantiationAnnotation => "1"}, :text]) %>
+    </dd>
+    <% end %>
+    <dt>
+      <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier], "Accession Number:") %>
+    </dt>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier]).first.empty? %>
+    <dd class="archives_accession_number">
+      <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcorePart, :pbcoreRelation, :pbcoreRelationIdentifier]) %>
+    </dd>
+    <% end %>
 
-<% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreIdentifier]).first.empty? %>
-<dt>
-  <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreIdentifier], "Archives Collection Code:") %>
-</dt>
-<dd class="archives_collection_code">
-  <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreIdentifier]) %>
-</dd>
-<% end %>
+    <dt>
+      <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreIdentifier], "Collection Code:") %>
+    </dt>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreIdentifier]).first.empty? %>
+    <dd class="archives_collection_code">
+      <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreIdentifier]) %>
+    </dd>
+    <% end %>
 
-<% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreDescription]).first.empty? %>
-<dt>
-  <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreDescription], "Archives Description:") %>
-</dt>
-<dd class="archives_description">
-  <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreDescription]) %>
-</dd>
-<% end %>
+    <dt>
+      <%= fedora_field_label("descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreDescription], "Description:") %>
+    </dt>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreDescription]).first.empty? %>
+    <dd class="archives_description">
+      <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, {:pbcorePart => "0"}, :pbcoreDescription]) %>
+    </dd>
+    <% end %>
 
-<% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreAnnotation]).first.empty? %>
-  <dt>
-    <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreAnnotation], "Archive Notes:") %>
-  </dt>
-  <dd class="notes">
-    <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreAnnotation]) %>
-  </dd>
-<% end %>
+    <dt>
+      <%= fedora_field_label("descMetadata", [:pbcorePart, :pbcoreAnnotation], "Notes:") %>
+    </dt>
+    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreAnnotation]).first.empty? %>
+    <dd class="notes">
+      <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcorePart, :pbcoreAnnotation]) %>
+    </dd>
+    <% end %>
+  </dl>
+</fieldset>
