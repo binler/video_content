@@ -70,7 +70,6 @@ class EventsController < CatalogController
 
   def location
     @document_fedora = Event.find(params[:id])
-    puts "Accessing State tag...........#{params[:cntry_name]}"
     render :partial => "events/edit_states", :locals=>{:cntry_name=>params[:cntry_name]}
   end
 

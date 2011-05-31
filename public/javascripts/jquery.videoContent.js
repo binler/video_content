@@ -10,7 +10,7 @@
       }
     }),
     $('select[rel*="country"]').change(function(){
-       var url = $("input#location").first().attr("value");
+       var url = $("input#location_state").first().attr("value");
        var params = "cntry_name="+$('select[rel*="country"]').val();
        var showDiv=$("div.state");
        var perviousNode=$("div.state").first();

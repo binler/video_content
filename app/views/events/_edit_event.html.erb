@@ -34,7 +34,7 @@
         <dd>
 	  <%= fedora_select(@document_fedora,"properties", [:country], :choices=>@document_fedora.countries) %>
         </dd>
-	<input id="location" type="hidden" name="display_state" value="<%= url_for(:action=>"location", :controller=>"events")%>" />
+	<input id="location_state" type="hidden" name="display_state" value="<%= url_for(:action=>"location", :controller=>"events")%>" />
         <div class="state" data-pid=<%= params[:id] %>>
 	  <%= render :partial => "events/edit_states", :locals=>{:cntry=>get_values_from_datastream(@document_fedora,"properties", [:country]).first} %>
 	</div>
