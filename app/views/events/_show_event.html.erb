@@ -11,7 +11,7 @@
       </dd>
     <% end %>
     <dt>
-      <label>State:</label>
+      <label>Workflow State:</label>
     </dt>
     <dd class="title">
       <%= @document_fedora.state.humanize.titleize %>
@@ -34,15 +34,6 @@
       </dd>
     <% end %>
 
-    <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreCoverage, :coverage]).first.empty? %>
-      <dt>
-        <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreCoverage, :coverage], "Location:") %>
-      </dt>
-      <dd class="location">
-        <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreCoverage, :coverage]) %>
-      </dd>
-    <% end %>
-
     <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreDescription]).first.empty? %>
       <dt>
         <%= fedora_field_label("descMetadata", [:pbcoreDescriptionDocument, :pbcoreDescription], "Description:") %>
@@ -60,6 +51,43 @@
         <%= get_values_from_datastream(@document_fedora,"descMetadata", [:pbcoreDescriptionDocument, :pbcoreSubject]) %>
       </dd>
     <% end %>
+    </dl>
+  </fieldset>
+   <fieldset>
+    <legend>Location</legend>
+    <dl>
+      <% unless get_values_from_datastream(@document_fedora,"properties", [:country]).first.empty? %>
+      <dt>
+	<%= fedora_field_label("properties", [:country], "Country:") %>
+      </dt>
+      <dd>
+	<%= get_values_from_datastream(@document_fedora,"properties", [:country]) %>
+      </dd>
+      <% end %>
+      <% unless get_values_from_datastream(@document_fedora,"properties", [:state]).first.empty? %>
+      <dt>
+	<%= fedora_field_label("properties", [:state], "State:") %>
+      </dt>
+      <dd>
+	<%= get_values_from_datastream(@document_fedora,"properties", [:state]) %>
+      </dd>
+      <% end %>
+      <% unless get_values_from_datastream(@document_fedora,"properties", [:city]).first.empty? %>
+      <dt>
+	<%= fedora_field_label("properties", [:city], "City:") %>
+      </dt>
+      <dd>
+	<%= get_values_from_datastream(@document_fedora,"properties", [:city]) %>
+      </dd>
+      <% end %>
+      <% unless get_values_from_datastream(@document_fedora,"properties", [:venue]).first.empty? %>
+      <dt>
+	<%= fedora_field_label("properties", [:venue], "Venue:") %>
+      </dt>
+      <dd>
+	<%= get_values_from_datastream(@document_fedora,"properties", [:venue]) %>
+      </dd>
+      <% end %>
     </dl>
   </fieldset>
   <%=render :partial=>'events/show_archive_fields'%>
