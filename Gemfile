@@ -56,3 +56,7 @@ group :development, :test do
   gem 'cucumber-rails'
   gem 'gherkin'
 end
+
+group :deploy do
+  gem 'capistrano'
+end
