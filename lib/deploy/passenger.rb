@@ -16,6 +16,7 @@ Capistrano::Configuration.instance(:must_exist).load do
 
   set :scm, :git
   set :deploy_via, :remote_cache
+  set :scm_command, '/shared/git/bin/git'
 
   def prompt_with_default(var, default, message = nil)
     set(var) do
@@ -41,12 +42,38 @@ Capistrano::Configuration.instance(:must_exist).load do
   end
 
   #############################################################
+  #  Environment
+  #############################################################
+
+  set :rake_path, 'vendor/bundle/ruby/1.8/bin/rake'
+
+  namespace :env do
+    desc "Set SCM branch"
+    task :set_paths do
+      set :ruby,      File.join(ruby_bin, 'ruby')
+      set :bundler,   File.join(ruby_bin, 'bundle')
+      set :rake,      File.join(shared_path, rake_path)
+    end
+  end
+
+  #############################################################
   #  Passenger
   #############################################################
 
   desc "Restart Application"
   task :restart_passenger do
     run "touch #{current_path}/tmp/restart.txt"
+  end
+
+  #############################################################
+  #  Database
+  #############################################################
+
+  namespace :db do
+    desc "Run the seed rake task."
+    task :seed, :roles => :app do
+      run "cd #{current_path}; #{bundler} exec #{rake} RAILS_ENV=#{rails_env} db:seed"
+    end
   end
 
   #############################################################
@@ -110,6 +137,11 @@ Capistrano::Configuration.instance(:must_exist).load do
     end
   end
 
+  #############################################################
+  #  Callbacks
+  #############################################################
+
+  before 'deploy', 'env:set_paths'
   before 'deploy:update_code', 'deploy:set_scm_branch'
   after 'deploy:update_code', 'deploy:symlink_shared', 'bundle:install', 'deploy:migrate'
 
