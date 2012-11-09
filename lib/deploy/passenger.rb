@@ -48,7 +48,7 @@ Capistrano::Configuration.instance(:must_exist).load do
   set :rake_path, 'vendor/bundle/ruby/1.8/bin/rake'
 
   namespace :env do
-    desc "Set SCM branch"
+    desc "Set command paths"
     task :set_paths do
       set :ruby,      File.join(ruby_bin, 'ruby')
       set :bundler,   File.join(ruby_bin, 'bundle')
