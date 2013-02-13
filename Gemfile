@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rails', '2.3.11'
+gem 'rails', '~>2.3.16'
+gem 'rack', '~>1.1.6'
 
 gem 'active-fedora', '2.0.0'
 gem 'authlogic', '>=0.1.0'
@@ -23,7 +24,6 @@ gem 'multipart-post'
 gem 'mysql', '2.8.1'
 gem 'nokogiri', '1.4.3.1'
 gem 'om', '>=1.0.1'
-gem 'rack'
 gem 'rack-test'
 gem 'rake'
 gem 'rcov'
