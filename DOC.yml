@@ -1,0 +1,32 @@
+id: video-content
+name: Video IDR Pilot
+owner: dbrubak1
+developers:
+  - dbrubak1
+  - rbalekai
+  - rjohns14
+  - blakshmi
+purpose: >
+  This project was a proof-of-concept implentation of a Fedora-backed video depository.
+audience: >
+  Representatives from the registar's office and the videographer from Academic Technologies.
+dependencies:
+  - fedora_3_6
+  - solr_1_4
+  - mysql
+  - ldap
+hosts:
+  - video.rpprd.library.nd.edu
+  - video.library.nd.edu
+urls:
+  - "http://video.rpprd.library.nd.edu"
+  - "http://video.library.nd.edu"
+setup: >
+  Rails, Solr, and Fedora
+deploy: >
+  Use capistrano. The deploment recipe isn't stored in the repo. It is stored along with the other config files in the pre-production and production environments.
+notes: >
+  This application will hopfully be sunset soon. It will be addressed with a Curation Concern.
+last_review:
+  date: 2013-06-24
+  reviewer: dbrubak1
